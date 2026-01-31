@@ -43,6 +43,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.viewpager2)
+    implementation(libs.dotsindicator)
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
     testImplementation(libs.junit)
