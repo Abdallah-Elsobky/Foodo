@@ -18,6 +18,8 @@ import iti.student.foodo.databinding.FragmentHomeBinding;
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
 
+    int counter = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -28,6 +30,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.counter.setText(String.valueOf(counter));
+        binding.home.setOnClickListener(v -> {
+            counter++;
+            binding.counter.setText(String.valueOf(counter));
+        });
     }
 
     @Override

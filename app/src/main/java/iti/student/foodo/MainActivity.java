@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import iti.student.foodo.databinding.ActivityMainBinding;
+
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -38,9 +40,30 @@ public class MainActivity extends AppCompatActivity {
 
     @NonNull
     private NavController setupNavigation() {
+
         NavController navController =
                 Navigation.findNavController(this, R.id.fragmentContainerView);
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (navController.getCurrentDestination() != null &&
+                    item.getItemId() == navController.getCurrentDestination().getId()) {
+                return false;
+            }
+            NavOptions options = new NavOptions.Builder()
+                    .setLaunchSingleTop(true)
+                    .setRestoreState(true)
+                    .setPopUpTo(R.id.homeFragment, false, true)
+                    .build();
+
+            try {
+                navController.navigate(item.getItemId(), null, options);
+                return true;
+            } catch (Exception e) {
+                return NavigationUI.onNavDestinationSelected(item, navController);
+            }
+        });
+
         return navController;
     }
 
