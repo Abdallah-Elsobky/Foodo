@@ -1,63 +1,24 @@
 package iti.student.foodo;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import iti.student.foodo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
-        NavController navController = setupNavigation();
-        handleBottomNavBar(navController);
-    }
-
-    @NonNull
-    private NavController setupNavigation() {
-        NavController navController =
-                Navigation.findNavController(this, R.id.fragmentContainerView);
-        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
-        return navController;
-    }
-
-    private void handleBottomNavBar(NavController navController) {
-        Set<Integer> topLevelDestinations = new HashSet<>();
-        topLevelDestinations.add(R.id.homeFragment);
-        topLevelDestinations.add(R.id.searchFragment);
-        topLevelDestinations.add(R.id.plannerFragment);
-        topLevelDestinations.add(R.id.favoritesFragment);
-        topLevelDestinations.add(R.id.cartFragment);
-
-        navController.addOnDestinationChangedListener((controller, destination, args) -> {
-            binding.bottomNavigationView.setVisibility(
-                    topLevelDestinations.contains(destination.getId())
-                            ? View.VISIBLE
-                            : View.GONE
-            );
         });
     }
 }
