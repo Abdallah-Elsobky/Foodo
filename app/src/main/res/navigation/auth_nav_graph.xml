@@ -43,10 +43,10 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_loginFragment"
+            android:id="@+id/navigateToLoginFromRegister"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/auth_nav_graph"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/forgetPasswordFragment"
