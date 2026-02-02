@@ -28,10 +28,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.login.setOnClickListener(v -> {
+        binding.signupBtn.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.navigateToRegisterFromLogin);
         });
-        binding.getRoot().setOnClickListener(v -> {
+        binding.guestBtn.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.navigateToMainFromLogin);
         });
     }

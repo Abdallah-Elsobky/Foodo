@@ -34,9 +34,10 @@ public class SplashFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         rotateWithFadeIn(binding.logo);
 
-        new Handler().postDelayed(() -> {
-            Navigation.findNavController(view).navigate(R.id.navigateToOnboardingFromSplash);
-        }, 3000);
+//        new Handler().postDelayed(() -> {
+//            Navigation.findNavController(view).navigate(R.id.navigateToOnboardingFromSplash);
+//        }, 3000);
+            Navigation.findNavController(view).navigate(R.id.navigateToAuthFromSplash);
     }
 
     @Override
