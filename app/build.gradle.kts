@@ -41,10 +41,19 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    // Navigation
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    // ViewPager
     implementation(libs.viewpager2)
     implementation(libs.dotsindicator)
+    // Retrofit
+    implementation(libs.retrofit)
+    // Gson
+    implementation(libs.gson.converter)
+    implementation(libs.gson)
+    // Glide
+    implementation(libs.glide)
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
     testImplementation(libs.junit)

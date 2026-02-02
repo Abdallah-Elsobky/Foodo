@@ -1,6 +1,6 @@
 package iti.student.foodo.features.onboarding;
 
-import static iti.student.foodo.utils.Animations.fadeIn;
+import static iti.student.foodo.core.utils.Animations.fadeIn;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

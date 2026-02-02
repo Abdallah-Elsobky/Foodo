@@ -1,4 +1,4 @@
-package iti.student.foodo.utils;
+package iti.student.foodo.core.utils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package iti.student.foodo.features.splash;
 
-import static iti.student.foodo.utils.Animations.rotateWithFadeIn;
+import static iti.student.foodo.core.utils.Animations.rotateWithFadeIn;
 
 import android.os.Bundle;
 
@@ -13,10 +13,8 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 
 import iti.student.foodo.R;
-import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.databinding.FragmentSplashBinding;
 
 
