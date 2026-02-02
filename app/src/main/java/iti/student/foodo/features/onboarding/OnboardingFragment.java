@@ -1,8 +1,8 @@
 package iti.student.foodo.features.onboarding;
 
-import static iti.student.foodo.utils.Animations.fadeIn;
-import static iti.student.foodo.utils.Animations.fadeOut;
-import static iti.student.foodo.utils.Animations.fadeOutInUpdate;
+import static iti.student.foodo.core.utils.Animations.fadeIn;
+import static iti.student.foodo.core.utils.Animations.fadeOut;
+import static iti.student.foodo.core.utils.Animations.fadeOutInUpdate;
 
 import android.os.Bundle;
 
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import iti.student.foodo.R;
 import iti.student.foodo.databinding.FragmentOnboardingBinding;
-import iti.student.foodo.utils.Constants;
+import iti.student.foodo.core.utils.Constants;
 
 public class OnboardingFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package iti.student.foodo.utils;
+package iti.student.foodo.core.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -54,16 +54,13 @@ public class Animations {
     }
 
     public static void fadeOutInUpdate(View view, long duration, Runnable updateAction) {
-        // Fade out
         view.animate()
                 .alpha(0f)
                 .setDuration(duration)
                 .setInterpolator(new AccelerateDecelerateInterpolator())
                 .withEndAction(() -> {
-                    // Update the view while hidden
                     updateAction.run();
 
-                    // Fade back in
                     view.animate()
                             .alpha(1f)
                             .setDuration(duration)
