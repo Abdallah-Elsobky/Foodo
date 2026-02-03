@@ -1,5 +1,11 @@
 package iti.student.foodo.core.utils;
 
+import static kotlin.text.Typography.degree;
+
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
+import android.os.Build;
+
 import java.util.ArrayList;
 import java.util.List;
 

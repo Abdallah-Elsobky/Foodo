@@ -7,4 +7,9 @@
     <string name="get_started">Get Started</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
+    <string name="error">ERROR</string>
+    <string name="warning">WARNING</string>
+    <string name="info">INFO</string>
+    <string name="success">SUCCESS</string>
+    <string name="cancel">Cancel</string>
 </resources>

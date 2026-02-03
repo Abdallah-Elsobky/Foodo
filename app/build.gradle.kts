@@ -2,6 +2,7 @@ import com.android.build.api.dsl.ViewBinding
 
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -47,6 +48,10 @@ dependencies {
     // ViewPager
     implementation(libs.viewpager2)
     implementation(libs.dotsindicator)
+    // Lottie
+    implementation(libs.lottie)
+    // Toast
+    implementation(libs.motiontoast)
     // Retrofit
     implementation(libs.retrofit)
     // Gson
@@ -54,6 +59,10 @@ dependencies {
     implementation(libs.gson)
     // Glide
     implementation(libs.glide)
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
     testImplementation(libs.junit)
