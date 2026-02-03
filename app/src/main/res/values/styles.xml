@@ -59,5 +59,12 @@
         <item name="android:paddingVertical">16dp</item>
     </style>
 
+    <style name="CustomLoading">
+        <item name="lottie_autoPlay">true</item>
+        <item name="lottie_colorFilter">@color/orange</item>
+        <item name="lottie_loop">true</item>
+        <item name="lottie_rawRes">@raw/loading</item>
+    </style>
+
 
 </resources>

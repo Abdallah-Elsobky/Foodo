@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "816259798328",
+    "project_id": "foodo-e11b3",
+    "storage_bucket": "foodo-e11b3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816259798328:android:8fe8995d5543058dbd1dcd",
+        "android_client_info": {
+          "package_name": "iti.student.foodo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGRw8rW8Bg7Eagr6oXMfR-Y0i4-3zOeh4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
