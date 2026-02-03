@@ -1,5 +1,10 @@
 package iti.student.foodo.features.auth.register;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+import static iti.student.foodo.features.utils.BlurUtils.*;
+import static iti.student.foodo.features.utils.CustomToastKt.*;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,29 +12,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import iti.student.foodo.R;
+import iti.student.foodo.data.remote.firebase.FirebaseAuthDataSource;
 import iti.student.foodo.databinding.FragmentRegisterBinding;
+import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
+import iti.student.foodo.features.utils.BlurUtils;
+import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ValidationUtils;
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements RegisterContract.View {
     FragmentRegisterBinding binding;
-    private FirebaseAuth mAuth;
+    private RegisterContract.Presenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        presenter = new RegisterPresenterImpl(new AuthRepositoryImpl(new FirebaseAuthDataSource()));
+        presenter.attachView(this);
     }
 
 
@@ -40,37 +42,24 @@ public class RegisterFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void createAccount(String email, String password) {
-        // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("baso", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d("baso", "createUserWithEmail:success");
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("baso", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-        // [END create_user_with_email]
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         binding.signupBtn.setOnClickListener(v -> {
-            String email = binding.emailEt.getText().toString();
-            String password = binding.passwordEt.getText().toString();
-            createAccount(email, password);
+            String email = binding.emailEt.getText().toString().trim();
+            String password = binding.passwordEt.getText().toString().trim();
+            if (!ValidationUtils.isValidEmail(email)) {
+                binding.emailEt.setError("Invalid Email");
+                showError("Email must be valid (example@gmail.com)");
+                return;
+            }
+            if (!ValidationUtils.isValidPassword(password)) {
+                binding.passwordEt.setError("Invalid Password");
+                showError("Password must be at least 6 characters");
+                return;
+            }
+            presenter.register(email, password);
         });
         binding.loginBtn.setOnClickListener(v -> {
             Navigation.findNavController(v).popBackStack();
@@ -81,5 +70,49 @@ public class RegisterFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        successToast(getContext(), "Register Success");
+        Navigation.findNavController(binding.getRoot()).popBackStack();
+    }
+
+    @Override
+    public void onRegisterFailure(String message) {
+        errorToast(getContext(), message);
+    }
+
+    @Override
+    public void showLoading() {
+        binding.loading.setVisibility(VISIBLE);
+        blurView(binding.blurView, 30);
+    }
+
+    @Override
+    public void hideLoading() {
+        binding.loading.setVisibility(GONE);
+        showBlur(binding.blurView);
+    }
+
+    @Override
+    public void showError(String message) {
+        CustomDialog.showDialog("Error", message, getChildFragmentManager(), new CustomDialog.OnDialogClosedListener() {
+            @Override
+            public void onOpen() {
+                BlurUtils.blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                BlurUtils.showBlur(binding.blurView);
+            }
+        });
     }
 }

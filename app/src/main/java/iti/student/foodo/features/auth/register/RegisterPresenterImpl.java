@@ -1,36 +1,36 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.register;
 
 import iti.student.foodo.features.auth.data.AuthRepository;
 
-public class LoginPresenterImpl implements LoginContract.Presenter {
-    private LoginContract.View view;
+public class RegisterPresenterImpl implements RegisterContract.Presenter {
+    private RegisterContract.View view;
     private final AuthRepository repository;
 
-    public LoginPresenterImpl(AuthRepository repository) {
+    public RegisterPresenterImpl(AuthRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public void login(String email, String password) {
+    public void register(String email, String password) {
         view.showLoading();
-        repository.login(email, password, new AuthRepository.AuthCallback() {
+        repository.register(email, password, new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess() {
                 view.hideLoading();
-                view.onLoginSuccess();
+                view.onRegisterSuccess();
             }
 
             @Override
             public void onError(String message) {
-                view.onLoginFailure(message);
                 view.hideLoading();
                 view.showError(message);
+                view.onRegisterFailure(message);
             }
         });
     }
 
     @Override
-    public void attachView(LoginContract.View view) {
+    public void attachView(RegisterContract.View view) {
         this.view = view;
     }
 

@@ -43,14 +43,12 @@ import iti.student.foodo.features.utils.ValidationUtils;
 public class LoginFragment extends Fragment implements LoginContract.View {
     FragmentLoginBinding binding;
     LoginContract.Presenter presenter;
-    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new LoginPresenterImpl(new AuthRepositoryImpl(new FirebaseAuthDataSource()));
         presenter.attachView(this);
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
