@@ -12,7 +12,20 @@
           "package_name": "iti.student.foodo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "816259798328-rpsd8qakj7m40spr7kgapan75q9aq4dt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "iti.student.foodo",
+            "certificate_hash": "90acc24ae52c1f60cf07cf9bee00e8fe0ce2099f"
+          }
+        },
+        {
+          "client_id": "816259798328-3b4u9mkeju16kfb88nn5390si13bp223.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBGRw8rW8Bg7Eagr6oXMfR-Y0i4-3zOeh4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816259798328-3b4u9mkeju16kfb88nn5390si13bp223.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

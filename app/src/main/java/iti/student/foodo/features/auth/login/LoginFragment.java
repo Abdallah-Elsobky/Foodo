@@ -3,12 +3,8 @@ package iti.student.foodo.features.auth.login;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import static iti.student.foodo.features.utils.CustomToastKt.errorToast;
-import static iti.student.foodo.features.utils.CustomToastKt.successToast;
+import static iti.student.foodo.features.utils.CustomToastKt.*;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,28 +12,33 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.airbnb.lottie.LottieProperty;
-import com.airbnb.lottie.model.KeyPath;
-import com.airbnb.lottie.value.LottieValueCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import iti.student.foodo.R;
-import iti.student.foodo.data.remote.firebase.FirebaseAuthDataSource;
+import iti.student.foodo.data.remote.firebase.AuthService;
 import iti.student.foodo.databinding.FragmentLoginBinding;
 import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
 import iti.student.foodo.features.utils.BlurUtils;
 import iti.student.foodo.features.utils.CustomDialog;
 import iti.student.foodo.features.utils.ValidationUtils;
+
+import android.os.CancellationSignal;
+
+import androidx.credentials.CredentialManager;
+import androidx.credentials.CredentialManagerCallback;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
+
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+
+import java.util.concurrent.Executors;
 
 
 public class LoginFragment extends Fragment implements LoginContract.View {
@@ -47,7 +48,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenterImpl(new AuthRepositoryImpl(new FirebaseAuthDataSource()));
+        presenter = new LoginPresenterImpl(new AuthRepositoryImpl(new AuthService()));
         presenter.attachView(this);
     }
 
@@ -83,33 +84,80 @@ public class LoginFragment extends Fragment implements LoginContract.View {
             presenter.login(email, password);
         });
 
+        binding.googleBtn.setOnClickListener(v -> {
+            presenter.onGoogleSignInClicked();
+        });
+
         binding.guestBtn.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.navigateToMainFromLogin);
         });
+
+        binding.facebookBtn.setOnClickListener(v -> {
+            warningToast(requireContext(), "Coming Soon");
+        });
+
+        binding.githubBtn.setOnClickListener(v -> {
+            warningToast(requireContext(), "Coming Soon");
+        });
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("top", "onDestroyView: ");
-        binding = null;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.detachView();
-    }
 
     @Override
     public void onLoginSuccess() {
-        successToast(getContext(), "Login Success");
+        successToast(requireContext(), "Login Success");
         Navigation.findNavController(binding.getRoot()).navigate(R.id.navigateToMainFromLogin);
     }
 
     @Override
     public void onLoginFailure(String message) {
-        errorToast(getContext(), "Invalid Email or Password");
+        errorToast(requireContext(), "Invalid Email or Password");
+    }
+
+    @Override
+    public void launchGoogleSignIn() {
+        showLoading();
+        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(getString(R.string.default_web_client_id))
+                .setAutoSelectEnabled(true)
+                .build();
+
+        GetCredentialRequest request = new GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build();
+
+        CredentialManager credentialManager =
+                CredentialManager.create(requireContext());
+
+        credentialManager.getCredentialAsync(
+                requireActivity(),
+                request,
+                new CancellationSignal(),
+                Executors.newSingleThreadExecutor(),
+                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+
+                    @Override
+                    public void onResult(GetCredentialResponse result) {
+                        requireActivity().runOnUiThread(
+                                () -> {
+                                    presenter.loginWithGoogle(result);
+                                }
+                        );
+                    }
+
+                    @Override
+                    public void onError(@NonNull GetCredentialException e) {
+                        requireActivity().runOnUiThread(
+                                () -> showError("Something went wrong")
+                        );
+                    }
+                }
+        );
+
+        new Handler(Looper.getMainLooper()).postDelayed(
+                this::hideLoading,
+                950
+        );
     }
 
     @Override
@@ -137,5 +185,18 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 BlurUtils.showBlur(binding.blurView);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("top", "onDestroyView: ");
+        binding = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 }

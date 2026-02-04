@@ -122,71 +122,15 @@
                 android:layout_marginTop="30dp"
                 android:text="Sign Up"
                 android:textSize="18sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="65dp"
-                android:weightSum="5">
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="2" />
-
-                <TextView
-                    style="@style/hintTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Or continue with" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="2" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-
-                <ImageButton
-                    android:id="@+id/google_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/circle_shape"
-                    android:src="@drawable/google_ic"
-                    app:layout_constraintEnd_toStartOf="@id/facebook_btn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:id="@+id/facebook_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/circle_shape"
-                    android:src="@drawable/facebook_ic"
-                    app:layout_constraintEnd_toStartOf="@id/github_btn"
-                    app:layout_constraintStart_toEndOf="@id/google_btn"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/gray" />
-
-                <ImageButton
-                    android:id="@+id/github_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/circle_shape"
-                    android:src="@drawable/github_ic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/facebook_btn"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/gray" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".9"
+            />
 
         <TextView
             android:id="@+id/account_hint"
@@ -198,7 +142,7 @@
             app:layout_constraintEnd_toStartOf="@id/login_btn"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container" />
+            app:layout_constraintTop_toBottomOf="@id/bottom_line" />
 
         <TextView
             android:id="@+id/login_btn"
@@ -212,7 +156,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/account_hint"
-            app:layout_constraintTop_toBottomOf="@id/container" />
+            app:layout_constraintTop_toBottomOf="@id/bottom_line" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
