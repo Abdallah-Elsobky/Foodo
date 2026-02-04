@@ -16,7 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import iti.student.foodo.data.remote.firebase.FirebaseAuthDataSource;
+import iti.student.foodo.data.remote.firebase.AuthService;
 import iti.student.foodo.databinding.FragmentRegisterBinding;
 import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
 import iti.student.foodo.features.utils.BlurUtils;
@@ -30,7 +30,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new RegisterPresenterImpl(new AuthRepositoryImpl(new FirebaseAuthDataSource()));
+        presenter = new RegisterPresenterImpl(new AuthRepositoryImpl(new AuthService()));
         presenter.attachView(this);
     }
 
