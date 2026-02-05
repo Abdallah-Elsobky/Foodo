@@ -1,11 +1,10 @@
-package iti.student.foodo.data.remote.retrofit;
+package iti.student.foodo.data.network.retrofit;
 
+import io.reactivex.rxjava3.core.Single;
 import iti.student.foodo.data.model.MealsResponse;
-import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("search.php?f=a")
-    Call<MealsResponse> getMeals();
+    Single<MealsResponse> getMeals();
 }

@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 
 
 import iti.student.foodo.R;
-import iti.student.foodo.data.remote.firebase.AuthService;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.databinding.FragmentLoginBinding;
 import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
 import iti.student.foodo.features.utils.BlurUtils;

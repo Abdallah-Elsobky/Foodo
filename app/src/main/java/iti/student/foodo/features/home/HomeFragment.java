@@ -11,13 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import iti.student.foodo.core.network.ApiClient;
-import iti.student.foodo.data.model.MealsResponse;
-import iti.student.foodo.data.remote.retrofit.ApiService;
+import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.databinding.FragmentHomeBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class HomeFragment extends Fragment {
@@ -46,17 +44,14 @@ public class HomeFragment extends Fragment {
 
     void getMeal() {
         ApiService apiService = ApiClient.getInstance().create(ApiService.class);
-        apiService.getMeals().enqueue(new Callback<MealsResponse>() {
-            @Override
-            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
-                Log.d("FIIIIO", "onResponse: " + response.body().getMeals().get(0).toString());
-            }
-
-            @Override
-            public void onFailure(Call<MealsResponse> call, Throwable t) {
-                Log.d("FIIIIO", "onResponse: " + t.getMessage());
-            }
-        });
+        apiService.getMeals().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                response -> {
+                    Log.d("FIIIIO", "onResponse: " + response.getMeals().get(0).toString());
+                },
+                error -> {
+                    Log.d("FIIIIO", "onResponse: " + error.getMessage());
+                }
+        );
     }
 
 

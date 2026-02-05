@@ -5,6 +5,7 @@ import java.io.File;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
@@ -26,6 +27,7 @@ public class ApiClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(NetworkConstants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                     .client(client)
                     .build();
         }

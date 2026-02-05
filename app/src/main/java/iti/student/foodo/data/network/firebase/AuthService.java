@@ -1,4 +1,4 @@
-package iti.student.foodo.data.remote.firebase;
+package iti.student.foodo.data.network.firebase;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;

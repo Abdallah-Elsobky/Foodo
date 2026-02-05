@@ -1,6 +1,6 @@
 package iti.student.foodo.features.auth.data;
 
-import iti.student.foodo.data.remote.firebase.AuthService;
+import iti.student.foodo.data.network.firebase.AuthService;
 
 public class AuthRepositoryImpl implements AuthRepository {
 
