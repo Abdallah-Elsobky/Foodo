@@ -20,6 +20,11 @@ public class AuthRepositoryImpl implements AuthRepository {
         authService.register(email, password, callback);
     }
 
+    @Override
+    public void loginAsGuest(AuthCallback callback) {
+        authService.loginAsGuest(callback);
+    }
+
     public void loginWithGoogle(String idToken, AuthCallback callback) {
         authService.loginWithGoogle(idToken, callback);
     }

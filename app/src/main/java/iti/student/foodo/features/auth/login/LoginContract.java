@@ -9,6 +9,8 @@ public interface LoginContract {
     interface View extends BaseView {
         void onLoginSuccess();
         void launchGoogleSignIn();
+        void disableButtons();
+        void enableButtons();
         void onLoginFailure(String message);
     }
 
@@ -16,7 +18,7 @@ public interface LoginContract {
         void login(String email, String password);
         void loginWithGoogle(GetCredentialResponse response);
         void onGoogleSignInClicked();
+        void loginAsGuest();
         void loginWithFacebook(String accessToken);
-        void logout();
     }
 }

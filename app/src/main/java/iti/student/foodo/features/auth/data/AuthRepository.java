@@ -11,6 +11,9 @@ public interface AuthRepository {
 
     void register(String email, String password, AuthCallback callback);
 
+    void loginAsGuest(AuthCallback callback);
+
+
     interface AuthCallback {
         void onSuccess();
 

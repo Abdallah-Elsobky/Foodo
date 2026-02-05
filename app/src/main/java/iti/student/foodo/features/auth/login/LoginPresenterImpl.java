@@ -26,17 +26,19 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
         }
     };
 
-    private AuthRepository.AuthCallback logoutCallback = new AuthRepository.AuthCallback(){
+    private AuthRepository.AuthCallback logoutCallback = new AuthRepository.AuthCallback() {
 
         @Override
         public void onSuccess() {
-            view.
+            view.hideLoading();
+            view.enableButtons();
         }
 
         @Override
         public void onError(String message) {
             view.hideLoading();
             view.showError(message);
+            view.enableButtons();
         }
     };
 
@@ -47,6 +49,7 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
     @Override
     public void login(String email, String password) {
         view.showLoading();
+        view.disableButtons();
         repository.login(email, password, loginCallback);
     }
 
@@ -68,6 +71,7 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
         GoogleIdTokenCredential googleCredential =
                 GoogleIdTokenCredential.createFrom(credential.getData());
         view.showLoading();
+        view.disableButtons();
         repository.loginWithGoogle(
                 googleCredential.getIdToken(),
                 loginCallback
@@ -80,15 +84,17 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
         view.launchGoogleSignIn();
     }
 
+    @Override
+    public void loginAsGuest() {
+        view.showLoading();
+        view.disableButtons();
+        repository.loginAsGuest(loginCallback);
+    }
+
 
     @Override
     public void loginWithFacebook(String accessToken) {
 
-    }
-
-    @Override
-    public void logout() {
-        repository.logout();
     }
 
     @Override
