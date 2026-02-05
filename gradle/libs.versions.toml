@@ -1,4 +1,5 @@
 [versions]
+adapterRxjava3 = "3.0.0"
 agp = "9.0.0"
 credentials = "1.5.0"
 dotsindicator = "5.1.0"
@@ -17,6 +18,11 @@ navigationFragmentKtx = "2.9.7"
 navigationUiKtx = "2.9.7"
 fragment = "1.8.9"
 playServicesAuth = "21.5.0"
+roomCompiler = "2.8.4"
+roomRuntime = "2.8.4"
+roomRxjava3 = "2.8.4"
+rxandroidVersion = "3.0.2"
+rxjava = "3.1.8"
 viewpager2 = "1.1.0"
 retrofit = "3.0.0"
 glide = "5.0.5"
@@ -24,6 +30,7 @@ gson = "2.13.2"
 
 
 [libraries]
+adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "adapterRxjava3" }
 credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
@@ -44,6 +51,11 @@ motiontoast = { module = "com.github.Spikeysanju:MotionToast", version.ref = "mo
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationUiKtx" }
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRxjava3" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+rxjava3-rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroidVersion" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 gson-converter = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }

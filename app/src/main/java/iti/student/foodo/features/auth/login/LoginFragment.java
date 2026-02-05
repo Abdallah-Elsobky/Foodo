@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 
 
 import iti.student.foodo.R;
-import iti.student.foodo.data.remote.firebase.AuthService;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.databinding.FragmentLoginBinding;
 import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
 import iti.student.foodo.features.utils.BlurUtils;
@@ -89,7 +89,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
         });
 
         binding.guestBtn.setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.navigateToMainFromLogin);
+            presenter.loginAsGuest();
         });
 
         binding.facebookBtn.setOnClickListener(v -> {
@@ -117,7 +117,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     public void launchGoogleSignIn() {
         showLoading();
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
+                .setFilterByAuthorizedAccounts(true)
                 .setServerClientId(getString(R.string.default_web_client_id))
                 .setAutoSelectEnabled(true)
                 .build();
@@ -158,6 +158,26 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                 this::hideLoading,
                 950
         );
+    }
+
+    @Override
+    public void disableButtons() {
+        binding.githubBtn.setEnabled(false);
+        binding.googleBtn.setEnabled(false);
+        binding.facebookBtn.setEnabled(false);
+        binding.guestBtn.setEnabled(false);
+        binding.loginBtn.setEnabled(false);
+        binding.signupBtn.setEnabled(false);
+    }
+
+    @Override
+    public void enableButtons() {
+        binding.githubBtn.setEnabled(true);
+        binding.googleBtn.setEnabled(true);
+        binding.facebookBtn.setEnabled(true);
+        binding.guestBtn.setEnabled(true);
+        binding.loginBtn.setEnabled(true);
+        binding.signupBtn.setEnabled(true);
     }
 
     @Override

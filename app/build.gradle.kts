@@ -45,20 +45,30 @@ dependencies {
     // Navigation
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+
     // ViewPager
     implementation(libs.viewpager2)
     implementation(libs.dotsindicator)
+
     // Lottie
     implementation(libs.lottie)
+
     // Toast
     implementation(libs.motiontoast)
+
     // Retrofit
     implementation(libs.retrofit)
+
+    // RX with retrofit
+    implementation(libs.adapter.rxjava3)
+
     // Gson
     implementation(libs.gson.converter)
     implementation(libs.gson)
+
     // Glide
     implementation(libs.glide)
+
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
@@ -66,6 +76,18 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services)
     implementation(libs.googleid)
+
+    // Room
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+
+    // RX with Room
+    implementation(libs.room.rxjava3)
+
+    // RX Java
+    implementation(libs.rxjava)
+    implementation(libs.rxjava3.rxandroid)
+
     implementation(libs.constraintlayout)
     implementation(libs.fragment)
     testImplementation(libs.junit)
