@@ -1,12 +1,24 @@
 package iti.student.foodo.core.utils;
 
 import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 public class Animations {
     public static void rotateWithFadeIn(View view) {
@@ -69,6 +81,51 @@ public class Animations {
                 })
                 .start();
     }
+
+    public static void hintVertical(RecyclerView recyclerView) {
+        recyclerView.animate()
+                .translationYBy(-50f)
+                .setDuration(300)
+                .withEndAction(() ->
+                        recyclerView.animate()
+                                .translationYBy(50f)
+                                .setDuration(300)
+                );
+    }
+
+    public static void hintHorizontal(RecyclerView recyclerView,Runnable runnable) {
+        recyclerView.animate()
+                .translationXBy(-50f)
+                .setDuration(600)
+                .withEndAction(() ->
+                        recyclerView.animate()
+                                .translationXBy(50f)
+                                .setDuration(600)
+                                .withEndAction(runnable)
+                );
+    }
+
+    public static void shakeView(View view) {
+        view.animate()
+                .translationXBy(-10f)
+                .setDuration(50)
+                .withEndAction(() ->
+                        view.animate()
+                                .translationXBy(20f)
+                                .setDuration(100)
+                                .withEndAction(() ->
+                                        view.animate()
+                                                .translationXBy(-20f)
+                                                .setDuration(100)
+                                                .withEndAction(() ->
+                                                        view.animate()
+                                                                .translationXBy(10f)
+                                                                .setDuration(50)
+                                                )
+                                )
+                );
+    }
+    
 
 
 }

@@ -1,23 +1,26 @@
-package iti.student.foodo.data.model;
+package iti.student.foodo.data.model.dto;
 
 public class MealsItem{
+    private String idMeal;
+    private String strMeal;
+    private String strCategory;
+    private Object strTags;
+    private String strArea;
+    private String strYoutube;
+    private String strMealThumb;
 	private Object strImageSource;
 	private String strIngredient10;
 	private String strIngredient12;
 	private String strIngredient11;
 	private String strIngredient14;
-	private String strCategory;
 	private String strIngredient13;
 	private String strIngredient16;
 	private String strIngredient15;
 	private Object strMealAlternate;
 	private String strIngredient18;
 	private String strIngredient17;
-	private String strArea;
 	private Object strCreativeCommonsConfirmed;
 	private String strIngredient19;
-	private Object strTags;
-	private String idMeal;
 	private String strInstructions;
 	private String strIngredient1;
 	private String strIngredient3;
@@ -29,10 +32,7 @@ public class MealsItem{
 	private String strIngredient6;
 	private String strIngredient9;
 	private String strIngredient8;
-	private String strMealThumb;
 	private String strMeasure20;
-	private String strYoutube;
-	private String strMeal;
 	private String strMeasure12;
 	private String strMeasure13;
 	private String strMeasure10;

@@ -1,4 +1,4 @@
-package iti.student.foodo.data.model;
+package iti.student.foodo.data.model.dto;
 
 import java.util.List;
 
