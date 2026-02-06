@@ -25,6 +25,17 @@ public class AuthRepositoryImpl implements AuthRepository {
         authService.loginAsGuest(callback);
     }
 
+    @Override
+    public void sendEmailVerification(AuthCallback callback) {
+        authService.sendEmailVerification(callback);
+    }
+
+    @Override
+    public boolean isVerified() {
+        return authService.isVerified();
+    }
+
+
     public void loginWithGoogle(String idToken, AuthCallback callback) {
         authService.loginWithGoogle(idToken, callback);
     }

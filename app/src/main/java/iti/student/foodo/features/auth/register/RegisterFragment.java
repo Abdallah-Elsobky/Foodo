@@ -80,7 +80,7 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
 
     @Override
     public void onRegisterSuccess() {
-        successToast(getContext(), "Register Success");
+        successToast(getContext(), "Register Success\nVerify your email");
         Navigation.findNavController(binding.getRoot()).popBackStack();
     }
 

@@ -1,8 +1,11 @@
 package iti.student.foodo.data.network.firebase;
 
+import android.util.Log;
+
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import iti.student.foodo.features.auth.data.AuthRepository;
@@ -19,7 +22,13 @@ public class AuthService {
                       AuthRepository.AuthCallback callback) {
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener(result -> callback.onSuccess())
+                .addOnSuccessListener(result -> {
+                    if (isVerified()) {
+                        callback.onSuccess();
+                    } else {
+                        callback.onError("Email not verified");
+                    }
+                })
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
@@ -50,6 +59,25 @@ public class AuthService {
         firebaseAuth.signInAnonymously()
                 .addOnSuccessListener(authResult -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    public void sendEmailVerification(AuthRepository.AuthCallback callback) {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        user.sendEmailVerification();
+        if (user != null) {
+            callback.onSuccess();
+        } else {
+            callback.onError("User not logged in");
+        }
+    }
+
+    public boolean isVerified() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            return user.isEmailVerified();
+        } else {
+            return false;
+        }
     }
 
     public void logout() {

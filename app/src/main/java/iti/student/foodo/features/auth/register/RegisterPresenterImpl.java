@@ -16,8 +16,18 @@ public class RegisterPresenterImpl implements RegisterContract.Presenter {
         repository.register(email, password, new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess() {
-                view.hideLoading();
-                view.onRegisterSuccess();
+                repository.sendEmailVerification(new AuthRepository.AuthCallback() {
+                    @Override
+                    public void onSuccess() {
+                        view.hideLoading();
+                        view.onRegisterSuccess();
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        view.showError(message);
+                    }
+                });
             }
 
             @Override
