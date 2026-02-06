@@ -13,6 +13,10 @@ public interface AuthRepository {
 
     void loginAsGuest(AuthCallback callback);
 
+    void sendEmailVerification(AuthCallback callback);
+
+    boolean isVerified();
+
 
     interface AuthCallback {
         void onSuccess();
