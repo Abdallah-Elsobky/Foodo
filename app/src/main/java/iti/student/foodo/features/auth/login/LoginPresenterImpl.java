@@ -16,6 +16,7 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
         public void onSuccess() {
             view.hideLoading();
             view.onLoginSuccess();
+            view.enableButtons();
         }
 
         @Override
@@ -23,6 +24,7 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
             view.onLoginFailure(message);
             view.hideLoading();
             view.showError(message);
+            view.enableButtons();
         }
     };
 
