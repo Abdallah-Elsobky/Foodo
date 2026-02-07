@@ -147,9 +147,6 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
                     @Override
                     public void onError(@NonNull GetCredentialException e) {
-                        requireActivity().runOnUiThread(
-                                () -> showError("Something went wrong")
-                        );
                     }
                 }
         );
