@@ -37,7 +37,7 @@ public class SplashFragment extends Fragment {
 //        new Handler().postDelayed(() -> {
 //            Navigation.findNavController(view).navigate(R.id.navigateToOnboardingFromSplash);
 //        }, 3000);
-            Navigation.findNavController(view).navigate(R.id.navigateToAuthFromSplash);
+            Navigation.findNavController(view).navigate(R.id.navigateToMainFromSplash);
     }
 
     @Override

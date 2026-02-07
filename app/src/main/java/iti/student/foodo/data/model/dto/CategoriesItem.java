@@ -6,12 +6,7 @@ public class CategoriesItem{
 	private String idCategory;
 	private String strCategoryThumb;
 
-    public CategoriesItem(String strCategory, String strCategoryDescription) {
-        this.strCategory = strCategory;
-        this.strCategoryDescription = strCategoryDescription;
-    }
-
-    public String getStrCategory(){
+	public String getStrCategory(){
 		return strCategory;
 	}
 
@@ -26,4 +21,17 @@ public class CategoriesItem{
 	public String getStrCategoryThumb(){
 		return strCategoryThumb;
 	}
+
+    @Override
+    public String toString() {
+        return "CategoriesItem{" +
+                "strCategory='" + safe(strCategory) + '\'' +
+                ", strCategoryDescription='" + safe(strCategoryDescription) + '\'' +
+                ", idCategory='" + safe(idCategory) + '\'' +
+                ", strCategoryThumb='" + safe(strCategoryThumb) + '\'' +
+                '}';
+    }
+    private String safe(String value) {
+        return value == null ? "" : value;
+    }
 }
