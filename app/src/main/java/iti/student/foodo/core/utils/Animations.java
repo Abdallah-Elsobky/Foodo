@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,27 +83,37 @@ public class Animations {
                 .start();
     }
 
-    public static void hintVertical(RecyclerView recyclerView) {
-        recyclerView.animate()
-                .translationYBy(-50f)
+    public static void hintVertical(View view) {
+        view.animate()
+                .translationYBy(-100f)
                 .setDuration(300)
                 .withEndAction(() ->
-                        recyclerView.animate()
-                                .translationYBy(50f)
+                        view.animate()
+                                .translationYBy(100f)
                                 .setDuration(300)
                 );
     }
 
-    public static void hintHorizontal(RecyclerView recyclerView,Runnable runnable) {
-        recyclerView.animate()
+    public static void hintHorizontal(View view, Runnable runnable) {
+        view.animate()
                 .translationXBy(-50f)
                 .setDuration(600)
                 .withEndAction(() ->
-                        recyclerView.animate()
+                        view.animate()
                                 .translationXBy(50f)
                                 .setDuration(600)
                                 .withEndAction(runnable)
                 );
+    }
+
+    public static void smoothScrollTo(ScrollView scrollView, int targetY) {
+        ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollY", targetY);
+
+        animator.setDuration(1000);
+
+        animator.setInterpolator(new DecelerateInterpolator());
+
+        animator.start();
     }
 
     public static void shakeView(View view) {
@@ -125,7 +136,6 @@ public class Animations {
                                 )
                 );
     }
-    
 
 
 }

@@ -56,6 +56,10 @@ dependencies {
     // Toast
     implementation(libs.motiontoast)
 
+    // Shimmer
+
+    implementation(libs.shimmer)
+
     // Retrofit
     implementation(libs.retrofit)
 

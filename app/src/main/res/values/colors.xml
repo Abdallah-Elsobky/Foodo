@@ -6,7 +6,8 @@
     <color name="gray_white">#FFF5F5F5</color>
     <color name="orange">#FFFF7043</color>
     <color name="light_orange">#FFFFF0EC</color>
-    <color name="gray">#FF858A97</color>
+    <color name="gray">#888888</color>
+    <color name="slate_gray">#707B81</color>
     <color name="blur">#CCFF7043</color>
     <color name="dark_blur">#99000000</color>
     <color name="golden">#CCB8860B</color>

@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import iti.student.foodo.data.model.domain.Category;
@@ -47,6 +49,9 @@ public class homeCategoryAdapter extends RecyclerView.Adapter<homeCategoryAdapte
         public void bind(Category item) {
             binding.name.setText(item.getName());
             binding.icon.setText(item.getImageIcon());
+            Glide.with(binding.getRoot()).load(item.getImage())
+                    .thumbnail(0.01f)
+                    .into(binding.image);
         }
     }
 }

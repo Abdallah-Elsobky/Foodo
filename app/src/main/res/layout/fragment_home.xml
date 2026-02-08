@@ -8,156 +8,162 @@
     android:paddingTop="24dp"
     tools:context=".features.home.view.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/blur_view"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/left_line"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".05" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/blur_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/right_line"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent=".95" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_line"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".05" />
 
-        <TextView
-            android:id="@+id/hello"
-            style="@style/hintTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello, Chef! 👋"
-            app:layout_constraintStart_toStartOf="@id/left_line"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_line"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".95" />
 
-        <TextView
-            android:id="@+id/title"
-            style="@style/TitleTextView"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="What do you want to cook today?"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="@id/left_line"
-            app:layout_constraintTop_toBottomOf="@id/hello" />
+            <TextView
+                android:id="@+id/hello"
+                style="@style/hintTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello, Chef! 👋"
+                app:layout_constraintStart_toStartOf="@id/left_line"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/meal_of_the_day"
-            android:layout_width="0dp"
-            android:layout_height="250dp"
-            app:cardCornerRadius="32dp"
-            app:layout_constraintEnd_toEndOf="@id/right_line"
-            app:layout_constraintStart_toStartOf="@id/left_line"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:strokeWidth="0dp">
+            <TextView
+                android:id="@+id/title"
+                style="@style/TitleTextView"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="What do you want to cook today?"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="@id/left_line"
+                app:layout_constraintTop_toBottomOf="@id/hello" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/meal_of_the_day"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                app:cardCornerRadius="32dp"
+                app:layout_constraintEnd_toEndOf="@id/right_line"
+                app:layout_constraintStart_toStartOf="@id/left_line"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:strokeWidth="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/image_vector"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/board2" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bottom_gradient" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/title_of_day"
+                        style="@style/CustomChip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="24dp"
+                        android:text="MEAL OF THE DAY"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/meal_category"
+                        style="@style/CustomChip"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:backgroundTint="@color/dark_blur"
+                        android:text="Meat"
+                        app:layout_constraintBottom_toBottomOf="@id/title_of_day"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/title_of_day" />
+
+                    <TextView
+                        android:id="@+id/meal_name"
+                        style="@style/TitleTextView"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="24dp"
+                        android:ellipsize="end"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:text="Seafood"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <TextView
+                android:id="@+id/category_title"
+                style="@style/TitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Categories"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/left_line"
+                app:layout_constraintTop_toBottomOf="@id/meal_of_the_day" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/category_rv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/category_title"
+                tools:listitem="@layout/main_list_item" />
 
-                <ImageView
-                    android:id="@+id/image_vector"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/board2" />
+            <TextView
+                android:id="@+id/country_title"
+                style="@style/TitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Popular Meals"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/left_line"
+                app:layout_constraintTop_toBottomOf="@id/category_rv" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bottom_gradient" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/meals_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/country_title"
+                tools:listitem="@layout/meal_item" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/title_of_day"
-                    style="@style/CustomChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="24dp"
-                    android:text="MEAL OF THE DAY"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/meal_category"
-                    style="@style/CustomChip"
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:backgroundTint="@color/dark_blur"
-                    android:text="Meat"
-                    app:layout_constraintBottom_toBottomOf="@id/title_of_day"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/title_of_day" />
-
-                <TextView
-                    android:id="@+id/meal_name"
-                    style="@style/TitleTextView"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="24dp"
-                    android:ellipsize="end"
-                    android:gravity="start"
-                    android:maxLines="1"
-                    android:text="Seafood"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-
-        <TextView
-            android:id="@+id/category_title"
-            style="@style/TitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Categories"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/left_line"
-            app:layout_constraintTop_toBottomOf="@id/meal_of_the_day" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/category_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/category_title"
-            tools:listitem="@layout/main_list_item" />
-
-        <TextView
-            android:id="@+id/country_title"
-            style="@style/TitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Popular Meals"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/left_line"
-            app:layout_constraintTop_toBottomOf="@id/category_rv" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/meals_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/country_title"
-            tools:listitem="@layout/main_list_item" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loading"

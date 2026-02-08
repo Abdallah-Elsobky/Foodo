@@ -7,7 +7,7 @@
     android:padding="4dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/image"
+        android:id="@+id/card"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/white"
@@ -24,6 +24,11 @@
             android:gravity="center"
             android:textSize="24sp"
             tools:text="🥩" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
@@ -36,8 +41,8 @@
         android:maxLines="1"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/image"
-        app:layout_constraintStart_toStartOf="@id/image"
-        app:layout_constraintTop_toBottomOf="@id/image"
+        app:layout_constraintEnd_toEndOf="@id/card"
+        app:layout_constraintStart_toStartOf="@id/card"
+        app:layout_constraintTop_toBottomOf="@id/card"
         tools:text="Fish" />
 </androidx.constraintlayout.widget.ConstraintLayout>
