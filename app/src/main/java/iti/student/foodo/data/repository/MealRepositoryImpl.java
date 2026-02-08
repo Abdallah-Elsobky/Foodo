@@ -4,6 +4,7 @@ import static iti.student.foodo.data.mapper.Mapper.*;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleTransformer;
 import io.reactivex.rxjava3.schedulers.Schedulers;

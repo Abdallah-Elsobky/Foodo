@@ -150,4 +150,19 @@ public class Animations {
                 );
     }
 
+    public static void animateChipCheck(View view) {
+        view.setScaleX(0.65f);
+        view.setScaleY(0.65f);
+        view.setAlpha(0.5f);
+
+        view.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .setDuration(400)
+                .setInterpolator(new android.view.animation.OvershootInterpolator())
+                .start();
+    }
+
+
 }

@@ -81,7 +81,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
         public void bind(Meal meal, int position) {
             binding.tvTitle.setText(meal.getName());
-            binding.tvSubtitle.setText(String.format("%s • %s", meal.getCategory(), meal.getArea()));
+            binding.tvSubtitle.setText(String.format("%s • %s", meal.getCategory() == null ? "" : meal.getCategory(), meal.getArea() == null ? "" : meal.getArea()));
             binding.loading.setVisibility(VISIBLE);
             Glide.with(binding.getRoot())
                     .load(meal.getImage())

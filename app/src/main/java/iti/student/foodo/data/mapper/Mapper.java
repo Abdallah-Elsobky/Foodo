@@ -21,7 +21,7 @@ public class Mapper {
 
     public static Meal map(MealsItem item) {
         Meal meal = new Meal();
-
+        meal.setId(item.getIdMeal());
         meal.setName(item.getStrMeal());
         meal.setImage(item.getStrMealThumb());
         meal.setCategory(item.getStrCategory());
@@ -78,7 +78,7 @@ public class Mapper {
     // Country Mapper
 
     public static Country map(CountriesItem item) {
-        return new Country(item.getStrArea());
+        return new Country(item.getStrArea(), CountriesItem.getFlagUrl(item.getStrArea()));
     }
 
     public static List<Country> mapCountries(List<CountriesItem> items) {
