@@ -137,5 +137,17 @@ public class Animations {
                 );
     }
 
+    public static void addToFav(View view) {
+        view.animate()
+                .scaleX(1.2f)
+                .scaleY(1.2f)
+                .setDuration(150)
+                .withEndAction(() ->
+                        view.animate()
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(150)
+                );
+    }
 
 }
