@@ -11,6 +11,7 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.model.dto.CategoriesItem;
 import iti.student.foodo.data.model.dto.CountriesItem;
+import iti.student.foodo.data.model.dto.IngredientsItem;
 import iti.student.foodo.data.model.dto.MealsItem;
 
 public class Mapper {
@@ -59,6 +60,20 @@ public class Mapper {
         return categories;
     }
 
+    // Ingredient Mapper
+
+    public static Ingredient map(IngredientsItem item) {
+        return new Ingredient(item.getStrIngredient(), "", item.getStrThumb());
+    }
+
+    public static List<Ingredient> mapIngredient(List<IngredientsItem> items) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        if (items == null) return ingredients;
+        for (IngredientsItem ingredient : items) {
+            ingredients.add(map(ingredient));
+        }
+        return ingredients;
+    }
 
     // Country Mapper
 

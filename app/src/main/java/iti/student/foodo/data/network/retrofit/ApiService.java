@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("search.php?f=a")
+    @GET("search.php?s=")
     Single<MealResponse> getMeals();
 
     @GET("random.php")

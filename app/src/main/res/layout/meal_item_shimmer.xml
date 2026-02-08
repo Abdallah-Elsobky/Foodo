@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeWidth="0dp">
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivFoodImage"
+            android:layout_width="0dp"
+            android:layout_height="160dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:chipCornerRadius="50dp"
+            app:chipStrokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivFoodImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <FrameLayout
+            android:id="@+id/btnFavorite"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_circle_translucent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:src="@drawable/love_ic"
+                app:tint="@color/light_orange" />
+
+        </FrameLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvTitle"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            app:chipCornerRadius="50dp"
+            app:chipStrokeWidth="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivFoodImage" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            style="@style/CustomLoading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/ivFoodImage"
+            app:layout_constraintEnd_toEndOf="@+id/ivFoodImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tvSubtitle"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            app:chipCornerRadius="50dp"
+            app:chipStrokeWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>

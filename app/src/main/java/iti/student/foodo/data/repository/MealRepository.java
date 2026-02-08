@@ -4,6 +4,8 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Single;
 import iti.student.foodo.data.model.domain.Category;
+import iti.student.foodo.data.model.domain.Country;
+import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.model.dto.CategoryResponse;
 import iti.student.foodo.data.model.dto.CountryResponse;
@@ -28,7 +30,7 @@ public interface MealRepository {
 
     public Single<List<Category>> getCategories();
 
-    public Single<CountryResponse> getAreas();
+    public Single<List<Country>> getAreas();
 
-    public Single<IngredientResponse> getIngredients();
+    public Single<List<Ingredient>> getIngredients();
 }

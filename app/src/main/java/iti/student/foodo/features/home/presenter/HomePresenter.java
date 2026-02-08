@@ -1,6 +1,8 @@
 package iti.student.foodo.features.home.presenter;
 
 
+import android.util.Log;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -36,6 +38,7 @@ public class HomePresenter implements HomeContract.Presenter {
                             if (view != null) {
                                 view.hideLoading();
                                 view.showMeals(meals);
+                                Log.d("Memo", "meals size: " + meals.size());
                             }
                         },
                         throwable -> {
