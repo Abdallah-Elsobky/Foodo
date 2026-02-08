@@ -20,6 +20,7 @@ import com.bumptech.glide.request.target.Target;
 import java.util.List;
 
 import iti.student.foodo.R;
+import iti.student.foodo.core.utils.Animations;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.databinding.MealItemBinding;
 
@@ -40,7 +41,17 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(meals.get(position));
+        Meal meal = meals.get(position);
+        if (meal.isFav()) {
+            holder.binding.loveImg.setColorFilter(
+                    ContextCompat.getColor(holder.itemView.getContext(), R.color.orange)
+            );
+        } else {
+            holder.binding.loveImg.setColorFilter(
+                    ContextCompat.getColor(holder.itemView.getContext(), R.color.gray_white)
+            );
+        }
+        holder.bind(meal, position);
     }
 
     @Override
@@ -53,7 +64,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public void notifyFavoriteChanged(int position) {
+        notifyItemChanged(position);
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         MealItemBinding binding;
         MealClickListener listener;
 
@@ -63,7 +79,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
             this.listener = listener;
         }
 
-        public void bind(Meal meal) {
+        public void bind(Meal meal, int position) {
             binding.tvTitle.setText(meal.getName());
             binding.tvSubtitle.setText(String.format("%s • %s", meal.getCategory(), meal.getArea()));
             binding.loading.setVisibility(VISIBLE);
@@ -88,8 +104,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
                     .into(binding.ivFoodImage);
 
             binding.btnFavorite.setOnClickListener(v -> {
+                meal.setFav(!meal.isFav());
+                Animations.addToFav(v);
                 listener.onFavoriteClick(meal);
-                binding.loveImg.setImageDrawable(ContextCompat.getDrawable(binding.getRoot().getContext(), R.drawable.fav_ic));
+                notifyItemChanged(position);
             });
 
             binding.getRoot().setOnClickListener(v -> {

@@ -8,6 +8,16 @@ public class Meal {
     private String category;
     private String area;
     private String youtube;
+    private boolean isFav;
+
+    public void setFav(boolean fav) {
+        isFav = fav;
+    }
+
+    public boolean isFav() {
+        return isFav;
+    }
+
     private List<Ingredient> ingredients;
     private List<Instruction> instructions;
 
