@@ -3,12 +3,15 @@ package iti.student.foodo.data.model.domain;
 import java.util.List;
 
 public class Meal {
+    private String id;
     private String name;
     private String image;
     private String category;
     private String area;
     private String youtube;
     private boolean isFav;
+    private List<Ingredient> ingredients;
+    private List<Instruction> instructions;
 
     public void setFav(boolean fav) {
         isFav = fav;
@@ -18,8 +21,9 @@ public class Meal {
         return isFav;
     }
 
-    private List<Ingredient> ingredients;
-    private List<Instruction> instructions;
+    public String getId() {return id;}
+
+    public void setId(String id) {this.id = id;}
 
     public void setName(String name) {
         this.name = name;

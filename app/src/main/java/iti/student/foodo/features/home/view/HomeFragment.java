@@ -1,12 +1,10 @@
 package iti.student.foodo.features.home.view;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,13 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.core.utils.Animations;
@@ -39,7 +33,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private FragmentHomeBinding binding;
     private boolean isFirstTimeEnter = true;
 
-    private homeCategoryAdapter categoriesAdapter;
+    private CategoryAdapter categoriesAdapter;
     private MealAdapter mealAdapter;
     private HomeContract.Presenter presenter;
 
@@ -80,7 +74,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void setupAdapters() {
-        categoriesAdapter = new homeCategoryAdapter();
+        categoriesAdapter = new CategoryAdapter(item -> {
+            Log.d("Memo", "testo: " + item);
+        });
         categoriesAdapter.submitList(Category.homeCategoryList());
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
             @Override
@@ -149,9 +145,10 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showRandomMeal(Meal meal) {
-        binding.mealCategory.setText(meal.getCategory());
-        binding.mealName.setText(meal.getName());
-        Glide.with(this).load(meal.getImage()).into(binding.imageVector);
+        binding.tvCategory.setText(meal.getCategory());
+        binding.tvMealName.setText(meal.getName());
+        binding.tvCountry.setText(meal.getArea());
+        Glide.with(this).load(meal.getImage()).thumbnail(0.01f).into(binding.imgMealBackground);
     }
 
     @Override

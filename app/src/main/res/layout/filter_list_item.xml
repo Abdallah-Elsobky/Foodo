@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="110dp"
     android:padding="4dp">
 
     <com.google.android.material.card.MaterialCardView
@@ -12,6 +12,7 @@
         android:layout_height="60dp"
         android:backgroundTint="@color/white"
         app:cardElevation="1dp"
+        app:cardCornerRadius="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,16 +34,27 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/card"
         app:layout_constraintStart_toStartOf="@id/card"
         app:layout_constraintTop_toBottomOf="@id/card"
         tools:text="Fish" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/selected_item"
+        android:layout_width="30dp"
+        android:layout_height="10dp"
+        android:backgroundTint="@color/orange"
+        android:visibility="gone"
+        app:chipStrokeWidth="0dp"
+        app:layout_constraintEnd_toEndOf="@id/name"
+        app:layout_constraintStart_toStartOf="@id/name"
+        app:layout_constraintTop_toBottomOf="@id/name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

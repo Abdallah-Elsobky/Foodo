@@ -4,20 +4,135 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:background="@color/gray_white"
-    tools:context=".features.search.SearchFragment">
+    android:paddingHorizontal="12dp"
+    tools:context=".features.search.view.SearchFragment">
 
-    <ScrollView
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/search_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="50dp">
+        android:layout_height="wrap_content"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/response"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_et"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Search" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/chip_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_input_layout">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/filterChipGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="afdddddddddddddddsfadsfasdfasdfasdf" />
-    </ScrollView>
+            app:singleLine="true"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="@string/name"
+
+                android:textColor="@color/nav_icon_selector"
+                app:checkedIcon="@drawable/cart_ic"
+                app:checkedIconTint="@color/nav_icon_selector"
+
+                app:checkedIconVisible="true"
+                app:chipBackgroundColor="@color/chip_bg_selector"
+                app:chipStrokeWidth="0dp" />
+
+
+            <!-- Category -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Category"
+
+                android:textColor="@color/nav_icon_selector"
+                app:checkedIcon="@drawable/category_ic"
+                app:checkedIconTint="@color/nav_icon_selector"
+
+                app:checkedIconVisible="true"
+                app:chipBackgroundColor="@color/chip_bg_selector"
+                app:chipStrokeWidth="0dp" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCountry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Country"
+
+                android:textColor="@color/nav_icon_selector"
+                app:checkedIcon="@drawable/meal_ic"
+                app:checkedIconTint="@color/nav_icon_selector"
+
+                app:checkedIconVisible="true"
+                app:chipBackgroundColor="@color/chip_bg_selector"
+
+                app:chipStrokeWidth="0dp" />
+
+            <!-- Ingredient -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipIngredient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkable="true"
+                android:text="Ingredient"
+
+                android:textColor="@color/nav_icon_selector"
+                app:checkedIcon="@drawable/cart_ic"
+                app:checkedIconTint="@color/nav_icon_selector"
+
+                app:checkedIconVisible="true"
+                app:chipBackgroundColor="@color/chip_bg_selector"
+
+                app:chipStrokeWidth="0dp" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filter_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/chip_scroll"
+        tools:listitem="@layout/filter_list_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/meal_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_rv"
+        app:spanCount="2"
+        tools:listitem="@layout/meal_item" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
