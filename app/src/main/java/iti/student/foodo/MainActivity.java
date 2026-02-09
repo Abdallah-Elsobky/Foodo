@@ -1,5 +1,8 @@
 package iti.student.foodo;
 
+import static iti.student.foodo.core.utils.Animations.hide;
+import static iti.student.foodo.core.utils.Animations.show;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -77,11 +80,10 @@ public class MainActivity extends AppCompatActivity {
         topLevelDestinations.add(R.id.cartFragment);
 
         navController.addOnDestinationChangedListener((controller, destination, args) -> {
-            binding.bottomNavigationView.setVisibility(
-                    topLevelDestinations.contains(destination.getId())
-                            ? View.VISIBLE
-                            : View.GONE
-            );
+            if (topLevelDestinations.contains(destination.getId()))
+                show(binding.bottomNavigationView);
+            else
+                hide(binding.bottomNavigationView);
         });
     }
 }

@@ -3,6 +3,7 @@ package iti.student.foodo.features.search.view;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
+import iti.student.foodo.features.meal.view.MealDetailsFragmentArgs;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
 
@@ -67,7 +69,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.attachView(this);
-
         setupAdapters();
         setupRecyclerViews();
         setupChipListeners();

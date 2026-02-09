@@ -58,8 +58,10 @@ dependencies {
     implementation(libs.motiontoast)
 
     // Shimmer
-
     implementation(libs.shimmer)
+
+    // Youtube Player
+    implementation(libs.core)
 
     // Retrofit
     implementation(libs.retrofit)

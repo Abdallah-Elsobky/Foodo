@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private void setupAdapters() {
         categoriesAdapter = new CategoryAdapter(item -> {
             Log.d("Memo", "testo: " + item);
-
         });
         categoriesAdapter.submitList(Category.homeCategoryList());
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
