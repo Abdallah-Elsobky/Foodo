@@ -67,4 +67,4 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+navigation-safe-args = { id = "androidx.navigation.safeargs", version.ref = "navigationUiKtx" }

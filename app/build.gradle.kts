@@ -3,6 +3,7 @@ import com.android.build.api.dsl.ViewBinding
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {

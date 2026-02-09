@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,7 +132,12 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
             @Override
             public void onMealClick(Meal meal) {
-                // Handle navigation to details
+                NavDirections action =
+                        SearchFragmentDirections
+                                .navigateToMealDetailsFragmentFromSearchFragment(meal.getId());
+
+                Navigation.findNavController(binding.getRoot())
+                        .navigate(action);
             }
 
             @Override

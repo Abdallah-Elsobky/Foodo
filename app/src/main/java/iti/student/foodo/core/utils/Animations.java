@@ -164,5 +164,53 @@ public class Animations {
                 .start();
     }
 
+    private static final long DURATION = 250;
+
+    // Exit → slide to LEFT & disappear
+    public static void slideOutToLeft(View view) {
+        view.animate()
+                .translationX(-view.getWidth())
+                .alpha(0f)
+                .setDuration(DURATION)
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
+    }
+
+    // Exit → slide to RIGHT & disappear
+    public static void slideOutToRight(View view) {
+        view.animate()
+                .translationX(view.getWidth())
+                .alpha(0f)
+                .setDuration(DURATION)
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
+    }
+
+    // Enter ← from RIGHT & appear
+    public static void slideInFromRight(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationX(view.getWidth());
+        view.setAlpha(0f);
+
+        view.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(DURATION)
+                .start();
+    }
+
+    // Enter → from LEFT & appear
+    public static void slideInFromLeft(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationX(-view.getWidth());
+        view.setAlpha(0f);
+
+        view.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(DURATION)
+                .start();
+    }
+
 
 }

@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="iti.student.foodo.features.home.view.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/navigateToMealDetailsFragmentFromHomeFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="iti.student.foodo.features.cart.CartFragment"
@@ -29,5 +33,18 @@
         android:id="@+id/searchFragment"
         android:name="iti.student.foodo.features.search.view.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/navigateToMealDetailsFragmentFromSearchFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="iti.student.foodo.features.meal.view.MealDetailsFragment"
+        android:label="MealDetailsFragment">
+        <argument
+            android:name="mealId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
