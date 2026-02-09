@@ -3,6 +3,7 @@ import com.android.build.api.dsl.ViewBinding
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    alias(libs.plugins.navigation.safe.args)
 }
 
 android {
@@ -57,8 +58,10 @@ dependencies {
     implementation(libs.motiontoast)
 
     // Shimmer
-
     implementation(libs.shimmer)
+
+    // Youtube Player
+    implementation(libs.core)
 
     // Retrofit
     implementation(libs.retrofit)

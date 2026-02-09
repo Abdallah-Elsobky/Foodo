@@ -132,7 +132,7 @@ public class Mapper {
         String[] steps = instructionsText.split("\\.");
 
         for (String step : steps) {
-            if (!step.trim().isEmpty()) {
+            if (!step.trim().isEmpty() && step.trim().length() >= 10) {
                 instructions.add(new Instruction(step.trim()));
             }
         }

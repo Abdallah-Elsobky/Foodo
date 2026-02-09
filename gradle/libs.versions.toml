@@ -1,6 +1,7 @@
 [versions]
 adapterRxjava3 = "3.0.0"
 agp = "9.0.0"
+core = "13.0.0"
 credentials = "1.5.0"
 dotsindicator = "5.1.0"
 firebaseBom = "34.8.0"
@@ -32,6 +33,7 @@ gson = "2.13.2"
 
 [libraries]
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "adapterRxjava3" }
+core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "core" }
 credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
@@ -67,4 +69,4 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+navigation-safe-args = { id = "androidx.navigation.safeargs", version.ref = "navigationUiKtx" }

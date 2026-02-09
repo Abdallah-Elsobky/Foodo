@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 
@@ -27,6 +29,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
+import iti.student.foodo.features.search.view.SearchFragmentDirections;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
@@ -81,7 +84,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
             @Override
             public void onMealClick(Meal meal) {
-
+                NavDirections action = HomeFragmentDirections
+                        .navigateToMealDetailsFragmentFromHomeFragment(meal.getId());
+                Navigation.findNavController(binding.getRoot()).navigate(action);
             }
 
             @Override
@@ -131,7 +136,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void showMeals(List<Meal> meals) {
         mealAdapter.submitList(meals);
-        Animations.smoothScrollTo(binding.scrollView, 400);
+//        Animations.smoothScrollTo(binding.scrollView, 400);
         binding.mealsRv.setAdapter(mealAdapter);
         // to display Shimmer
 //        new Handler().postDelayed(() -> {
@@ -149,6 +154,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         binding.tvMealName.setText(meal.getName());
         binding.tvCountry.setText(meal.getArea());
         Glide.with(this).load(meal.getImage()).thumbnail(0.01f).into(binding.imgMealBackground);
+        binding.mealOfTheDay.setOnClickListener(v -> {
+            NavDirections action = HomeFragmentDirections
+                    .navigateToMealDetailsFragmentFromHomeFragment(meal.getId());
+            Navigation.findNavController(binding.getRoot()).navigate(action);
+        });
     }
 
     @Override

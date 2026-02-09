@@ -3,6 +3,7 @@ package iti.student.foodo.features.search.view;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +30,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
+import iti.student.foodo.features.meal.view.MealDetailsFragmentArgs;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
 
@@ -65,7 +69,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.attachView(this);
-
         setupAdapters();
         setupRecyclerViews();
         setupChipListeners();
@@ -130,7 +133,12 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
             @Override
             public void onMealClick(Meal meal) {
-                // Handle navigation to details
+                NavDirections action =
+                        SearchFragmentDirections
+                                .navigateToMealDetailsFragmentFromSearchFragment(meal.getId());
+
+                Navigation.findNavController(binding.getRoot())
+                        .navigate(action);
             }
 
             @Override

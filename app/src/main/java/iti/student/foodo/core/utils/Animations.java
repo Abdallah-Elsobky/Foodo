@@ -106,8 +106,8 @@ public class Animations {
                 );
     }
 
-    public static void smoothScrollTo(ScrollView scrollView, int targetY) {
-        ObjectAnimator animator = ObjectAnimator.ofInt(scrollView, "scrollY", targetY);
+    public static void smoothScrollTo(View view, int targetY) {
+        ObjectAnimator animator = ObjectAnimator.ofInt(view, "scrollY", targetY);
 
         animator.setDuration(1000);
 
@@ -161,6 +161,81 @@ public class Animations {
                 .alpha(1f)
                 .setDuration(400)
                 .setInterpolator(new android.view.animation.OvershootInterpolator())
+                .start();
+    }
+
+    private static final long DURATION = 250;
+
+    // Exit → slide to LEFT & disappear
+    public static void slideOutToLeft(View view) {
+        view.animate()
+                .translationX(-view.getWidth())
+                .alpha(0f)
+                .setDuration(DURATION)
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
+    }
+
+    // Exit → slide to RIGHT & disappear
+    public static void slideOutToRight(View view) {
+        view.animate()
+                .translationX(view.getWidth())
+                .alpha(0f)
+                .setDuration(DURATION)
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
+    }
+
+    // Enter ← from RIGHT & appear
+    public static void slideInFromRight(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationX(view.getWidth());
+        view.setAlpha(0f);
+
+        view.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(DURATION)
+                .start();
+    }
+
+    // Enter → from LEFT & appear
+    public static void slideInFromLeft(View view) {
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationX(-view.getWidth());
+        view.setAlpha(0f);
+
+        view.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(DURATION)
+                .start();
+    }
+
+    public static void hide(View view) {
+        if (view.getVisibility() != View.VISIBLE) return;
+
+        view.animate()
+                .translationY(view.getHeight())
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .withEndAction(() -> view.setVisibility(View.GONE))
+                .start();
+    }
+
+    /**
+     * Show bottom navigation with slide up animation
+     */
+    public static void show(View view) {
+        if (view.getVisibility() == View.VISIBLE) return;
+
+        view.setVisibility(View.VISIBLE);
+        view.setTranslationY(view.getHeight());
+
+        view.animate()
+                .translationY(0)
+                .setDuration(500)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
                 .start();
     }
 
