@@ -1,5 +1,7 @@
 package iti.student.foodo.features.meal.presenter;
 
+import android.util.Log;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -26,6 +28,25 @@ public class MealPresenter implements MealContract.Presenter {
                 }
         );
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void addToFavorites(String userId, String mealId) {
+        repository.addToFavorites(userId, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> {
+                    Log.d("loco", "meal added: " + mealId);
+                }
+        );
+    }
+
+    @Override
+    public void removeFromFavorites(String userId, String mealId) {
+
+    }
+
+    @Override
+    public void isFavorite(String userId, String mealId) {
+
     }
 
     @Override

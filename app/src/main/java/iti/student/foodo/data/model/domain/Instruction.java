@@ -2,9 +2,15 @@ package iti.student.foodo.data.model.domain;
 
 public class Instruction {
     private String step;
+    private String mealId;
 
-    public Instruction(String step) {
+    public String getMealId() {
+        return mealId;
+    }
+
+    public Instruction(String step, String mealId) {
         this.step = step;
+        this.mealId = mealId;
     }
 
     public String getStep() {

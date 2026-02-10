@@ -42,15 +42,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Meal meal = meals.get(position);
-        if (meal.isFav()) {
-            holder.binding.loveImg.setColorFilter(
-                    ContextCompat.getColor(holder.itemView.getContext(), R.color.orange)
-            );
-        } else {
-            holder.binding.loveImg.setColorFilter(
-                    ContextCompat.getColor(holder.itemView.getContext(), R.color.gray_white)
-            );
-        }
+//        if (meal.isFav()) {
+//            holder.binding.loveImg.setColorFilter(
+//                    ContextCompat.getColor(holder.itemView.getContext(), R.color.orange)
+//            );
+//        } else {
+//            holder.binding.loveImg.setColorFilter(
+//                    ContextCompat.getColor(holder.itemView.getContext(), R.color.gray_white)
+//            );
+//        }
         holder.bind(meal, position);
     }
 
@@ -103,12 +103,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
                     .error(R.drawable.bad_response)
                     .into(binding.ivFoodImage);
 
-            binding.btnFavorite.setOnClickListener(v -> {
-                meal.setFav(!meal.isFav());
-                Animations.addToFav(v);
-                listener.onFavoriteClick(meal);
-                notifyItemChanged(position);
-            });
+//            binding.btnFavorite.setOnClickListener(v -> {
+//                meal.setFav(!meal.isFav());
+//                Animations.addToFav(v);
+//                listener.onFavoriteClick(meal);
+//                notifyItemChanged(position);
+//            });
 
             binding.getRoot().setOnClickListener(v -> {
                 listener.onMealClick(meal);

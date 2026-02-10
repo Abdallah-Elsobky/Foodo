@@ -106,23 +106,23 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <FrameLayout
-                        android:id="@+id/btn_favorite"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_margin="16dp"
-                        android:background="@drawable/bg_circle_translucent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+<!--                    <FrameLayout-->
+<!--                        android:id="@+id/btn_favorite"-->
+<!--                        android:layout_width="50dp"-->
+<!--                        android:layout_height="50dp"-->
+<!--                        android:layout_margin="16dp"-->
+<!--                        android:background="@drawable/bg_circle_translucent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent">-->
 
-                        <ImageView
-                            android:id="@+id/love_img"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/love_ic"
-                            app:tint="@color/white" />
-                    </FrameLayout>
+<!--                        <ImageView-->
+<!--                            android:id="@+id/love_img"-->
+<!--                            android:layout_width="25dp"-->
+<!--                            android:layout_height="25dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:src="@drawable/love_ic"-->
+<!--                            app:tint="@color/white" />-->
+<!--                    </FrameLayout>-->
 
                     <TextView
                         android:id="@+id/tv_meal_name"

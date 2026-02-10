@@ -26,7 +26,9 @@ import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.core.utils.Animations;
 import iti.student.foodo.core.utils.ShimmerAdapter;
+import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
+import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.retrofit.ApiService;
@@ -51,7 +53,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class))));
+        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)),new MealLocalDataSource(AppDatabase.getInstance(requireContext()))));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override

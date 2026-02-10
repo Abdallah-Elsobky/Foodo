@@ -2,13 +2,22 @@ package iti.student.foodo.data.repository;
 
 import static iti.student.foodo.data.mapper.Mapper.*;
 
+import android.util.Log;
+
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleTransformer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
+import iti.student.foodo.data.db.entity.FavoriteMealEntity;
+import iti.student.foodo.data.db.entity.IngredientEntity;
+import iti.student.foodo.data.db.entity.MealEntity;
+import iti.student.foodo.data.db.pojo.MealWithDetails;
 import iti.student.foodo.data.mapper.Mapper;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
@@ -16,10 +25,12 @@ import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
 
 public class MealRepositoryImpl implements MealRepository {
-    private MealsRemoteDataSource remoteDataSource;
+    private final MealsRemoteDataSource remoteDataSource;
+    private final MealLocalDataSource localDataSource;
 
-    public MealRepositoryImpl(MealsRemoteDataSource remoteDataSource) {
+    public MealRepositoryImpl(MealsRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
         this.remoteDataSource = remoteDataSource;
+        this.localDataSource = localDataSource;
     }
 
     public Single<List<Meal>> getMeals() {
@@ -43,7 +54,36 @@ public class MealRepositoryImpl implements MealRepository {
     public Single<List<Meal>> searchById(String query) {
         return remoteDataSource.searchById(query)
                 .compose(applySchedulers())
-                .map(response -> mapList(response.getMeals()));
+                .map(response -> {
+                    List<Meal> meals = mapList(response.getMeals());
+                    // TODO move this into presenter to subscribe on it and check insertion success
+                    localDataSource.saveMeal(meals.get(0)).observeOn(Schedulers.io()).subscribe();
+                    return meals;
+                });
+    }
+
+    // TODO TEST
+    public Flowable<List<MealEntity>> getLocalMeals() {
+        return localDataSource.getAllMeals();
+    }
+
+    // TODO TEST
+    public Flowable<MealWithDetails> getLocalMeals(String mealId) {
+        return localDataSource.getMealDetails(mealId).map(mealWithDetails -> {
+            mealWithDetails.instructions.sort((a, b) -> a.instructionId - b.instructionId);
+            mealWithDetails.ingredients.sort((a, b) -> a.ingredientId - b.ingredientId);
+            return mealWithDetails;
+        });
+    }
+
+    // TODO TEST
+    public Completable addToFavorites(String userId, String mealId) {
+        return localDataSource.addToFavorites(userId, mealId);
+    }
+
+    // TODO TEST
+    public Flowable<List<MealWithDetails>> getAllFavorites(String userId) {
+        return localDataSource.getUserFavorites(userId);
     }
 
     public Single<List<Meal>> searchByCategory(String query) {

@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import iti.student.foodo.data.db.entity.IngredientEntity;
+import iti.student.foodo.data.db.entity.InstructionEntity;
+import iti.student.foodo.data.db.entity.MealEntity;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Instruction;
@@ -29,9 +32,28 @@ public class Mapper {
         meal.setYoutube(item.getStrYoutube());
 
         meal.setIngredients(mapIngredients(item));
-        meal.setInstructions(mapInstructions(item.getStrInstructions()));
+        meal.setInstructions(mapInstructions(item.getStrInstructions(), item.getIdMeal()));
 
         return meal;
+    }
+
+    public static MealEntity toMealEntity(Meal meal) {
+        return new MealEntity(
+                meal.getId(),
+                meal.getName(),
+                meal.getImage(),
+                meal.getCategory(),
+                meal.getArea(),
+                meal.getYoutube()
+        );
+    }
+
+    public static List<MealEntity> toMealEntityList(List<Meal> meals) {
+        List<MealEntity> mealEntities = new ArrayList<>();
+        for (Meal meal : meals) {
+            mealEntities.add(toMealEntity(meal));
+        }
+        return mealEntities;
     }
 
     public static List<Meal> mapList(List<MealsItem> items) {
@@ -63,7 +85,7 @@ public class Mapper {
     // Ingredient Mapper
 
     public static Ingredient map(IngredientsItem item) {
-        return new Ingredient(item.getStrIngredient(), "", item.getStrThumb());
+        return new Ingredient("", item.getStrIngredient(), "", item.getStrThumb());
     }
 
     public static List<Ingredient> mapIngredient(List<IngredientsItem> items) {
@@ -73,6 +95,23 @@ public class Mapper {
             ingredients.add(map(ingredient));
         }
         return ingredients;
+    }
+
+    public static IngredientEntity toIngredientEntity(Ingredient ingredient) {
+        return new IngredientEntity(
+                ingredient.getMealId(),
+                ingredient.getName(),
+                ingredient.getMeasure(),
+                ingredient.getImage()
+        );
+    }
+
+    public static List<IngredientEntity> toIngredientEntityList(List<Ingredient> ingredients) {
+        List<IngredientEntity> ingredientEntities = new ArrayList<>();
+        for (Ingredient ingredient : ingredients) {
+            ingredientEntities.add(toIngredientEntity(ingredient));
+        }
+        return ingredientEntities;
     }
 
     // Country Mapper
@@ -110,7 +149,7 @@ public class Mapper {
                 if (ingredient != null && !ingredient.trim().isEmpty()) {
                     String image = "https://www.themealdb.com/images/ingredients/" + ingredient.toLowerCase() + ".png";
                     ingredients.add(
-                            new Ingredient(ingredient, measure, image)
+                            new Ingredient(item.getIdMeal(), ingredient, measure, image)
                     );
                 }
 
@@ -124,7 +163,7 @@ public class Mapper {
 
     // Instruction Mapper
 
-    private static List<Instruction> mapInstructions(String instructionsText) {
+    private static List<Instruction> mapInstructions(String instructionsText, String mealId) {
         List<Instruction> instructions = new ArrayList<>();
 
         if (instructionsText == null) return instructions;
@@ -133,10 +172,25 @@ public class Mapper {
 
         for (String step : steps) {
             if (!step.trim().isEmpty() && step.trim().length() >= 10) {
-                instructions.add(new Instruction(step.trim()));
+                instructions.add(new Instruction(step.trim(), mealId));
             }
         }
         return instructions;
+    }
+
+    public static List<InstructionEntity> toInstructionEntityList(List<Instruction> instructions) {
+        List<InstructionEntity> instructionEntities = new ArrayList<>();
+        for (Instruction instruction : instructions) {
+            instructionEntities.add(toInstructionEntity(instruction));
+        }
+        return instructionEntities;
+    }
+
+    public static InstructionEntity toInstructionEntity(Instruction instruction) {
+        return new InstructionEntity(
+                instruction.getMealId(),
+                instruction.getStep()
+        );
     }
 }
 

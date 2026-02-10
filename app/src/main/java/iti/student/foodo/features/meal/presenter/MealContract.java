@@ -11,5 +11,8 @@ public interface MealContract {
 
     interface Presenter extends BasePresenter<View> {
         void getMeals(String id);
+        void addToFavorites(String userId, String mealId);
+        void removeFromFavorites(String userId, String mealId);
+        void isFavorite(String userId, String mealId);
     }
 }
