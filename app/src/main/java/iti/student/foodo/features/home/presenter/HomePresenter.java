@@ -1,6 +1,7 @@
 package iti.student.foodo.features.home.presenter;
 
 
+import static iti.student.foodo.features.utils.ErrorUtils.*;
 import android.util.Log;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -44,7 +45,7 @@ public class HomePresenter implements HomeContract.Presenter {
                         throwable -> {
                             if (view != null) {
                                 view.hideLoading();
-                                view.showError(throwable.getMessage());
+                                view.showError(getErrorMessage(throwable));
                             }
                         }
                 );
@@ -67,7 +68,7 @@ public class HomePresenter implements HomeContract.Presenter {
                         throwable -> {
                             if (view != null) {
                                 view.hideLoading();
-                                view.showError(throwable.getMessage());
+                                view.showError(getErrorMessage(throwable));
                             }
                         }
                 );

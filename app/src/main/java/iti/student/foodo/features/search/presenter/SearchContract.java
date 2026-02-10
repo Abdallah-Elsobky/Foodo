@@ -22,7 +22,7 @@ public interface SearchContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void getMeals();
+//        void getMeals();
 
         void getMealsBySearch(String query);
 

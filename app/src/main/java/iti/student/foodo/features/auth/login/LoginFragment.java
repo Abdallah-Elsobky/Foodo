@@ -3,6 +3,8 @@ package iti.student.foodo.features.auth.login;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static iti.student.foodo.features.utils.BlurUtils.blurView;
+import static iti.student.foodo.features.utils.BlurUtils.showBlur;
 import static iti.student.foodo.features.utils.CustomToastKt.*;
 
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.os.Handler;
@@ -44,12 +47,25 @@ import java.util.concurrent.Executors;
 public class LoginFragment extends Fragment implements LoginContract.View {
     FragmentLoginBinding binding;
     LoginContract.Presenter presenter;
-
+    private FragmentManager fragmentManager;
+    private CustomDialog.OnDialogListener dialogListener;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new LoginPresenterImpl(new AuthRepositoryImpl(new AuthService()));
         presenter.attachView(this);
+        fragmentManager = getParentFragmentManager();
+        dialogListener = new CustomDialog.OnDialogListener() {
+            @Override
+            public void onOpen() {
+                blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                showBlur(binding.blurView);
+            }
+        };
     }
 
     @Override
@@ -191,17 +207,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.showDialog("Error", message, getChildFragmentManager(), new CustomDialog.OnDialogClosedListener() {
-            @Override
-            public void onOpen() {
-                BlurUtils.blurView(binding.blurView, 30);
-            }
-
-            @Override
-            public void onClosed() {
-                BlurUtils.showBlur(binding.blurView);
-            }
-        });
+        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     @Override

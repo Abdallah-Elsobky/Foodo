@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -26,12 +27,25 @@ import iti.student.foodo.features.utils.ValidationUtils;
 public class RegisterFragment extends Fragment implements RegisterContract.View {
     FragmentRegisterBinding binding;
     private RegisterContract.Presenter presenter;
-
+    private FragmentManager fragmentManager;
+    private CustomDialog.OnDialogListener dialogListener;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new RegisterPresenterImpl(new AuthRepositoryImpl(new AuthService()));
         presenter.attachView(this);
+        fragmentManager = getParentFragmentManager();
+        dialogListener = new CustomDialog.OnDialogListener() {
+            @Override
+            public void onOpen() {
+                blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                showBlur(binding.blurView);
+            }
+        };
     }
 
 
@@ -103,16 +117,6 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
 
     @Override
     public void showError(String message) {
-        CustomDialog.showDialog("Error", message, getChildFragmentManager(), new CustomDialog.OnDialogClosedListener() {
-            @Override
-            public void onOpen() {
-                BlurUtils.blurView(binding.blurView, 30);
-            }
-
-            @Override
-            public void onClosed() {
-                BlurUtils.showBlur(binding.blurView);
-            }
-        });
+        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 }
