@@ -1,9 +1,11 @@
 package iti.student.foodo.features.search.view;
 
+import static iti.student.foodo.features.utils.BlurUtils.blurView;
+import static iti.student.foodo.features.utils.BlurUtils.showBlur;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -30,9 +33,9 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
-import iti.student.foodo.features.meal.view.MealDetailsFragmentArgs;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
+import iti.student.foodo.features.utils.CustomDialog;
 
 public class SearchFragment extends Fragment implements SearchContract.View {
 
@@ -48,6 +51,9 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private CountryAdapter countryAdapter;
     private IngredientAdapter ingredientAdapter;
 
+    private FragmentManager fragmentManager;
+    private CustomDialog.OnDialogListener dialogListener;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,18 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                         new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class))
                 )
         );
+        fragmentManager = getParentFragmentManager();
+        dialogListener = new CustomDialog.OnDialogListener() {
+            @Override
+            public void onOpen() {
+                blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                showBlur(binding.blurView);
+            }
+        };
     }
 
     @Nullable
@@ -73,7 +91,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         setupRecyclerViews();
         setupChipListeners();
         setupSearchBar();
-        presenter.getMeals();
+        presenter.getMealsBySearch("");
     }
 
     private void setupSearchBar() {
@@ -159,7 +177,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private void setupChipListeners() {
         binding.filterChipGroup.setOnCheckedChangeListener((group, checkedId) -> {
             binding.filterRv.setAdapter(new ShimmerAdapter(R.layout.filter_list_item_shimmer));
-            binding.searchEt.setText("");
             if (checkedId == R.id.chipIngredient) {
                 presenter.getIngredients();
             } else if (checkedId == R.id.chipCategory) {
@@ -167,6 +184,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             } else if (checkedId == R.id.chipCountry) {
                 presenter.getCountries();
             } else {
+                // set empty list
                 binding.filterRv.setAdapter(new CategoryAdapter(item -> {
                 }));
             }
@@ -222,17 +240,15 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     @Override
     public void showLoading() {
-        // You can handle full screen loading here if needed
     }
 
     @Override
     public void hideLoading() {
-        // Hide full screen loading
     }
 
     @Override
     public void showError(String message) {
-        // Show Toast or Snackbar
+        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     // endregion

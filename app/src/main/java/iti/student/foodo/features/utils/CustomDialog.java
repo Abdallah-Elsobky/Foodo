@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -14,21 +16,37 @@ import iti.student.foodo.databinding.CustomDialogBinding;
 
 public class CustomDialog extends DialogFragment {
 
+    private static final String TAG = "CustomDialogTag";
     private static final String ARG_TITLE = "arg_title";
     private static final String ARG_MESSAGE = "arg_message";
 
+    private CustomDialogBinding binding;
+    private OnDialogListener listener;
 
-    public static void showDialog(String title, String message, FragmentManager manager, OnDialogClosedListener listener) {
-        listener.onOpen();
-        CustomDialog.newInstance(title, message, listener).show(manager, "CustomDialogTag");
+    public static void show(
+            @NonNull FragmentManager manager,
+            @NonNull String title,
+            @NonNull String message,
+            @Nullable OnDialogListener listener
+    ) {
+        DialogFragment oldDialog =
+                (DialogFragment) manager.findFragmentByTag(TAG);
+
+        if (oldDialog != null) {
+            oldDialog.dismissAllowingStateLoss();
+        }
+
+        CustomDialog dialog = newInstance(title, message);
+        dialog.setListener(listener);
+
+        if (listener != null) listener.onOpen();
+
+        dialog.show(manager, TAG);
     }
 
-    CustomDialogBinding binding;
-    static OnDialogClosedListener listener;
 
-    public static CustomDialog newInstance(String title, String message, OnDialogClosedListener listener) {
+    private static CustomDialog newInstance(String title, String message) {
         CustomDialog fragment = new CustomDialog();
-        CustomDialog.listener = listener;
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_MESSAGE, message);
@@ -36,19 +54,22 @@ public class CustomDialog extends DialogFragment {
         return fragment;
     }
 
+    private void setListener(OnDialogListener listener) {
+        this.listener = listener;
+    }
+
+    @Nullable
     @Override
     public View onCreateView(
-            LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
     ) {
         binding = CustomDialogBinding.inflate(inflater, container, false);
 
         if (getArguments() != null) {
-            String title = getArguments().getString(ARG_TITLE);
-            String message = getArguments().getString(ARG_MESSAGE);
-            binding.titleTv.setText(title);
-            binding.messageTv.setText(message);
+            binding.titleTv.setText(getArguments().getString(ARG_TITLE));
+            binding.messageTv.setText(getArguments().getString(ARG_MESSAGE));
         }
 
         binding.cancelBtn.setOnClickListener(v -> dismiss());
@@ -74,10 +95,12 @@ public class CustomDialog extends DialogFragment {
         super.onDestroy();
         if (listener != null) {
             listener.onClosed();
+            listener = null;
         }
     }
 
-    public interface OnDialogClosedListener {
+
+    public interface OnDialogListener {
         void onOpen();
 
         void onClosed();

@@ -1,5 +1,9 @@
 package iti.student.foodo.features.home.view;
 
+import static android.view.View.*;
+
+import static iti.student.foodo.features.utils.BlurUtils.*;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
@@ -29,7 +34,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
-import iti.student.foodo.features.search.view.SearchFragmentDirections;
+import iti.student.foodo.features.utils.CustomDialog;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
@@ -40,10 +45,25 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private MealAdapter mealAdapter;
     private HomeContract.Presenter presenter;
 
+    private FragmentManager fragmentManager;
+    private CustomDialog.OnDialogListener dialogListener;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class))));
+        fragmentManager = getParentFragmentManager();
+        dialogListener = new CustomDialog.OnDialogListener() {
+            @Override
+            public void onOpen() {
+                blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                showBlur(binding.blurView);
+            }
+        };
     }
 
     @Override
@@ -138,11 +158,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         mealAdapter.submitList(meals);
 //        Animations.smoothScrollTo(binding.scrollView, 400);
         binding.mealsRv.setAdapter(mealAdapter);
-        // to display Shimmer
-//        new Handler().postDelayed(() -> {
-//            if (isViewDestroyed()) return;
-//            binding.mealsRv.setAdapter(mealAdapter);
-//        }, 2000);
         int dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         Meal meal = meals.get(dayOfMonth % meals.size());
         showRandomMeal(meal);
@@ -163,16 +178,16 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showLoading() {
-
+        binding.loading.setVisibility(VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        binding.loading.setVisibility(GONE);
     }
 
     @Override
     public void showError(String message) {
-
+        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 }
