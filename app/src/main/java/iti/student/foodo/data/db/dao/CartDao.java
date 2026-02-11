@@ -5,7 +5,10 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
 
 @Dao
@@ -26,6 +29,10 @@ public interface CartDao {
             String measure,
             boolean isBought
     );
+
+    @Query("SELECT * FROM cart")
+    Flowable<List<CartIngredientEntity>> getCartItems();
+
 
     @Query("DELETE FROM cart")
     Completable clearCart();

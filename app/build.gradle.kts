@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services)
     implementation(libs.googleid)
+    implementation(libs.google.firebase.firestore)
 
     // Room
     implementation(libs.room.runtime)
