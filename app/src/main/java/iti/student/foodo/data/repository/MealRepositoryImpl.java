@@ -1,6 +1,5 @@
 package iti.student.foodo.data.repository;
 
-
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -12,6 +11,7 @@ import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
 import iti.student.foodo.data.db.entity.MealEntity;
+import iti.student.foodo.data.db.entity.PlannedMealEntity;
 import iti.student.foodo.data.db.pojo.MealWithDetails;
 import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.mapper.CategoryMapper;
@@ -22,15 +22,24 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.FirestoreService;
 
 public class MealRepositoryImpl implements MealRepository {
+
     private final MealsRemoteDataSource remoteDataSource;
     private final MealLocalDataSource localDataSource;
+    private final FirestoreService firestoreService;
 
-    public MealRepositoryImpl(MealsRemoteDataSource remoteDataSource, MealLocalDataSource localDataSource) {
+    public MealRepositoryImpl(MealsRemoteDataSource remoteDataSource,
+                              MealLocalDataSource localDataSource, FirestoreService firestoreService) {
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = localDataSource;
+        this.firestoreService = firestoreService;
     }
+
+    /* ============================
+       Remote - Meals
+     ============================ */
 
     public Single<List<Meal>> getMeals() {
         return remoteDataSource.getMeals()
@@ -55,57 +64,12 @@ public class MealRepositoryImpl implements MealRepository {
                 .compose(applySchedulers())
                 .map(response -> {
                     List<Meal> meals = MealMapper.mapList(response.getMeals());
-                    // TODO move this into presenter to subscribe on it and check insertion success
-                    localDataSource.saveMeal(meals.get(0)).observeOn(Schedulers.io()).subscribe();
+                    localDataSource.saveMeal(meals.get(0))
+                            .observeOn(Schedulers.io())
+                            .subscribe();
                     return meals;
                 });
     }
-
-    // TODO TEST
-    public Flowable<List<MealEntity>> getLocalMeals() {
-        return localDataSource.getAllMeals();
-    }
-
-    // TODO TEST
-    public Flowable<MealWithDetails> getLocalMeals(String mealId) {
-        return localDataSource.getMealDetails(mealId).map(mealWithDetails -> {
-            mealWithDetails.instructions.sort((a, b) -> a.instructionId - b.instructionId);
-            mealWithDetails.ingredients.sort((a, b) -> a.ingredientId - b.ingredientId);
-            return mealWithDetails;
-        });
-    }
-
-    // TODO TEST
-    public Completable addToFavorites(String userId, String mealId) {
-        return localDataSource.addToFavorites(userId, mealId);
-    }
-
-    public Completable addTOCart(CartIngredientEntity item){
-        return localDataSource.addTOCart(item);
-    }
-
-    // TODO TEST
-    public Flowable<List<MealWithDetails>> getAllFavorites(String userId) {
-        return localDataSource.getUserFavorites(userId);
-    }
-
-    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String userId, String date) {
-        return localDataSource.getPlannedMeals(userId, date);
-    }
-
-    public Completable removeFromFavorites(String userId, String mealId) {
-        return localDataSource.removeFromFavorites(userId, mealId);
-    }
-
-    public Completable removePlannedMeal(String userId, String date, String mealId) {
-        return localDataSource.removePlannedMeal(userId, date, mealId);
-    }
-
-
-    public Completable removeItemFromCart(String ingredientName, String measure) {
-        return localDataSource.removeItemFromCart(ingredientName, measure);
-    }
-
 
     public Single<List<Meal>> searchByCategory(String query) {
         return remoteDataSource.searchByCategory(query)
@@ -125,13 +89,16 @@ public class MealRepositoryImpl implements MealRepository {
                 .map(response -> MealMapper.mapList(response.getMeals()));
     }
 
+    /* ============================
+       Remote - Static Data
+     ============================ */
+
     @Override
     public Single<List<Category>> getCategories() {
         return remoteDataSource.getCategories()
                 .map(s -> CategoryMapper.mapList(s.getCategories()))
                 .compose(applySchedulers());
     }
-
 
     public Single<List<Country>> getAreas() {
         return remoteDataSource.getAreas()
@@ -145,8 +112,119 @@ public class MealRepositoryImpl implements MealRepository {
                 .compose(applySchedulers());
     }
 
+    /* ============================
+       Local - Meals
+     ============================ */
+
+    public Flowable<Meal> getLocalMeals(String mealId) {
+        return localDataSource.getMealDetails(mealId)
+                .map(mealWithDetails -> {
+                    mealWithDetails.instructions
+                            .sort((a, b) -> a.instructionId - b.instructionId);
+                    mealWithDetails.ingredients
+                            .sort((a, b) -> a.ingredientId - b.ingredientId);
+                    return mealWithDetails;
+                }).map(MealMapper::fromEntity);
+    }
+
+    public Completable saveMeals(List<Meal> meals) {
+        return localDataSource.saveMeals(MealMapper.toEntityList(meals));
+    }
+
+    /* ============================
+       Favorites
+     ============================ */
+
+    public Completable addToFavorites(String userId, String mealId) {
+        return localDataSource.addToFavorites(userId, mealId);
+    }
+
+    public Completable removeFromFavorites(String userId, String mealId) {
+        return localDataSource.removeFromFavorites(userId, mealId);
+    }
+
+    public Flowable<List<Meal>> getAllFavorites(String userId) {
+        return localDataSource.getUserFavorites(userId).map(MealMapper::fromEntityList);
+    }
+
+    /* ============================
+       Planner
+     ============================ */
+
+    public Completable addPlannedMeal(PlannedMealEntity plannedMeal) {
+        return localDataSource.addPlannedMeal(plannedMeal);
+    }
+
+
+    @Override
+    public Completable addPlannedMeal(String userId, String date, String mealId) {
+        return null;
+    }
+
+    @Override
+    public Flowable<List<Meal>> getPlannedMeals(String userId, String date) {
+        return null;
+    }
+
+//    public Flowable<List<Meal>> getPlannedMeals(String userId, String date) {
+//        return localDataSource.getPlannedMeals(userId, date).map(MealMapper::fromEntityList);
+//    }
+
+    public Completable removePlannedMeal(String userId, String date, String mealId) {
+        return localDataSource.removePlannedMeal(userId, date, mealId);
+    }
+
+    /* ============================
+       Cart
+     ============================ */
+
+    public Completable addTOCart(CartIngredientEntity item) {
+        return localDataSource.addTOCart(item);
+    }
+
+    public Completable removeItemFromCart(String ingredientName,
+                                          String measure) {
+        return localDataSource.removeItemFromCart(ingredientName, measure);
+    }
+
+    public Flowable<List<CartIngredientEntity>> getCartItems() {
+        return localDataSource.getCartItems();
+    }
+
+
+    // Test
+
+    public Completable addFavoriteToCloud(String mealId) {
+        return firestoreService.addFavorite(mealId);
+    }
+
+    public Single<List<String>> getFavoritesFromCloud() {
+        return firestoreService.getFavorites();
+    }
+
+    public Completable removeFavoriteFromCloud(String mealId) {
+        return firestoreService.removeFavorite(mealId);
+    }
+
+    public Completable addPlannedMealToCloud(String mealId, String date) {
+        return firestoreService.addPlannedMeal(mealId, date);
+    }
+
+    public Single<List<PlannedMealEntity>> getPlannedMealsFromCloud() {
+        return firestoreService.getPlannedMeals();
+    }
+
+    public Completable removePlannedMealFromCloud(String mealId, String date) {
+        return firestoreService.removePlannedMeal(mealId, date);
+    }
+
+
+
+    /* ============================
+       Scheduler Helper
+     ============================ */
+
     private <T> SingleTransformer<T, T> applySchedulers() {
-        return upstream -> upstream
-                .subscribeOn(Schedulers.io());
+        return upstream -> upstream.subscribeOn(Schedulers.io());
     }
 }

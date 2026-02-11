@@ -18,6 +18,37 @@ public class PlannedMealEntity {
     @NonNull
     public String mealId;
 
+    public PlannedMealEntity() {
+
+    }
+
+    @NonNull
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(@NonNull String userId) {
+        this.userId = userId;
+    }
+
+    @NonNull
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(@NonNull String date) {
+        this.date = date;
+    }
+
+    @NonNull
+    public String getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(@NonNull String mealId) {
+        this.mealId = mealId;
+    }
+
     public PlannedMealEntity(
             @NonNull String userId,
             @NonNull String date,

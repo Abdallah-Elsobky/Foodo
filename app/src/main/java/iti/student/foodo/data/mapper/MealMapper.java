@@ -5,6 +5,7 @@ import java.util.List;
 
 import iti.student.foodo.data.db.entity.MealEntity;
 import iti.student.foodo.data.db.pojo.MealWithDetails;
+import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Instruction;
 import iti.student.foodo.data.model.domain.Meal;
@@ -78,6 +79,19 @@ public class MealMapper {
         meal.setYoutube(mealWithDetails.meal.youtube);
         meal.setIngredients(IngredientMapper.fromEntityList(mealWithDetails.ingredients));
         meal.setInstructions(InstructionMapper.fromEntityList(mealWithDetails.instructions));
+        return meal;
+    }
+
+    public static Meal fromEntity(
+            PlannedMealWithDetails plannedMealWithDetails
+    ) {
+        Meal meal = new Meal();
+        meal.setId(plannedMealWithDetails.meal.id);
+        meal.setName(plannedMealWithDetails.meal.name);
+        meal.setImage(plannedMealWithDetails.meal.image);
+        meal.setCategory(plannedMealWithDetails.meal.category);
+        meal.setArea(plannedMealWithDetails.meal.area);
+        meal.setYoutube(plannedMealWithDetails.meal.youtube);
         return meal;
     }
 

@@ -28,6 +28,7 @@ import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentMealDetailsBinding;
@@ -51,7 +52,8 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
                         new MealsRemoteDataSource(
                                 ApiClient.getInstance().create(ApiService.class)
                         ),
-                        new MealLocalDataSource(AppDatabase.getInstance(requireContext()))
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
+                        new FirestoreService()
                 )
         );
         presenter.attachView(this);

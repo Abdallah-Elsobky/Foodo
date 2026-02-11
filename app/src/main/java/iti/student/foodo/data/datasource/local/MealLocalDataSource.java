@@ -112,6 +112,10 @@ public class MealLocalDataSource {
         return cartDao.deleteCartItem(ingredientName, measure);
     }
 
+    public Flowable<List<CartIngredientEntity>> getCartItems() {
+        return cartDao.getCartItems();
+    }
+
     public Completable clearCart() {
         return cartDao.clearCart();
     }
