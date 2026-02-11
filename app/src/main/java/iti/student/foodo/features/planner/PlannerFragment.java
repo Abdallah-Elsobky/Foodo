@@ -19,6 +19,7 @@ import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.db.entity.PlannedMealEntity;
 import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.mapper.MealMapper;
+import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentPlannerBinding;
@@ -35,7 +36,8 @@ public class PlannerFragment extends Fragment {
                 new MealsRemoteDataSource(
                         ApiClient.getInstance().create(ApiService.class)),
                 new MealLocalDataSource(
-                        AppDatabase.getInstance(requireContext())));
+                        AppDatabase.getInstance(requireContext())),
+                new FirestoreService());
     }
 
     @Override
@@ -50,14 +52,22 @@ public class PlannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // to test local
         binding.planner.setOnClickListener(v -> {
-            repository.removeFromFavorites("memo", "53322").subscribe(
-                    () -> Log.d("Memo", "remove fav item")
+            repository.removePlannedMealFromCloud("53123","12/12/2006").subscribe(
+                    () -> {
+                        Log.d("loco", "remove planned Succeesss");
+                    },
+                    throwable -> {
+                        Log.d("loco", "throwable: " + throwable);
+                    }
             );
-            repository.removeItemFromCart("Sugar", "100g ").subscribe(
-                    () -> Log.d("Memo", "remove cart item")
-            );
-            repository.removePlannedMeal("memo", "12/12/2023", "53322").subscribe(
-                    () -> Log.d("Memo", "remove planned meal")
+
+            repository.removeFavoriteFromCloud("53123").subscribe(
+                    () -> {
+                        Log.d("loco", "remove favorite Succeesss");
+                    },
+                    throwable -> {
+                        Log.d("loco", "throwable: " + throwable);
+                    }
             );
         });
     }

@@ -22,16 +22,19 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.FirestoreService;
 
 public class MealRepositoryImpl implements MealRepository {
 
     private final MealsRemoteDataSource remoteDataSource;
     private final MealLocalDataSource localDataSource;
+    private final FirestoreService firestoreService;
 
     public MealRepositoryImpl(MealsRemoteDataSource remoteDataSource,
-                              MealLocalDataSource localDataSource) {
+                              MealLocalDataSource localDataSource, FirestoreService firestoreService) {
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = localDataSource;
+        this.firestoreService = firestoreService;
     }
 
     /* ============================
@@ -187,6 +190,35 @@ public class MealRepositoryImpl implements MealRepository {
     public Flowable<List<CartIngredientEntity>> getCartItems() {
         return localDataSource.getCartItems();
     }
+
+
+    // Test
+
+    public Completable addFavoriteToCloud(String mealId) {
+        return firestoreService.addFavorite(mealId);
+    }
+
+    public Single<List<String>> getFavoritesFromCloud() {
+        return firestoreService.getFavorites();
+    }
+
+    public Completable removeFavoriteFromCloud(String mealId) {
+        return firestoreService.removeFavorite(mealId);
+    }
+
+    public Completable addPlannedMealToCloud(String mealId, String date) {
+        return firestoreService.addPlannedMeal(mealId, date);
+    }
+
+    public Single<List<PlannedMealEntity>> getPlannedMealsFromCloud() {
+        return firestoreService.getPlannedMeals();
+    }
+
+    public Completable removePlannedMealFromCloud(String mealId, String date) {
+        return firestoreService.removePlannedMeal(mealId, date);
+    }
+
+
 
     /* ============================
        Scheduler Helper

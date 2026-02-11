@@ -30,6 +30,7 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
@@ -62,7 +63,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         presenter = new SearchPresenter(
                 new MealRepositoryImpl(
                         new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)),
-                        new MealLocalDataSource(AppDatabase.getInstance(requireContext()))
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
+                        new FirestoreService()
                 )
         );
         fragmentManager = getParentFragmentManager();
