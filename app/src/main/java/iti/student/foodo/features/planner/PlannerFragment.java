@@ -16,6 +16,9 @@ import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
+import iti.student.foodo.data.db.entity.PlannedMealEntity;
+import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
+import iti.student.foodo.data.mapper.MealMapper;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentPlannerBinding;
@@ -47,15 +50,14 @@ public class PlannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // to test local
         binding.planner.setOnClickListener(v -> {
-            repository.getAllFavorites("memo").subscribe(
-                    mealWithDetails -> {
-                        Log.d("loco", "meal size: " + mealWithDetails.size());
-                        for (int i = 0; i < mealWithDetails.size(); i++) {
-                            Log.d("loco", "meal name: " + mealWithDetails.get(i).meal.name);
-                            Log.d("loco", "meal ingredients: " + mealWithDetails.get(i).ingredients.size());
-                            Log.d("loco", "meal instructions: " + mealWithDetails.get(i).instructions.size());
-                        }
-                    }
+            repository.removeFromFavorites("memo", "53322").subscribe(
+                    () -> Log.d("Memo", "remove fav item")
+            );
+            repository.removeItemFromCart("Sugar", "100g ").subscribe(
+                    () -> Log.d("Memo", "remove cart item")
+            );
+            repository.removePlannedMeal("memo", "12/12/2023", "53322").subscribe(
+                    () -> Log.d("Memo", "remove planned meal")
             );
         });
     }

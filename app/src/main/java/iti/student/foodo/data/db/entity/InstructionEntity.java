@@ -22,6 +22,20 @@ public class InstructionEntity {
     @NonNull
     public String text;
 
+    public int getInstructionId() {
+        return instructionId;
+    }
+
+    @NonNull
+    public String getMealId() {
+        return mealId;
+    }
+
+    @NonNull
+    public String getText() {
+        return text;
+    }
+
     public InstructionEntity(@NonNull String mealId, @NonNull String text) {
         this.mealId = mealId;
         this.text = text;

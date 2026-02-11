@@ -17,6 +17,31 @@ public class MealEntity {
     public String area;
     public String youtube;
 
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getYoutube() {
+        return youtube;
+    }
+
     public MealEntity(@NonNull String id, String name, String image, String category, String area, String youtube) {
         this.id = id;
         this.name = name;

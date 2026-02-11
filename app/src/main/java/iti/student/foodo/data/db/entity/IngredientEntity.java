@@ -27,6 +27,29 @@ public class IngredientEntity {
 
     public String imageUrl;
 
+    public int getIngredientId() {
+        return ingredientId;
+    }
+
+    @NonNull
+    public String getMealId() {
+        return mealId;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    @NonNull
+    public String getMeasure() {
+        return measure;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public IngredientEntity(@NonNull String mealId, @NonNull String name, @NonNull String measure, String imageUrl) {
         this.mealId = mealId;
         this.name = name;

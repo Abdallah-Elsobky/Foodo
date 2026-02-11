@@ -6,15 +6,19 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import iti.student.foodo.data.db.dao.CartDao;
 import iti.student.foodo.data.db.dao.FavoriteDao;
 import iti.student.foodo.data.db.dao.IngredientDao;
 import iti.student.foodo.data.db.dao.InstructionDao;
 import iti.student.foodo.data.db.dao.MealDao;
+import iti.student.foodo.data.db.dao.PlannedMealDao;
 import iti.student.foodo.data.db.dao.UserDao;
+import iti.student.foodo.data.db.entity.CartIngredientEntity;
 import iti.student.foodo.data.db.entity.FavoriteMealEntity;
 import iti.student.foodo.data.db.entity.IngredientEntity;
 import iti.student.foodo.data.db.entity.InstructionEntity;
 import iti.student.foodo.data.db.entity.MealEntity;
+import iti.student.foodo.data.db.entity.PlannedMealEntity;
 import iti.student.foodo.data.db.entity.UserEntity;
 
 @Database(
@@ -23,6 +27,8 @@ import iti.student.foodo.data.db.entity.UserEntity;
                 IngredientEntity.class,
                 InstructionEntity.class,
                 FavoriteMealEntity.class,
+                CartIngredientEntity.class,
+                PlannedMealEntity.class,
                 UserEntity.class
         },
         version = 1,
@@ -41,6 +47,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FavoriteDao favoriteDao();
 
     public abstract UserDao userDao();
+
+
+    public abstract CartDao cartDao();
+
+    public abstract PlannedMealDao plannedMealDao();
 
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
