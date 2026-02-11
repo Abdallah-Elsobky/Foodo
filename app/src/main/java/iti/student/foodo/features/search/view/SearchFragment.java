@@ -23,7 +23,9 @@ import java.util.stream.Collectors;
 import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.core.utils.ShimmerAdapter;
+import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
+import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
@@ -59,7 +61,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         super.onCreate(savedInstanceState);
         presenter = new SearchPresenter(
                 new MealRepositoryImpl(
-                        new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class))
+                        new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)),
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext()))
                 )
         );
         fragmentManager = getParentFragmentManager();

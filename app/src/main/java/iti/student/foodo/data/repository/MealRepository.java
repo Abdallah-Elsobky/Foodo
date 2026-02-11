@@ -2,6 +2,7 @@ package iti.student.foodo.data.repository;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
@@ -33,4 +34,6 @@ public interface MealRepository {
     public Single<List<Country>> getAreas();
 
     public Single<List<Ingredient>> getIngredients();
+
+    public Completable addToFavorites(String userId, String mealId);
 }

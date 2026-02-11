@@ -24,7 +24,9 @@ import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.core.utils.Animations;
 import iti.student.foodo.core.utils.ShimmerAdapter;
+import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
+import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.MealRepositoryImpl;
@@ -37,6 +39,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
     // region Fields
     private FragmentMealDetailsBinding binding;
     private MealContract.Presenter presenter;
+    private String viewMealId = "53322";
     // endregion
 
     // region Lifecycle
@@ -47,7 +50,8 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
                 new MealRepositoryImpl(
                         new MealsRemoteDataSource(
                                 ApiClient.getInstance().create(ApiService.class)
-                        )
+                        ),
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext()))
                 )
         );
         presenter.attachView(this);
@@ -74,6 +78,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         setupYoutubeLifecycle();
         setupBackButtonListener();
         requestMealDetails();
+        setupAddToFavButton();
     }
 
 
@@ -134,6 +139,13 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         });
     }
 
+    private void setupAddToFavButton() {
+        binding.btnFavorite.setOnClickListener(v -> {
+            presenter.addToFavorites("memo", viewMealId);
+            binding.btnFavorite.setIconTintResource(R.color.orange);
+        });
+    }
+
 
     // endregion
 
@@ -143,7 +155,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         String mealId = MealDetailsFragmentArgs
                 .fromBundle(getArguments())
                 .getMealId();
-
+        viewMealId = mealId;
         presenter.getMeals(mealId);
 
         Log.d("MealDetails", "meal id: " + mealId);
