@@ -111,6 +111,15 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
+    public void addMealToPlanner(String date, String mealId) {
+        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> repository.searchById(mealId).subscribe(),
+                throwable -> view.showError(getErrorMessage(throwable))
+        );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
     public void attachView(SearchContract.View view) {
         this.view = view;
     }

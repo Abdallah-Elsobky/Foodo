@@ -41,5 +41,7 @@ public interface SearchContract {
         void addToFavorites(String mealId);
 
         void deleteFromFavorites(String mealId);
+
+        void addMealToPlanner(String date, String mealId);
     }
 }

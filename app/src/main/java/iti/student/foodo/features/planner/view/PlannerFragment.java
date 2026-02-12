@@ -37,6 +37,7 @@ import iti.student.foodo.databinding.FragmentPlannerBinding;
 import iti.student.foodo.features.home.view.HomeFragmentDirections;
 import iti.student.foodo.features.planner.presenter.PlannerContract;
 import iti.student.foodo.features.planner.presenter.PlannerPresenter;
+import iti.student.foodo.features.utils.ConfirmDialog;
 
 public class PlannerFragment extends Fragment implements PlannerContract.View {
 
@@ -139,7 +140,20 @@ public class PlannerFragment extends Fragment implements PlannerContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-                presenter.removeMeal(selectedDay, meal.getId());
+                ConfirmDialog dialog = new ConfirmDialog(requireContext(),
+                        "Remove Planned Meal",
+                        "Are you sure you want to remove this item?",
+                        new ConfirmDialog.OnConfirmListener() {
+                            @Override
+                            public void onConfirm() {
+                                presenter.removeMeal(selectedDay, meal.getId());
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                dialog.show();
             }
         });
         adapter.submitList(meals);

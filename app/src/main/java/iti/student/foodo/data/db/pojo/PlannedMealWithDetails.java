@@ -17,6 +17,11 @@ public class PlannedMealWithDetails {
     )
     public MealEntity meal;
 
+    public PlannedMealWithDetails(PlannedMealEntity plan, MealEntity meal) {
+        this.plan = plan;
+        this.meal = meal;
+    }
+
     public PlannedMealEntity getPlan() {
         return plan;
     }

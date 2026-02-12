@@ -203,7 +203,7 @@ public class MealRepositoryImpl implements MealRepository {
 
     @Override
     public Completable addPlannedMeal(String date, String mealId) {
-        return null;
+        return localDataSource.addPlannedMeal(new PlannedMealEntity(date, mealId));
     }
 
     @Override

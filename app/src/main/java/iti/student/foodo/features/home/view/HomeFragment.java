@@ -40,6 +40,8 @@ import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
 import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.CustomToastKt;
+import iti.student.foodo.features.utils.MyDatePicker;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
@@ -120,6 +122,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 } else {
                     presenter.removeFavorite(meal.getId());
                 }
+            }
+
+            @Override
+            public void onPlannerClick(Meal meal) {
+                MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
+                    presenter.addMealToPlanner(date, meal.getId());
+                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
+                });
+                datePicker.show();
             }
         });
     }

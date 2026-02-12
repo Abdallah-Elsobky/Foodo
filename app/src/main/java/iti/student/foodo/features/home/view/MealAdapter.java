@@ -110,6 +110,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 notifyItemChanged(position);
             });
 
+            binding.plannerBtn.setOnClickListener(v->{
+                listener.onPlannerClick(meal);
+            });
+
             binding.getRoot().setOnClickListener(v -> {
                 listener.onMealClick(meal);
             });
@@ -120,5 +124,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
         void onMealClick(Meal meal);
 
         void onFavoriteClick(Meal meal);
+
+        void onPlannerClick(Meal meal);
     }
 }
