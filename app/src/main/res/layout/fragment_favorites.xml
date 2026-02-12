@@ -27,10 +27,19 @@
             android:id="@+id/fav_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="recipes saved offline"
             android:textColor="@color/gray"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/my_fav"
+            tools:text="0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" recipes saved offline"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/fav_count"
             app:layout_constraintTop_toBottomOf="@id/my_fav" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

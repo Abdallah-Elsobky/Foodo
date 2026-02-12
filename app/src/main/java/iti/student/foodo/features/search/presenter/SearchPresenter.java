@@ -2,6 +2,8 @@ package iti.student.foodo.features.search.presenter;
 
 import static iti.student.foodo.features.utils.ErrorUtils.getErrorMessage;
 
+import android.util.Log;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -89,6 +91,23 @@ public class SearchPresenter implements SearchContract.Presenter {
                 throwable -> view.showError(getErrorMessage(throwable))
         );
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void addToFavorites(String mealId) {
+        Disposable disposable = repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> repository.searchById(mealId).subscribe(),
+                throwable -> view.showError(getErrorMessage(throwable))
+        );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void deleteFromFavorites(String mealId) {
+        Disposable disposable = repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> Log.d("loco", "removed from favorites"),
+                throwable -> view.showError(getErrorMessage(throwable))
+        );
     }
 
     @Override

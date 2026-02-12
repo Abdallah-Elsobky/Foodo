@@ -34,6 +34,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentMealDetailsBinding;
 import iti.student.foodo.features.meal.presenter.MealContract;
 import iti.student.foodo.features.meal.presenter.MealPresenter;
+import iti.student.foodo.features.utils.CustomToastKt;
 
 public class MealDetailsFragment extends Fragment implements MealContract.View {
 
@@ -179,11 +180,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
                 meal.getIngredients(),
                 ingredient ->
                 {
-                    Toast.makeText(
-                            requireContext(),
-                            "Added to cart",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    CustomToastKt.successToast(requireContext(), "Add item to cart");
                     presenter.addIngredientToCart(ingredient);
                 }
         );

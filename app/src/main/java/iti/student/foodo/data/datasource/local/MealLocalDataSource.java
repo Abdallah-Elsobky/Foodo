@@ -65,10 +65,10 @@ public class MealLocalDataSource {
         ingredientDao.insertIngredients(IngredientMapper.toEntityList(meal.getIngredients()))
                 .observeOn(Schedulers.io()).subscribe();
         // TODO TESTO
-        cartDao.insertCartItem(new CartIngredientEntity(meal.getIngredients().get(0).getName(), meal.getIngredients().get(0).getMeasure(), meal.getIngredients().get(0).getImage()))
-                .observeOn(Schedulers.io()).subscribe();
-        plannedMealDao.insertPlannedMeal(new PlannedMealEntity("12/12/2023", meal.getId()))
-                .observeOn(Schedulers.io()).subscribe();
+//        cartDao.insertCartItem(new CartIngredientEntity(meal.getIngredients().get(0).getName(), meal.getIngredients().get(0).getMeasure(), meal.getIngredients().get(0).getImage()))
+//                .observeOn(Schedulers.io()).subscribe();
+//        plannedMealDao.insertPlannedMeal(new PlannedMealEntity("12/12/2023", meal.getId()))
+//                .observeOn(Schedulers.io()).subscribe();
         return mealDao.insertMeal(MealMapper.toEntity(meal));
     }
 

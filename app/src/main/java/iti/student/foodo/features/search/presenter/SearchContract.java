@@ -37,5 +37,9 @@ public interface SearchContract {
         void getCategories();
 
         void getIngredients();
+
+        void addToFavorites(String mealId);
+
+        void deleteFromFavorites(String mealId);
     }
 }

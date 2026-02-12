@@ -94,7 +94,7 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
         } else {
             binding.noFavContainer.setVisibility(GONE);
         }
-        binding.favCount.setText(meals.size() + " " + binding.favCount.getText());
+        binding.favCount.setText("" + meals.size());
         MealAdapter adapter = new MealAdapter(new MealAdapter.MealClickListener() {
             @Override
             public void onMealClick(Meal meal) {
