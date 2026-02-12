@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
+import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
@@ -43,11 +44,11 @@ public interface MealRepository {
 
     public Flowable<List<Meal>> getAllFavorites();
 
-    public Completable addPlannedMeal(String userId, String date, String mealId);
+    public Completable addPlannedMeal(String date, String mealId);
 
-    public Flowable<List<Meal>> getPlannedMeals(String userId, String date);
+    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String date);
 
-    public Completable removePlannedMeal(String userId, String date, String mealId);
+    public Completable removePlannedMeal(String date, String mealId);
 
     public Completable addTOCart(CartIngredientEntity item);
 

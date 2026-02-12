@@ -16,5 +16,13 @@ public class PlannedMealWithDetails {
             entityColumn = "id"
     )
     public MealEntity meal;
+
+    public PlannedMealEntity getPlan() {
+        return plan;
+    }
+
+    public MealEntity getMeal() {
+        return meal;
+    }
 }
 

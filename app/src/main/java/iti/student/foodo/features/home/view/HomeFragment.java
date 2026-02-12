@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 
@@ -101,7 +103,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupAdapters() {
         categoriesAdapter = new CategoryAdapter(item -> {
-            Log.d("Memo", "testo: " + item);
         });
         categoriesAdapter.submitList(Category.homeCategoryList());
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
@@ -114,7 +115,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-                // Add meal to fav
                 if (meal.isFav()) {
                     presenter.addFavorite(meal.getId());
                 } else {
