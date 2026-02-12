@@ -23,5 +23,7 @@ public interface HomeContract {
         void addFavorite(String mealId);
 
         void removeFavorite(String mealId);
+
+        void addMealToPlanner(String date, String mealId);
     }
 }

@@ -24,6 +24,7 @@ import iti.student.foodo.data.repository.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentCartBinding;
 import iti.student.foodo.features.cart.presenter.CartContract;
 import iti.student.foodo.features.cart.presenter.CartPresenter;
+import iti.student.foodo.features.utils.ConfirmDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 
 
@@ -89,7 +90,21 @@ public class CartFragment extends Fragment implements CartContract.View {
         binding.cartCount.setText(String.valueOf(items.size()));
         Log.d("loco", "items: " + items.size());
         adapter = new CartAdapter(item -> {
-            presenter.deleteItem(item);
+            ConfirmDialog dialog = new ConfirmDialog(requireContext(),
+                    "Remove Cart Item",
+                    "Are you sure you want to remove this item?",
+                    new ConfirmDialog.OnConfirmListener() {
+                        @Override
+                        public void onConfirm() {
+                            presenter.deleteItem(item);
+
+                        }
+
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+            dialog.show();
         });
         adapter.submitList(items);
         binding.cartRv.setAdapter(adapter);

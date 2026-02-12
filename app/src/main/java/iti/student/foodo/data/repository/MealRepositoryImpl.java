@@ -202,20 +202,20 @@ public class MealRepositoryImpl implements MealRepository {
 
 
     @Override
-    public Completable addPlannedMeal(String userId, String date, String mealId) {
-        return null;
+    public Completable addPlannedMeal(String date, String mealId) {
+        return localDataSource.addPlannedMeal(new PlannedMealEntity(date, mealId));
     }
 
     @Override
-    public Flowable<List<Meal>> getPlannedMeals(String userId, String date) {
-        return null;
+    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String date) {
+        return localDataSource.getPlannedMeals(date);
     }
 
 //    public Flowable<List<Meal>> getPlannedMeals(String userId, String date) {
 //        return localDataSource.getPlannedMeals(userId, date).map(MealMapper::fromEntityList);
 //    }
 
-    public Completable removePlannedMeal(String userId, String date, String mealId) {
+    public Completable removePlannedMeal(String date, String mealId) {
         return localDataSource.removePlannedMeal(date, mealId);
     }
 

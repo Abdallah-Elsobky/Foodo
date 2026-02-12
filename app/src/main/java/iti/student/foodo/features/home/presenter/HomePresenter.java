@@ -79,22 +79,35 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addFavorite(String mealId) {
-        repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     repository.searchById(mealId).subscribe();
                     Log.d("loco", "meal added: " + mealId);
                 }
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
         );
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void removeFavorite(String mealId) {
-        repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     Log.d("loco", "meal removed: " + mealId);
                 }
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
         );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void addMealToPlanner(String date, String mealId) {
+        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> {
+                    repository.searchById(mealId).subscribe();
+                }
+                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
+        );
+        compositeDisposable.add(disposable);
     }
 }

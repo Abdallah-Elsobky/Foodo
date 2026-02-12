@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 
@@ -38,6 +40,8 @@ import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
 import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.CustomToastKt;
+import iti.student.foodo.features.utils.MyDatePicker;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
@@ -101,7 +105,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupAdapters() {
         categoriesAdapter = new CategoryAdapter(item -> {
-            Log.d("Memo", "testo: " + item);
         });
         categoriesAdapter.submitList(Category.homeCategoryList());
         mealAdapter = new MealAdapter(new MealAdapter.MealClickListener() {
@@ -114,12 +117,20 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-                // Add meal to fav
                 if (meal.isFav()) {
                     presenter.addFavorite(meal.getId());
                 } else {
                     presenter.removeFavorite(meal.getId());
                 }
+            }
+
+            @Override
+            public void onPlannerClick(Meal meal) {
+                MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
+                    presenter.addMealToPlanner(date, meal.getId());
+                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
+                });
+                datePicker.show();
             }
         });
     }

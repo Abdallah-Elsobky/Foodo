@@ -39,6 +39,8 @@ import iti.student.foodo.features.home.view.MealAdapter;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
 import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.CustomToastKt;
+import iti.student.foodo.features.utils.MyDatePicker;
 
 public class SearchFragment extends Fragment implements SearchContract.View {
 
@@ -170,6 +172,15 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                     presenter.addToFavorites(meal.getId());
                 else
                     presenter.deleteFromFavorites(meal.getId());
+            }
+
+            @Override
+            public void onPlannerClick(Meal meal) {
+                MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
+                    presenter.addMealToPlanner(date, meal.getId());
+                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
+                });
+                datePicker.show();
             }
         });
     }

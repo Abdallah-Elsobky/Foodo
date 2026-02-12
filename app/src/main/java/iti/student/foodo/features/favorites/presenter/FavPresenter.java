@@ -14,7 +14,6 @@ public class FavPresenter implements FavContract.Presenter {
 
     private FavContract.View view;
     private final MealRepository repository;
-    private final String USER_ID = FirebaseAuth.getInstance().getUid();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
@@ -36,6 +35,15 @@ public class FavPresenter implements FavContract.Presenter {
     public void removeFavorite(String mealId) {
         Disposable disposable = repository.removeFromFavorites(mealId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> Log.d("loco", "removed")
+                , throwable -> view.showError(throwable.getMessage())
+        );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void addMealToPlanner(String date, String mealId) {
+        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> Log.d("loco", "added")
                 , throwable -> view.showError(throwable.getMessage())
         );
         compositeDisposable.add(disposable);

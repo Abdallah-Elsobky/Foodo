@@ -3,7 +3,9 @@
     <style name="Base.Theme.Foodo" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/orange</item>
-        <item name="colorSecondary">@color/light_orange</item>
+        <item name="colorOnSecondary">@color/orange</item>
+        <item name="colorSecondary">@color/orange</item>
+
     </style>
 
     <style name="CustomIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

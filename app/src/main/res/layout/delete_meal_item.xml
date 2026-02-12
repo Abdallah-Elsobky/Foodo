@@ -39,26 +39,7 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_gravity="center"
-                android:src="@drawable/love_ic"
-                app:tint="@color/white" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/planner_btn"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/bg_circle_translucent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/calender_img"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="center"
-                android:src="@drawable/calendar_ic"
+                android:src="@drawable/ic_delete_"
                 app:tint="@color/white" />
         </FrameLayout>
 

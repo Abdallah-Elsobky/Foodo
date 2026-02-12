@@ -34,7 +34,10 @@ import iti.student.foodo.features.favorites.presenter.FavContract;
 import iti.student.foodo.features.favorites.presenter.FavPresenter;
 import iti.student.foodo.features.home.presenter.HomePresenter;
 import iti.student.foodo.features.home.view.MealAdapter;
+import iti.student.foodo.features.utils.ConfirmDialog;
 import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.CustomToastKt;
+import iti.student.foodo.features.utils.MyDatePicker;
 
 public class FavoritesFragment extends Fragment implements FavContract.View {
 
@@ -106,7 +109,29 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-                presenter.removeFavorite(meal.getId());
+                ConfirmDialog dialog = new ConfirmDialog(requireContext(),
+                        "Remove Favorite",
+                        "Are you sure you want to remove this item?",
+                        new ConfirmDialog.OnConfirmListener() {
+                            @Override
+                            public void onConfirm() {
+                                presenter.removeFavorite(meal.getId());
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                dialog.show();
+            }
+
+            @Override
+            public void onPlannerClick(Meal meal) {
+                MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
+                    presenter.addMealToPlanner(date, meal.getId());
+                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
+                });
+                datePicker.show();
             }
         });
         adapter.submitList(meals);

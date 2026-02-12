@@ -1,6 +1,7 @@
-package iti.student.foodo.features.home.view;
+package iti.student.foodo.features.planner.view;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -21,36 +22,29 @@ import java.util.List;
 
 import iti.student.foodo.R;
 import iti.student.foodo.core.utils.Animations;
+import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
+import iti.student.foodo.data.mapper.MealMapper;
 import iti.student.foodo.data.model.domain.Meal;
-import iti.student.foodo.databinding.MealItemBinding;
+import iti.student.foodo.databinding.DeleteMealItemBinding;
 
-public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
-    List<Meal> meals = List.of();
+public class DeleteMealAdapter extends RecyclerView.Adapter<DeleteMealAdapter.ViewHolder> {
+    List<PlannedMealWithDetails> meals = List.of();
     MealClickListener listener;
 
-    public MealAdapter(MealClickListener listener) {
+    public DeleteMealAdapter(MealClickListener listener) {
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        MealItemBinding binding = MealItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        DeleteMealItemBinding binding = DeleteMealItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding, listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Meal meal = meals.get(position);
-        if (meal.isFav()) {
-            holder.binding.loveImg.setColorFilter(
-                    ContextCompat.getColor(holder.itemView.getContext(), R.color.orange)
-            );
-        } else {
-            holder.binding.loveImg.setColorFilter(
-                    ContextCompat.getColor(holder.itemView.getContext(), R.color.gray_white)
-            );
-        }
+        PlannedMealWithDetails meal = meals.get(position);
         holder.bind(meal, position);
     }
 
@@ -59,7 +53,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
         return meals.size();
     }
 
-    public void submitList(List<Meal> meals) {
+    public void submitList(List<PlannedMealWithDetails> meals) {
         this.meals = meals;
         notifyDataSetChanged();
     }
@@ -70,16 +64,17 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        MealItemBinding binding;
+        DeleteMealItemBinding binding;
         MealClickListener listener;
 
-        public ViewHolder(MealItemBinding binding, MealClickListener listener) {
+        public ViewHolder(DeleteMealItemBinding binding, MealClickListener listener) {
             super(binding.getRoot());
             this.binding = binding;
             this.listener = listener;
         }
 
-        public void bind(Meal meal, int position) {
+        public void bind(PlannedMealWithDetails plannedMeal, int position) {
+            Meal meal = MealMapper.fromEntity(plannedMeal.getMeal());
             binding.tvTitle.setText(meal.getName());
             binding.tvSubtitle.setText(String.format("%s • %s", meal.getCategory() == null ? "" : meal.getCategory(), meal.getArea() == null ? "" : meal.getArea()));
             binding.loading.setVisibility(VISIBLE);
@@ -110,10 +105,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
                 notifyItemChanged(position);
             });
 
-            binding.plannerBtn.setOnClickListener(v->{
-                listener.onPlannerClick(meal);
-            });
-
             binding.getRoot().setOnClickListener(v -> {
                 listener.onMealClick(meal);
             });
@@ -124,7 +115,5 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.ViewHolder> {
         void onMealClick(Meal meal);
 
         void onFavoriteClick(Meal meal);
-
-        void onPlannerClick(Meal meal);
     }
 }

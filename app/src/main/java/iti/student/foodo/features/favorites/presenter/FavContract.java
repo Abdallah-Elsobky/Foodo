@@ -14,6 +14,7 @@ public interface FavContract {
     public interface Presenter extends BasePresenter<View> {
         void getFavorites();
         void removeFavorite(String mealId);
+        void addMealToPlanner(String date, String mealId);
     }
 
 }
