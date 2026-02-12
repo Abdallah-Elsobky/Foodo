@@ -2,6 +2,7 @@ package iti.student.foodo.features.home.presenter;
 
 
 import static iti.student.foodo.features.utils.ErrorUtils.*;
+
 import android.util.Log;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -74,5 +75,26 @@ public class HomePresenter implements HomeContract.Presenter {
                 );
 
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void addFavorite(String mealId) {
+        repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> {
+                    repository.searchById(mealId).subscribe();
+                    Log.d("loco", "meal added: " + mealId);
+                }
+                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
+        );
+    }
+
+    @Override
+    public void removeFavorite(String mealId) {
+        repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> {
+                    Log.d("loco", "meal removed: " + mealId);
+                }
+                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
+        );
     }
 }

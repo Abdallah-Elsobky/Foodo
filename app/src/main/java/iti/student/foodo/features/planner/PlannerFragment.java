@@ -52,22 +52,14 @@ public class PlannerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // to test local
         binding.planner.setOnClickListener(v -> {
-            repository.removePlannedMealFromCloud("53123","12/12/2006").subscribe(
-                    () -> {
-                        Log.d("loco", "remove planned Succeesss");
-                    },
-                    throwable -> {
-                        Log.d("loco", "throwable: " + throwable);
+            repository.getAllFavorites().subscribe(
+                    meals -> {
+                        Log.d("loco", "meals size: " + meals.size());
+                        for (int i = 0; i < meals.size(); i++) {
+                            Log.d("loco", "meals: " + meals.get(i).getName());
+                        }
                     }
-            );
-
-            repository.removeFavoriteFromCloud("53123").subscribe(
-                    () -> {
-                        Log.d("loco", "remove favorite Succeesss");
-                    },
-                    throwable -> {
-                        Log.d("loco", "throwable: " + throwable);
-                    }
+                    , throwable -> Log.d("loco", "error: " + throwable.getMessage())
             );
         });
     }

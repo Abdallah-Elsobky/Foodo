@@ -1,6 +1,9 @@
 package iti.student.foodo.data.repository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -53,10 +56,33 @@ public class MealRepositoryImpl implements MealRepository {
                 .map(response -> MealMapper.mapList(response.getMeals()));
     }
 
-    public Single<List<Meal>> searchByName(String query) {
-        return remoteDataSource.searchByName(query)
-                .compose(applySchedulers())
-                .map(response -> MealMapper.mapList(response.getMeals()));
+
+    private Single<List<Meal>> mergeWithFavorites(
+            Single<List<Meal>> mealsSingle
+    ) {
+
+        return Single.zip(
+                mealsSingle,
+
+                localDataSource.getUserFavorites()
+                        .first(new ArrayList<>())
+                        .map(MealMapper::fromEntityList),
+
+                (meals, favoriteMeals) -> {
+
+                    Set<String> favIds = new HashSet<>();
+
+                    for (Meal fav : favoriteMeals) {
+                        favIds.add(fav.getId());
+                    }
+
+                    for (Meal meal : meals) {
+                        meal.setFav(favIds.contains(meal.getId()));
+                    }
+
+                    return meals;
+                }
+        );
     }
 
     public Single<List<Meal>> searchById(String query) {
@@ -71,23 +97,42 @@ public class MealRepositoryImpl implements MealRepository {
                 });
     }
 
-    public Single<List<Meal>> searchByCategory(String query) {
-        return remoteDataSource.searchByCategory(query)
-                .compose(applySchedulers())
-                .map(response -> MealMapper.mapList(response.getMeals()));
+    public Single<List<Meal>> searchByName(String query) {
+
+        Single<List<Meal>> meals =
+                remoteDataSource.searchByName(query)
+                        .map(response -> MealMapper.mapList(response.getMeals()));
+        return mergeWithFavorites(meals)
+                .compose(applySchedulers());
     }
+
+    public Single<List<Meal>> searchByCategory(String query) {
+        Single<List<Meal>> meals =
+                remoteDataSource.searchByCategory(query)
+                        .map(response -> MealMapper.mapList(response.getMeals()));
+        return mergeWithFavorites(meals)
+                .compose(applySchedulers());
+    }
+
 
     public Single<List<Meal>> searchByArea(String query) {
-        return remoteDataSource.searchByArea(query)
-                .compose(applySchedulers())
-                .map(response -> MealMapper.mapList(response.getMeals()));
+        Single<List<Meal>> meals =
+                remoteDataSource.searchByArea(query)
+                        .map(response -> MealMapper.mapList(response.getMeals()));
+        return mergeWithFavorites(meals)
+                .compose(applySchedulers());
     }
 
+
     public Single<List<Meal>> searchByIngredient(String query) {
-        return remoteDataSource.searchByIngredient(query)
-                .compose(applySchedulers())
-                .map(response -> MealMapper.mapList(response.getMeals()));
+
+        Single<List<Meal>> meals =
+                remoteDataSource.searchByIngredient(query)
+                        .map(response -> MealMapper.mapList(response.getMeals()));
+        return mergeWithFavorites(meals)
+                .compose(applySchedulers());
     }
+
 
     /* ============================
        Remote - Static Data
@@ -135,16 +180,16 @@ public class MealRepositoryImpl implements MealRepository {
        Favorites
      ============================ */
 
-    public Completable addToFavorites(String userId, String mealId) {
-        return localDataSource.addToFavorites(userId, mealId);
+    public Completable addToFavorites(String mealId) {
+        return localDataSource.addToFavorites(mealId);
     }
 
-    public Completable removeFromFavorites(String userId, String mealId) {
-        return localDataSource.removeFromFavorites(userId, mealId);
+    public Completable removeFromFavorites(String mealId) {
+        return localDataSource.removeFromFavorites(mealId);
     }
 
-    public Flowable<List<Meal>> getAllFavorites(String userId) {
-        return localDataSource.getUserFavorites(userId).map(MealMapper::fromEntityList);
+    public Flowable<List<Meal>> getAllFavorites() {
+        return localDataSource.getUserFavorites().map(MealMapper::fromEntityList);
     }
 
     /* ============================
@@ -171,7 +216,7 @@ public class MealRepositoryImpl implements MealRepository {
 //    }
 
     public Completable removePlannedMeal(String userId, String date, String mealId) {
-        return localDataSource.removePlannedMeal(userId, date, mealId);
+        return localDataSource.removePlannedMeal(date, mealId);
     }
 
     /* ============================

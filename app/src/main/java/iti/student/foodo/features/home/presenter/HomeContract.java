@@ -19,5 +19,9 @@ public interface HomeContract {
         void getMeals();
 
         void getRandomMeal();
+
+        void addFavorite(String mealId);
+
+        void removeFavorite(String mealId);
     }
 }

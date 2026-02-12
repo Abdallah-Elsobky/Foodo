@@ -19,17 +19,14 @@ public interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable addToFavorites(FavoriteMealEntity favorite);
 
-    @Query("DELETE FROM favorite_meals WHERE userId = :userId AND mealId = :mealId")
-    Completable removeFromFavorites(String userId, String mealId);
+    @Query("DELETE FROM favorite_meals WHERE mealId = :mealId")
+    Completable removeFromFavorites(String mealId);
 
-    @Query("SELECT EXISTS(SELECT 1 FROM favorite_meals WHERE userId = :userId AND mealId = :mealId)")
-    Flowable<Boolean> isFavorite(String userId, String mealId);
+    @Query("SELECT EXISTS(SELECT 1 FROM favorite_meals WHERE mealId = :mealId)")
+    Flowable<Boolean> isFavorite(String mealId);
 
     @Transaction
-    @Query("SELECT meals.* FROM meals INNER JOIN favorite_meals ON meals.id = favorite_meals.mealId WHERE favorite_meals.userId = :userId")
-    Flowable<List<MealWithDetails>> getUserFavoriteMeals(String userId);
-
-    @Query("DELETE FROM favorite_meals WHERE userId = :userId")
-    Completable clearUserFavorites(String userId);
+    @Query("SELECT meals.* FROM meals INNER JOIN favorite_meals ON meals.id = favorite_meals.mealId")
+    Flowable<List<MealWithDetails>> getUserFavoriteMeals();
 }
 

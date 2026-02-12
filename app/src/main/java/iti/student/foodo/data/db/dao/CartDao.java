@@ -23,13 +23,6 @@ public interface CartDao {
             String measure
     );
 
-    @Query("UPDATE cart SET isBought = :isBought WHERE ingredientName = :name AND measure = :measure")
-    Completable updateBoughtState(
-            String name,
-            String measure,
-            boolean isBought
-    );
-
     @Query("SELECT * FROM cart")
     Flowable<List<CartIngredientEntity>> getCartItems();
 

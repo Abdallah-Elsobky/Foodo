@@ -15,16 +15,16 @@ public class CartIngredientEntity {
     @NonNull
     public String measure;
 
-    public boolean isBought;
+    public String imageUrl;
 
     public CartIngredientEntity(
             @NonNull String ingredientName,
             @NonNull String measure,
-            boolean isBought
+            String imageUrl
     ) {
         this.ingredientName = ingredientName;
         this.measure = measure;
-        this.isBought = isBought;
+        this.imageUrl = imageUrl;
     }
 }
 

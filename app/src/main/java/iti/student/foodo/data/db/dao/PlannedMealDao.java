@@ -19,16 +19,14 @@ public interface PlannedMealDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertPlannedMeal(PlannedMealEntity plannedMeal);
 
-    @Query("DELETE FROM planned_meals WHERE userId = :userId AND date = :date AND mealId = :mealId")
+    @Query("DELETE FROM planned_meals WHERE date = :date AND mealId = :mealId")
     Completable deletePlannedMeal(
-            String userId,
             String date,
             String mealId
     );
     @Transaction
-    @Query("SELECT * FROM planned_meals WHERE userId = :userId AND date = :date")
+    @Query("SELECT * FROM planned_meals WHERE date = :date")
     Flowable<List<PlannedMealWithDetails>> getPlannedMealsWithDetails(
-            String userId,
             String date
     );
 }

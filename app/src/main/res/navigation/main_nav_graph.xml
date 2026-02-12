@@ -21,9 +21,13 @@
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="iti.student.foodo.features.favorites.FavoritesFragment"
+        android:name="iti.student.foodo.features.favorites.view.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/navigateToMealDetailsFragmentFromFavFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/plannerFragment"
         android:name="iti.student.foodo.features.planner.PlannerFragment"
