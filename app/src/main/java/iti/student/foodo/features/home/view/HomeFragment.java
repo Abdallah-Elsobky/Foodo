@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)),new MealLocalDataSource(AppDatabase.getInstance(requireContext())),new FirestoreService()));
+        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)), new MealLocalDataSource(AppDatabase.getInstance(requireContext())), new FirestoreService()));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override
@@ -114,7 +114,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-
+                // Add meal to fav
+                if (meal.isFav()) {
+                    presenter.addFavorite(meal.getId());
+                } else {
+                    presenter.removeFavorite(meal.getId());
+                }
             }
         });
     }

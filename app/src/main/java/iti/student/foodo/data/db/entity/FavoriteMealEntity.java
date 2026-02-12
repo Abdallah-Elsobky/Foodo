@@ -6,19 +6,16 @@ import androidx.room.Index;
 
 @Entity(
         tableName = "favorite_meals",
-        primaryKeys = {"userId", "mealId"},
+        primaryKeys = { "mealId"},
         indices = {@Index("mealId")}
 )
 public class FavoriteMealEntity {
-    @NonNull
-    public String userId;
     @NonNull
     public String mealId;
 
     public long addedAt;
 
-    public FavoriteMealEntity(String userId, String mealId, long addedAt) {
-        this.userId = userId;
+    public FavoriteMealEntity(String mealId, long addedAt) {
         this.mealId = mealId;
         this.addedAt = addedAt;
     }

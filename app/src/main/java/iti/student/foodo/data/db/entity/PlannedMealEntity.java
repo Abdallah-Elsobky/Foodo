@@ -5,12 +5,10 @@ import androidx.room.Entity;
 
 @Entity(
         tableName = "planned_meals",
-        primaryKeys = {"userId", "date", "mealId"}
+        primaryKeys = {"date", "mealId"}
 )
 public class PlannedMealEntity {
 
-    @NonNull
-    public String userId;
 
     @NonNull
     public String date;
@@ -20,15 +18,6 @@ public class PlannedMealEntity {
 
     public PlannedMealEntity() {
 
-    }
-
-    @NonNull
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(@NonNull String userId) {
-        this.userId = userId;
     }
 
     @NonNull
@@ -50,11 +39,9 @@ public class PlannedMealEntity {
     }
 
     public PlannedMealEntity(
-            @NonNull String userId,
             @NonNull String date,
             @NonNull String mealId
     ) {
-        this.userId = userId;
         this.date = date;
         this.mealId = mealId;
     }

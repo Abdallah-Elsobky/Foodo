@@ -143,7 +143,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
 
     private void setupAddToFavButton() {
         binding.btnFavorite.setOnClickListener(v -> {
-            presenter.addToFavorites("memo", viewMealId);
+            presenter.addToFavorites(viewMealId);
             binding.btnFavorite.setIconTintResource(R.color.orange);
         });
     }
@@ -178,11 +178,14 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         MealIngredientAdapter ingredientAdapter = new MealIngredientAdapter(
                 meal.getIngredients(),
                 ingredient ->
-                        Toast.makeText(
-                                requireContext(),
-                                "Added to cart",
-                                Toast.LENGTH_SHORT
-                        ).show()
+                {
+                    Toast.makeText(
+                            requireContext(),
+                            "Added to cart",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                    presenter.addIngredientToCart(ingredient);
+                }
         );
         binding.ingredientRv.setAdapter(ingredientAdapter);
     }

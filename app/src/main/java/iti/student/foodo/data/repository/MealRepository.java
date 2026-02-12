@@ -37,11 +37,11 @@ public interface MealRepository {
 
     public Single<List<Ingredient>> getIngredients();
 
-    public Completable addToFavorites(String userId, String mealId);
+    public Completable addToFavorites(String mealId);
 
-    public Completable removeFromFavorites(String userId, String mealId);
+    public Completable removeFromFavorites(String mealId);
 
-    public Flowable<List<Meal>> getAllFavorites(String userId);
+    public Flowable<List<Meal>> getAllFavorites();
 
     public Completable addPlannedMeal(String userId, String date, String mealId);
 

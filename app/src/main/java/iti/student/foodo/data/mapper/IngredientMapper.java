@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import iti.student.foodo.data.db.entity.CartIngredientEntity;
 import iti.student.foodo.data.db.entity.IngredientEntity;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.dto.IngredientsItem;
@@ -64,6 +65,14 @@ public class IngredientMapper {
     public static IngredientEntity toEntity(Ingredient ingredient) {
         return new IngredientEntity(
                 ingredient.getMealId(),
+                ingredient.getName(),
+                ingredient.getMeasure(),
+                ingredient.getImage()
+        );
+    }
+
+    public static CartIngredientEntity toCartEntity(Ingredient ingredient) {
+        return new CartIngredientEntity(
                 ingredient.getName(),
                 ingredient.getMeasure(),
                 ingredient.getImage()

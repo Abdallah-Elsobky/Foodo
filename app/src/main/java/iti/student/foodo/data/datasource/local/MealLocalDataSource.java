@@ -64,10 +64,10 @@ public class MealLocalDataSource {
                 .observeOn(Schedulers.io()).subscribe();
         ingredientDao.insertIngredients(IngredientMapper.toEntityList(meal.getIngredients()))
                 .observeOn(Schedulers.io()).subscribe();
-        // TESTO
-        cartDao.insertCartItem(new CartIngredientEntity(meal.getIngredients().get(0).getName(), meal.getIngredients().get(0).getMeasure(), false))
+        // TODO TESTO
+        cartDao.insertCartItem(new CartIngredientEntity(meal.getIngredients().get(0).getName(), meal.getIngredients().get(0).getMeasure(), meal.getIngredients().get(0).getImage()))
                 .observeOn(Schedulers.io()).subscribe();
-        plannedMealDao.insertPlannedMeal(new PlannedMealEntity("memo", "12/12/2023", meal.getId()))
+        plannedMealDao.insertPlannedMeal(new PlannedMealEntity("12/12/2023", meal.getId()))
                 .observeOn(Schedulers.io()).subscribe();
         return mealDao.insertMeal(MealMapper.toEntity(meal));
     }
@@ -82,24 +82,24 @@ public class MealLocalDataSource {
     }
 
 
-    public Completable addToFavorites(String userId, String mealId) {
+    public Completable addToFavorites(String mealId) {
         return favoriteDao.addToFavorites(
-                new FavoriteMealEntity(userId, mealId, System.currentTimeMillis())
+                new FavoriteMealEntity(mealId, System.currentTimeMillis())
         );
     }
 
 
     // Meal Dao
-    public Completable removeFromFavorites(String userId, String mealId) {
-        return favoriteDao.removeFromFavorites(userId, mealId);
+    public Completable removeFromFavorites(String mealId) {
+        return favoriteDao.removeFromFavorites(mealId);
     }
 
-    public Flowable<Boolean> isFavorite(String userId, String mealId) {
-        return favoriteDao.isFavorite(userId, mealId);
+    public Flowable<Boolean> isFavorite(String mealId) {
+        return favoriteDao.isFavorite(mealId);
     }
 
-    public Flowable<List<MealWithDetails>> getUserFavorites(String userId) {
-        return favoriteDao.getUserFavoriteMeals(userId);
+    public Flowable<List<MealWithDetails>> getUserFavorites() {
+        return favoriteDao.getUserFavoriteMeals();
     }
 
 
@@ -125,11 +125,11 @@ public class MealLocalDataSource {
         return plannedMealDao.insertPlannedMeal(plannedMeal);
     }
 
-    public Completable removePlannedMeal(String userId, String date, String mealId) {
-        return plannedMealDao.deletePlannedMeal(userId, date, mealId);
+    public Completable removePlannedMeal(String date, String mealId) {
+        return plannedMealDao.deletePlannedMeal(date, mealId);
     }
 
-    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String userId, String date) {
-        return plannedMealDao.getPlannedMealsWithDetails(userId, date);
+    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String date) {
+        return plannedMealDao.getPlannedMealsWithDetails(date);
     }
 }
