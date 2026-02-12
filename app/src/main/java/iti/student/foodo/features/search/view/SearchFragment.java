@@ -166,7 +166,10 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
             @Override
             public void onFavoriteClick(Meal meal) {
-                // Handle favorite toggle
+                if (meal.isFav())
+                    presenter.addToFavorites(meal.getId());
+                else
+                    presenter.deleteFromFavorites(meal.getId());
             }
         });
     }
