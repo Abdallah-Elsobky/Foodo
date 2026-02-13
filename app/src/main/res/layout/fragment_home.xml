@@ -53,6 +53,27 @@
                 app:layout_constraintTop_toBottomOf="@id/hello" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/account_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="40dp"
+                android:backgroundTint="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/meal_of_the_day"
+                app:layout_constraintEnd_toEndOf="@id/right_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/orange"
+                app:strokeWidth="5dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:padding="8dp"
+                    android:backgroundTint="@color/orange"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/user_ic" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/meal_of_the_day"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -106,23 +127,23 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-<!--                    <FrameLayout-->
-<!--                        android:id="@+id/btn_favorite"-->
-<!--                        android:layout_width="50dp"-->
-<!--                        android:layout_height="50dp"-->
-<!--                        android:layout_margin="16dp"-->
-<!--                        android:background="@drawable/bg_circle_translucent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent">-->
+                    <!--                    <FrameLayout-->
+                    <!--                        android:id="@+id/btn_favorite"-->
+                    <!--                        android:layout_width="50dp"-->
+                    <!--                        android:layout_height="50dp"-->
+                    <!--                        android:layout_margin="16dp"-->
+                    <!--                        android:background="@drawable/bg_circle_translucent"-->
+                    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--                        app:layout_constraintTop_toTopOf="parent">-->
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/love_img"-->
-<!--                            android:layout_width="25dp"-->
-<!--                            android:layout_height="25dp"-->
-<!--                            android:layout_gravity="center"-->
-<!--                            android:src="@drawable/love_ic"-->
-<!--                            app:tint="@color/white" />-->
-<!--                    </FrameLayout>-->
+                    <!--                        <ImageView-->
+                    <!--                            android:id="@+id/love_img"-->
+                    <!--                            android:layout_width="25dp"-->
+                    <!--                            android:layout_height="25dp"-->
+                    <!--                            android:layout_gravity="center"-->
+                    <!--                            android:src="@drawable/love_ic"-->
+                    <!--                            app:tint="@color/white" />-->
+                    <!--                    </FrameLayout>-->
 
                     <TextView
                         android:id="@+id/tv_meal_name"

@@ -1,4 +1,4 @@
-package iti.student.foodo.data.repository;
+package iti.student.foodo.data.repository.meal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,9 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
-import iti.student.foodo.data.db.entity.MealEntity;
 import iti.student.foodo.data.db.entity.PlannedMealEntity;
-import iti.student.foodo.data.db.pojo.MealWithDetails;
 import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.mapper.CategoryMapper;
 import iti.student.foodo.data.mapper.CountryMapper;

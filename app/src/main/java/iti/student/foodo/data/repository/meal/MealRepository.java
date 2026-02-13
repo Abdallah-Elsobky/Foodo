@@ -1,4 +1,4 @@
-package iti.student.foodo.data.repository;
+package iti.student.foodo.data.repository.meal;
 
 import java.util.List;
 
@@ -11,10 +11,6 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
-import iti.student.foodo.data.model.dto.CategoryResponse;
-import iti.student.foodo.data.model.dto.CountryResponse;
-import iti.student.foodo.data.model.dto.IngredientResponse;
-import iti.student.foodo.data.model.dto.MealResponse;
 
 public interface MealRepository {
 

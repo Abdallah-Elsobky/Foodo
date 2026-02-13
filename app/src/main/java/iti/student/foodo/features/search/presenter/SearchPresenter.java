@@ -7,7 +7,7 @@ import android.util.Log;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
 
 public class SearchPresenter implements SearchContract.Presenter {
 

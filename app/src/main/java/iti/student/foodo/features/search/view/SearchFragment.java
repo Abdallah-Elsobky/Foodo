@@ -32,7 +32,7 @@ import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;

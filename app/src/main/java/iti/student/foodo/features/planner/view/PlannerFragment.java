@@ -15,11 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,9 +30,8 @@ import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentPlannerBinding;
-import iti.student.foodo.features.home.view.HomeFragmentDirections;
 import iti.student.foodo.features.planner.presenter.PlannerContract;
 import iti.student.foodo.features.planner.presenter.PlannerPresenter;
 import iti.student.foodo.features.utils.ConfirmDialog;

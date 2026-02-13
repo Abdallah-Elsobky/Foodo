@@ -8,15 +8,18 @@ import android.util.Log;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.auth.AuthRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
 
 public class HomePresenter implements HomeContract.Presenter {
     HomeContract.View view;
-    MealRepository repository;
+    final MealRepository repository;
+    final AuthRepository authRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public HomePresenter(MealRepository repository) {
+    public HomePresenter(MealRepository repository, AuthRepository authRepository) {
         this.repository = repository;
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -109,5 +112,20 @@ public class HomePresenter implements HomeContract.Presenter {
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
         );
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void Logout() {
+        authRepository.logout(new AuthRepository.AuthCallback(){
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
     }
 }

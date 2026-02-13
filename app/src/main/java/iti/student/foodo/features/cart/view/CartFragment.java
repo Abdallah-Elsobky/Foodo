@@ -20,7 +20,7 @@ import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentCartBinding;
 import iti.student.foodo.features.cart.presenter.CartContract;
 import iti.student.foodo.features.cart.presenter.CartPresenter;

@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import iti.student.foodo.data.mapper.IngredientMapper;
 import iti.student.foodo.data.model.domain.Ingredient;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
 
 public class MealPresenter implements MealContract.Presenter {
 

@@ -1,11 +1,11 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.login.presenter;
 
 import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialResponse;
 
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 
-import iti.student.foodo.features.auth.data.AuthRepository;
+import iti.student.foodo.data.repository.auth.AuthRepository;
 
 public class LoginPresenterImpl implements LoginContract.Presenter {
     private LoginContract.View view;

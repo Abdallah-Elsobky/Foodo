@@ -1,14 +1,12 @@
 package iti.student.foodo.data.network.firebase;
 
-import android.util.Log;
-
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import iti.student.foodo.features.auth.data.AuthRepository;
+import iti.student.foodo.data.repository.auth.AuthRepository;
 
 public class AuthService {
 

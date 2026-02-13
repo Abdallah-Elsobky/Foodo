@@ -1,4 +1,4 @@
-package iti.student.foodo.features.auth.data;
+package iti.student.foodo.data.repository.auth;
 
 import iti.student.foodo.data.network.firebase.AuthService;
 

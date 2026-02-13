@@ -13,6 +13,8 @@ public interface HomeContract {
         void showMeals(List<Meal> meals);
 
         void showRandomMeal(Meal meal);
+
+        void onLogout();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -25,5 +27,7 @@ public interface HomeContract {
         void removeFavorite(String mealId);
 
         void addMealToPlanner(String date, String mealId);
+
+        void Logout();
     }
 }

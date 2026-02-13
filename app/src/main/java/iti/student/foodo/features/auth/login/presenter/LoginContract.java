@@ -1,4 +1,4 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.login.presenter;
 
 import androidx.credentials.GetCredentialResponse;
 

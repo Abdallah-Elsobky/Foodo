@@ -1,4 +1,4 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.login.view;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 import iti.student.foodo.R;
 import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.databinding.FragmentLoginBinding;
-import iti.student.foodo.features.auth.data.AuthRepositoryImpl;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
+import iti.student.foodo.features.auth.login.presenter.LoginContract;
+import iti.student.foodo.features.auth.login.presenter.LoginPresenterImpl;
 import iti.student.foodo.features.utils.BlurUtils;
 import iti.student.foodo.features.utils.CustomDialog;
 import iti.student.foodo.features.utils.ValidationUtils;

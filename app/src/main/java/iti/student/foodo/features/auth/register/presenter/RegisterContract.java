@@ -1,4 +1,4 @@
-package iti.student.foodo.features.auth.register;
+package iti.student.foodo.features.auth.register.presenter;
 
 import iti.student.foodo.core.base.BasePresenter;
 import iti.student.foodo.core.base.BaseView;

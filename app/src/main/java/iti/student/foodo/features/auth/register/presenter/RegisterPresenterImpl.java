@@ -1,6 +1,6 @@
-package iti.student.foodo.features.auth.register;
+package iti.student.foodo.features.auth.register.presenter;
 
-import iti.student.foodo.features.auth.data.AuthRepository;
+import iti.student.foodo.data.repository.auth.AuthRepository;
 
 public class RegisterPresenterImpl implements RegisterContract.Presenter {
     private RegisterContract.View view;

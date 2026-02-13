@@ -5,7 +5,6 @@ import static android.view.View.*;
 import static iti.student.foodo.features.utils.BlurUtils.*;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 
@@ -33,9 +30,11 @@ import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
@@ -58,7 +57,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)), new MealLocalDataSource(AppDatabase.getInstance(requireContext())), new FirestoreService()));
+        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)), new MealLocalDataSource(AppDatabase.getInstance(requireContext())), new FirestoreService()),new AuthRepositoryImpl(new AuthService()));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override
@@ -135,6 +134,12 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         });
     }
 
+    private void setupClickListeners() {
+        binding.accountLogout.setOnClickListener(v->{
+
+        });
+    }
+
     private void setupRecyclerViews() {
         if (isViewDestroyed()) return;
         binding.categoryRv.setAdapter(categoriesAdapter);
@@ -193,6 +198,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     .navigateToMealDetailsFragmentFromHomeFragment(meal.getId());
             Navigation.findNavController(binding.getRoot()).navigate(action);
         });
+    }
+
+    @Override
+    public void onLogout() {
+        presenter.Logout();
     }
 
     @Override
