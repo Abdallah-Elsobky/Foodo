@@ -24,7 +24,17 @@ import android.view.ViewGroup;
 
 
 import iti.student.foodo.R;
+import iti.student.foodo.core.network.ApiClient;
+import iti.student.foodo.data.datasource.local.MealLocalDataSource;
+import iti.student.foodo.data.datasource.local.PrefManager;
+import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
+import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.network.firebase.AuthService;
+import iti.student.foodo.data.network.firebase.FirestoreService;
+import iti.student.foodo.data.network.retrofit.ApiService;
+import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentLoginBinding;
 import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.features.auth.login.presenter.LoginContract;
@@ -51,10 +61,29 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     LoginContract.Presenter presenter;
     private FragmentManager fragmentManager;
     private CustomDialog.OnDialogListener dialogListener;
+    private PrefManager prefManager;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new LoginPresenterImpl(new AuthRepositoryImpl(new AuthService()));
+        prefManager = new PrefManager(requireContext());
+        presenter = new LoginPresenterImpl(
+                new AuthRepositoryImpl(
+                        new AuthService()),
+                prefManager,
+                new FavoriteRepositoryImpl(
+                        new MealLocalDataSource(
+                                AppDatabase.getInstance(requireContext())),
+                        new FirestoreService()),
+                new PlannerRepositoryImpl(
+                        new MealLocalDataSource(
+                                AppDatabase.getInstance(requireContext()))
+                        ,new FirestoreService()),
+                new MealRepositoryImpl(
+                        new MealsRemoteDataSource(
+                                ApiClient.getInstance().
+                                        create(ApiService.class)),
+                        new MealLocalDataSource(
+                                AppDatabase.getInstance(requireContext()))));
         presenter.attachView(this);
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {

@@ -34,7 +34,9 @@ import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
 import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
+import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
@@ -57,7 +59,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new HomePresenter(new MealRepositoryImpl(new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)), new MealLocalDataSource(AppDatabase.getInstance(requireContext())), new FirestoreService()),new AuthRepositoryImpl(new AuthService()));
+        MealsRemoteDataSource remoteDataSource = new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class));
+        MealLocalDataSource localDataSource = new MealLocalDataSource(AppDatabase.getInstance(requireContext()));
+        FirestoreService firestoreService = new FirestoreService();
+        presenter = new HomePresenter(
+                new MealRepositoryImpl(remoteDataSource, localDataSource),
+                new FavoriteRepositoryImpl(localDataSource, firestoreService),
+                new PlannerRepositoryImpl(localDataSource, firestoreService),
+                new AuthRepositoryImpl(new AuthService()));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override
@@ -202,7 +211,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void onLogout() {
-        presenter.Logout();
+
     }
 
     @Override

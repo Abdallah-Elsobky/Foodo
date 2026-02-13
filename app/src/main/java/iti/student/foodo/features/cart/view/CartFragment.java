@@ -13,14 +13,10 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
-import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
-import iti.student.foodo.data.network.firebase.FirestoreService;
-import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.cart.CartRepositoryImpl;
 import iti.student.foodo.databinding.FragmentCartBinding;
 import iti.student.foodo.features.cart.presenter.CartContract;
 import iti.student.foodo.features.cart.presenter.CartPresenter;
@@ -37,12 +33,9 @@ public class CartFragment extends Fragment implements CartContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new CartPresenter(new MealRepositoryImpl(
-                new MealsRemoteDataSource(
-                        ApiClient.getInstance().create(ApiService.class)
-                ),
-                new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
-                new FirestoreService()));
+        presenter = new CartPresenter(
+                new CartRepositoryImpl(
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext()))));
     }
 
     @Override

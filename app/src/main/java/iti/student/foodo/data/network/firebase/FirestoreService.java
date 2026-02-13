@@ -73,7 +73,6 @@ public class FirestoreService {
 
     public Single<List<String>> getFavorites() {
         return Single.create(emitter -> {
-
             String userId = getUserId();
             if (userId == null) {
                 emitter.onError(new Exception("User not logged in"));

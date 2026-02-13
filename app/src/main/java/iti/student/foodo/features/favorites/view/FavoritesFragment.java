@@ -21,14 +21,12 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
-import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.firebase.FirestoreService;
-import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentFavoritesBinding;
 import iti.student.foodo.features.favorites.presenter.FavContract;
 import iti.student.foodo.features.favorites.presenter.FavPresenter;
@@ -48,12 +46,11 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MealLocalDataSource localDataSource = new MealLocalDataSource(AppDatabase.getInstance(requireContext()));
+        FirestoreService firestoreService = new FirestoreService();
         presenter = new FavPresenter(
-                new MealRepositoryImpl(
-                        new MealsRemoteDataSource(
-                                ApiClient.getInstance().create(ApiService.class)),
-                        new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
-                        new FirestoreService()));
+                new FavoriteRepositoryImpl(localDataSource, firestoreService),
+                new PlannerRepositoryImpl(localDataSource, firestoreService));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override

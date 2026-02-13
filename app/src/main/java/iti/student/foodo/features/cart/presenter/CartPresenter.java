@@ -4,20 +4,20 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import iti.student.foodo.data.db.entity.CartIngredientEntity;
-import iti.student.foodo.data.repository.meal.MealRepository;
+import iti.student.foodo.data.repository.cart.CartRepository;
 
 public class CartPresenter implements CartContract.Presenter {
     private CartContract.View view;
-    private final MealRepository repository;
+    private final CartRepository cartRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public CartPresenter(MealRepository repository) {
-        this.repository = repository;
+    public CartPresenter(CartRepository cartRepository) {
+        this.cartRepository = cartRepository;
     }
 
     @Override
     public void getCart() {
-        Disposable disposable = repository.getCartItems().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = cartRepository.getCartItems().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 items -> {
                     if (view != null) {
                         view.showCart(items);
@@ -33,7 +33,7 @@ public class CartPresenter implements CartContract.Presenter {
 
     @Override
     public void deleteItem(CartIngredientEntity item) {
-        repository.removeItemFromCart(item.ingredientName, item.measure).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        cartRepository.removeItemFromCart(item.ingredientName, item.measure).observeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
     @Override

@@ -5,8 +5,6 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
-import iti.student.foodo.data.db.entity.CartIngredientEntity;
-import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
@@ -14,41 +12,27 @@ import iti.student.foodo.data.model.domain.Meal;
 
 public interface MealRepository {
 
-    public Single<List<Meal>> getMeals();
+    Single<List<Meal>> getMeals();
 
-    public Single<List<Meal>> getRandomMeal();
+    Single<List<Meal>> getRandomMeal();
 
-    public Single<List<Meal>> searchByName(String query);
+    Single<List<Meal>> searchByName(String query);
 
-    public Single<List<Meal>> searchById(String query);
+    Single<List<Meal>> searchById(String query);
 
-    public Single<List<Meal>> searchByCategory(String query);
+    Single<List<Meal>> searchByCategory(String query);
 
-    public Single<List<Meal>> searchByArea(String query);
+    Single<List<Meal>> searchByArea(String query);
 
-    public Single<List<Meal>> searchByIngredient(String query);
+    Single<List<Meal>> searchByIngredient(String query);
 
-    public Single<List<Category>> getCategories();
+    Single<List<Category>> getCategories();
 
-    public Single<List<Country>> getAreas();
+    Single<List<Country>> getAreas();
 
-    public Single<List<Ingredient>> getIngredients();
+    Single<List<Ingredient>> getIngredients();
 
-    public Completable addToFavorites(String mealId);
+    Flowable<Meal> getLocalMeals(String mealId);
 
-    public Completable removeFromFavorites(String mealId);
-
-    public Flowable<List<Meal>> getAllFavorites();
-
-    public Completable addPlannedMeal(String date, String mealId);
-
-    public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String date);
-
-    public Completable removePlannedMeal(String date, String mealId);
-
-    public Completable addTOCart(CartIngredientEntity item);
-
-    public Flowable<List<CartIngredientEntity>> getCartItems();
-
-    public Completable removeItemFromCart(String ingredientName, String measure);
+    Completable saveMeals(List<Meal> meals);
 }

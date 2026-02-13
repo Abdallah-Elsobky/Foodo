@@ -1,10 +1,12 @@
 package iti.student.foodo.data.repository.auth;
 
+import iti.student.foodo.data.datasource.local.PrefManager;
 import iti.student.foodo.data.network.firebase.AuthService;
 
 public class AuthRepositoryImpl implements AuthRepository {
 
     private final AuthService authService;
+    private PrefManager prefManager;
 
     public AuthRepositoryImpl(AuthService dataSource) {
         this.authService = dataSource;
