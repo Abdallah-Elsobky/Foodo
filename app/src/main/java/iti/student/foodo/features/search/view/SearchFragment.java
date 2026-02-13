@@ -30,8 +30,10 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
@@ -70,7 +72,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         presenter = new SearchPresenter(
                 new MealRepositoryImpl(remoteDataSource, localDataSource),
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
-                new PlannerRepositoryImpl(localDataSource, firestoreService)
+                new PlannerRepositoryImpl(localDataSource, firestoreService),
+                new AuthRepositoryImpl(new AuthService())
         );
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
@@ -181,7 +184,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             public void onPlannerClick(Meal meal) {
                 MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
                     presenter.addMealToPlanner(date, meal.getId());
-                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
                 });
                 datePicker.show();
             }
@@ -232,6 +234,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         }
         categoryAdapter.submitList(categories);
         binding.filterRv.setAdapter(categoryAdapter);
+    }
+
+    @Override
+    public void showToast(String message) {
+        CustomToastKt.successToast(requireContext(), message);
     }
 
     @Override

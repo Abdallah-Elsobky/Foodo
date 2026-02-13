@@ -136,7 +136,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             public void onPlannerClick(Meal meal) {
                 MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
                     presenter.addMealToPlanner(date, meal.getId());
-                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
                 });
                 datePicker.show();
             }
@@ -207,6 +206,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     .navigateToMealDetailsFragmentFromHomeFragment(meal.getId());
             Navigation.findNavController(binding.getRoot()).navigate(action);
         });
+    }
+
+    @Override
+    public void showToast(String message) {
+        CustomToastKt.successToast(requireContext(), message);
     }
 
     @Override

@@ -24,7 +24,9 @@ import java.util.List;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentFavoritesBinding;
@@ -50,7 +52,7 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
         FirestoreService firestoreService = new FirestoreService();
         presenter = new FavPresenter(
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
-                new PlannerRepositoryImpl(localDataSource, firestoreService));
+                new PlannerRepositoryImpl(localDataSource, firestoreService),new AuthRepositoryImpl(new AuthService()));
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {
             @Override

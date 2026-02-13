@@ -14,6 +14,8 @@ public interface HomeContract {
 
         void showRandomMeal(Meal meal);
 
+        void showToast(String message);
+
         void onLogout();
     }
 

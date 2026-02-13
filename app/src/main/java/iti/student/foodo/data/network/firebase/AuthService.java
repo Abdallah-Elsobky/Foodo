@@ -31,6 +31,10 @@ public class AuthService {
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
+    public boolean isGuest() {
+        return firebaseAuth.getCurrentUser() == null || firebaseAuth.getCurrentUser().isAnonymous();
+    }
+
     public void register(String email, String password,
                          AuthRepository.AuthCallback callback) {
 

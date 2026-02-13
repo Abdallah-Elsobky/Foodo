@@ -7,6 +7,7 @@ import android.util.Log;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import iti.student.foodo.data.repository.auth.AuthRepository;
 import iti.student.foodo.data.repository.favorite.FavoriteRepository;
 import iti.student.foodo.data.repository.meal.MealRepository;
 import iti.student.foodo.data.repository.planner.PlannerRepository;
@@ -17,15 +18,17 @@ public class SearchPresenter implements SearchContract.Presenter {
     final FavoriteRepository favoriteRepository;
     final PlannerRepository plannerRepository;
     SearchContract.View view;
+    private final AuthRepository authRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     public SearchPresenter(MealRepository mealRepository,
                            FavoriteRepository favoriteRepository,
-                           PlannerRepository plannerRepository) {
+                           PlannerRepository plannerRepository, AuthRepository authRepository) {
         this.mealRepository = mealRepository;
         this.favoriteRepository = favoriteRepository;
         this.plannerRepository = plannerRepository;
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -93,8 +96,15 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void addToFavorites(String mealId) {
+        if(authRepository.isGuest()){
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                () -> mealRepository.searchById(mealId).subscribe(),
+                () -> {
+                    view.showToast("Meal added to favorites");
+                    mealRepository.searchById(mealId).subscribe();
+                },
                 throwable -> view.showError(getErrorMessage(throwable))
         );
         compositeDisposable.add(disposable);
@@ -102,16 +112,27 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void deleteFromFavorites(String mealId) {
+        if(authRepository.isGuest()){
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = favoriteRepository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                () -> Log.d("loco", "removed from favorites"),
+                () -> view.showToast("Meal removed from favorites"),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
     }
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
+        if(authRepository.isGuest()){
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                () -> mealRepository.searchById(mealId).subscribe(),
+                () -> {
+                    view.showToast("Meal added to planner");
+                    mealRepository.searchById(mealId).subscribe();
+                },
                 throwable -> view.showError(getErrorMessage(throwable))
         );
         compositeDisposable.add(disposable);

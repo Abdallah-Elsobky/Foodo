@@ -19,6 +19,8 @@ public interface SearchContract {
         void onLoadIngredients(List<Ingredient> ingredients);
 
         void onLoadCategories(List<Category> categories);
+
+        void showToast(String message);
     }
 
     interface Presenter extends BasePresenter<View> {
