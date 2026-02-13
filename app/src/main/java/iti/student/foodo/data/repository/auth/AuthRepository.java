@@ -1,4 +1,4 @@
-package iti.student.foodo.features.auth.data;
+package iti.student.foodo.data.repository.auth;
 
 public interface AuthRepository {
     void login(String email, String password, AuthCallback callback);

@@ -1,4 +1,6 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.login.presenter;
+
+import android.content.Context;
 
 import androidx.credentials.GetCredentialResponse;
 
@@ -12,6 +14,7 @@ public interface LoginContract {
         void disableButtons();
         void enableButtons();
         void onLoginFailure(String message);
+        Context getContext();
     }
 
     interface Presenter extends BasePresenter<View> {

@@ -1,20 +1,55 @@
-package iti.student.foodo.features.auth.login;
+package iti.student.foodo.features.auth.login.presenter;
+
+import android.util.Log;
 
 import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialResponse;
 
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 
-import iti.student.foodo.features.auth.data.AuthRepository;
+import io.reactivex.rxjava3.disposables.Disposable;
+import iti.student.foodo.data.datasource.local.PrefManager;
+import iti.student.foodo.data.db.entity.PlannedMealEntity;
+import iti.student.foodo.data.repository.auth.AuthRepository;
+import iti.student.foodo.data.repository.favorite.FavoriteRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
+import iti.student.foodo.data.repository.planner.PlannerRepository;
 
 public class LoginPresenterImpl implements LoginContract.Presenter {
     private LoginContract.View view;
     private final AuthRepository repository;
+    private final PrefManager prefManager;
+    private final FavoriteRepository favoriteRepository;
+    private final PlannerRepository plannerRepository;
+    private final MealRepository mealRepository;
 
-    private AuthRepository.AuthCallback loginCallback = new AuthRepository.AuthCallback() {
+    private final AuthRepository.AuthCallback loginCallback = new AuthRepository.AuthCallback() {
         @Override
         public void onSuccess() {
             view.hideLoading();
+            Log.d("loco", "before cloud: ");
+            Disposable disposable1 = favoriteRepository.getFavoritesFromCloud().subscribe(
+                    mealIds -> {
+                        Log.d("loco", "mealIds: " + mealIds);
+                        for (String mealId : mealIds) {
+                            Log.d("loco", "mealId: " + mealId);
+                            mealRepository.searchById(mealId).subscribe();
+                            favoriteRepository.addToFavorites(mealId).subscribe();
+                        }
+                    }
+            );
+            Log.d("loco", "after cloud: ");
+            Disposable disposable2 =plannerRepository.getPlannedMealsFromCloud().subscribe(
+                    meals -> {
+                        Log.d("loco", "planned: " + meals);
+                        for (PlannedMealEntity meal : meals) {
+                            Log.d("loco", "planned: " + meal);
+                            mealRepository.searchById(meal.mealId).subscribe();
+                            plannerRepository.addPlannedMeal(meal.date,meal.mealId).subscribe();
+                        }
+                    }
+            );
+            prefManager.setFirstTime(false);
             view.onLoginSuccess();
             view.enableButtons();
         }
@@ -44,8 +79,12 @@ public class LoginPresenterImpl implements LoginContract.Presenter {
         }
     };
 
-    public LoginPresenterImpl(AuthRepository repository) {
+    public LoginPresenterImpl(AuthRepository repository, PrefManager prefManager, FavoriteRepository favoriteRepository, PlannerRepository plannerRepository, MealRepository mealRepository) {
         this.repository = repository;
+        this.prefManager = prefManager;
+        this.favoriteRepository = favoriteRepository;
+        this.plannerRepository = plannerRepository;
+        this.mealRepository = mealRepository;
     }
 
     @Override

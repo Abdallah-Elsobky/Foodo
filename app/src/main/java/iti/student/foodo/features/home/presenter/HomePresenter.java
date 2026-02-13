@@ -8,15 +8,27 @@ import android.util.Log;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.auth.AuthRepository;
+import iti.student.foodo.data.repository.favorite.FavoriteRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
+import iti.student.foodo.data.repository.planner.PlannerRepository;
 
 public class HomePresenter implements HomeContract.Presenter {
     HomeContract.View view;
-    MealRepository repository;
+    final MealRepository mealRepository;
+    final FavoriteRepository favoriteRepository;
+    final PlannerRepository plannerRepository;
+    final AuthRepository authRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public HomePresenter(MealRepository repository) {
-        this.repository = repository;
+    public HomePresenter(MealRepository mealRepository,
+                         FavoriteRepository favoriteRepository,
+                         PlannerRepository plannerRepository,
+                         AuthRepository authRepository) {
+        this.mealRepository = mealRepository;
+        this.favoriteRepository = favoriteRepository;
+        this.plannerRepository = plannerRepository;
+        this.authRepository = authRepository;
     }
 
     @Override
@@ -33,7 +45,7 @@ public class HomePresenter implements HomeContract.Presenter {
     @Override
     public void getMeals() {
         if (view != null) view.showLoading();
-        Disposable disposable = repository.getMeals()
+        Disposable disposable = mealRepository.getMeals()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
@@ -57,7 +69,7 @@ public class HomePresenter implements HomeContract.Presenter {
     @Override
     public void getRandomMeal() {
         if (view != null) view.showLoading();
-        Disposable disposable = repository.getRandomMeal()
+        Disposable disposable = mealRepository.getRandomMeal()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
@@ -79,9 +91,9 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addFavorite(String mealId) {
-        Disposable disposable = repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
-                    repository.searchById(mealId).subscribe();
+                    mealRepository.searchById(mealId).subscribe();
                     Log.d("loco", "meal added: " + mealId);
                 }
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
@@ -91,7 +103,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void removeFavorite(String mealId) {
-        Disposable disposable = repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = favoriteRepository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     Log.d("loco", "meal removed: " + mealId);
                 }
@@ -102,12 +114,27 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
-        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
-                    repository.searchById(mealId).subscribe();
+                    mealRepository.searchById(mealId).subscribe();
                 }
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
         );
         compositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void Logout() {
+        authRepository.logout(new AuthRepository.AuthCallback(){
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(String message) {
+
+            }
+        });
     }
 }

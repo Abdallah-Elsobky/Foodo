@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:layout_marginBottom="40dp"
-    tools:context=".features.auth.register.RegisterFragment">
+    tools:context=".features.auth.register.view.RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/blur_view"

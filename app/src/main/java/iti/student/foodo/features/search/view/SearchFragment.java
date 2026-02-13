@@ -32,7 +32,9 @@ import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
+import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentSearchBinding;
 import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
@@ -62,12 +64,13 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MealsRemoteDataSource remoteDataSource = new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class));
+        MealLocalDataSource localDataSource = new MealLocalDataSource(AppDatabase.getInstance(requireContext()));
+        FirestoreService firestoreService = new FirestoreService();
         presenter = new SearchPresenter(
-                new MealRepositoryImpl(
-                        new MealsRemoteDataSource(ApiClient.getInstance().create(ApiService.class)),
-                        new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
-                        new FirestoreService()
-                )
+                new MealRepositoryImpl(remoteDataSource, localDataSource),
+                new FavoriteRepositoryImpl(localDataSource, firestoreService),
+                new PlannerRepositoryImpl(localDataSource, firestoreService)
         );
         fragmentManager = getParentFragmentManager();
         dialogListener = new CustomDialog.OnDialogListener() {

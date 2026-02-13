@@ -2,29 +2,31 @@ package iti.student.foodo.features.favorites.presenter;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.favorite.FavoriteRepository;
+import iti.student.foodo.data.repository.planner.PlannerRepository;
 
 public class FavPresenter implements FavContract.Presenter {
 
     private FavContract.View view;
-    private final MealRepository repository;
+    private final FavoriteRepository favoriteRepository;
+    private final PlannerRepository plannerRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    public FavPresenter(MealRepository repository) {
-        this.repository = repository;
+    public FavPresenter(FavoriteRepository favoriteRepository,
+                        PlannerRepository plannerRepository) {
+        this.favoriteRepository = favoriteRepository;
+        this.plannerRepository = plannerRepository;
     }
 
 
     @Override
     public void getFavorites() {
-        Disposable disposable = repository.getAllFavorites().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = favoriteRepository.getAllFavorites().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.showFavorites(meals)
                 , throwable -> view.showError(throwable.getMessage())
         );
@@ -33,7 +35,7 @@ public class FavPresenter implements FavContract.Presenter {
 
     @Override
     public void removeFavorite(String mealId) {
-        Disposable disposable = repository.removeFromFavorites(mealId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = favoriteRepository.removeFromFavorites(mealId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> Log.d("loco", "removed")
                 , throwable -> view.showError(throwable.getMessage())
         );
@@ -42,7 +44,7 @@ public class FavPresenter implements FavContract.Presenter {
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
-        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> Log.d("loco", "added")
                 , throwable -> view.showError(throwable.getMessage())
         );

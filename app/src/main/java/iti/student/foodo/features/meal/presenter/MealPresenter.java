@@ -7,22 +7,30 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import iti.student.foodo.data.mapper.IngredientMapper;
 import iti.student.foodo.data.model.domain.Ingredient;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.cart.CartRepository;
+import iti.student.foodo.data.repository.favorite.FavoriteRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
 
 public class MealPresenter implements MealContract.Presenter {
 
     MealContract.View view;
-    final MealRepository repository;
+    final MealRepository mealRepository;
+    final FavoriteRepository favoriteRepository;
+    final CartRepository cartRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    public MealPresenter(MealRepository mealRepository) {
-        this.repository = mealRepository;
+    public MealPresenter(MealRepository mealRepository,
+                         FavoriteRepository favoriteRepository,
+                         CartRepository cartRepository) {
+        this.mealRepository = mealRepository;
+        this.favoriteRepository = favoriteRepository;
+        this.cartRepository = cartRepository;
     }
 
     @Override
     public void getMeals(String id) {
-        Disposable disposable = repository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meal -> {
                     if (view != null) {
                         view.onLoadMeals(meal.get(0));
@@ -35,7 +43,7 @@ public class MealPresenter implements MealContract.Presenter {
 
     @Override
     public void addToFavorites(String mealId) {
-        repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     Log.d("loco", "meal added: " + mealId);
                 }
@@ -55,7 +63,7 @@ public class MealPresenter implements MealContract.Presenter {
 
     @Override
     public void addIngredientToCart(Ingredient ingredient) {
-        repository.addTOCart(IngredientMapper.toCartEntity(ingredient)).observeOn(AndroidSchedulers.mainThread()).subscribe();
+        cartRepository.addToCart(IngredientMapper.toCartEntity(ingredient)).observeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
     @Override

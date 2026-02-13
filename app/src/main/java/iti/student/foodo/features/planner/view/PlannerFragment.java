@@ -15,26 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import iti.student.foodo.R;
-import iti.student.foodo.core.network.ApiClient;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
-import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.db.pojo.PlannedMealWithDetails;
 import iti.student.foodo.data.model.domain.Meal;
 import iti.student.foodo.data.network.firebase.FirestoreService;
-import iti.student.foodo.data.network.retrofit.ApiService;
-import iti.student.foodo.data.repository.MealRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentPlannerBinding;
-import iti.student.foodo.features.home.view.HomeFragmentDirections;
 import iti.student.foodo.features.planner.presenter.PlannerContract;
 import iti.student.foodo.features.planner.presenter.PlannerPresenter;
 import iti.student.foodo.features.utils.ConfirmDialog;
@@ -42,19 +36,16 @@ import iti.student.foodo.features.utils.ConfirmDialog;
 public class PlannerFragment extends Fragment implements PlannerContract.View {
 
     FragmentPlannerBinding binding;
-    MealRepositoryImpl repository;
     PlannerContract.Presenter presenter;
     String selectedDay;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new PlannerPresenter(repository = new MealRepositoryImpl(
-                new MealsRemoteDataSource(
-                        ApiClient.getInstance().create(ApiService.class)),
-                new MealLocalDataSource(
-                        AppDatabase.getInstance(requireContext())),
-                new FirestoreService()));
+        presenter = new PlannerPresenter(
+                new PlannerRepositoryImpl(
+                        new MealLocalDataSource(AppDatabase.getInstance(requireContext())),
+                        new FirestoreService()));
     }
 
     @Override

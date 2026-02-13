@@ -7,32 +7,30 @@ import android.util.Log;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import iti.student.foodo.data.repository.MealRepository;
+import iti.student.foodo.data.repository.favorite.FavoriteRepository;
+import iti.student.foodo.data.repository.meal.MealRepository;
+import iti.student.foodo.data.repository.planner.PlannerRepository;
 
 public class SearchPresenter implements SearchContract.Presenter {
 
-    final MealRepository repository;
+    final MealRepository mealRepository;
+    final FavoriteRepository favoriteRepository;
+    final PlannerRepository plannerRepository;
     SearchContract.View view;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    public SearchPresenter(MealRepository repository) {
-        this.repository = repository;
+    public SearchPresenter(MealRepository mealRepository,
+                           FavoriteRepository favoriteRepository,
+                           PlannerRepository plannerRepository) {
+        this.mealRepository = mealRepository;
+        this.favoriteRepository = favoriteRepository;
+        this.plannerRepository = plannerRepository;
     }
-
-
-//    @Override
-//    public void getMeals() {
-//        Disposable disposable = repository.getMeals().observeOn(AndroidSchedulers.mainThread()).subscribe(
-//                meals -> view.onLoadMeals(meals),
-//                throwable -> view.showError(getErrorMessage(throwable))
-//        );
-//        compositeDisposable.add(disposable);
-//    }
 
     @Override
     public void getMealsBySearch(String query) {
-        Disposable disposable = repository.searchByName(query).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.searchByName(query).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.onLoadMeals(meals),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -41,7 +39,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getMealsByCategory(String category) {
-        Disposable disposable = repository.searchByCategory(category).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.searchByCategory(category).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.onLoadMeals(meals),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -50,7 +48,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getMealsByCountry(String country) {
-        Disposable disposable = repository.searchByArea(country).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.searchByArea(country).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.onLoadMeals(meals),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -59,7 +57,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getMealsByIngredient(String ingredient) {
-        Disposable disposable = repository.searchByIngredient(ingredient).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.searchByIngredient(ingredient).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.onLoadMeals(meals),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -68,7 +66,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getCountries() {
-        Disposable disposable = repository.getAreas().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.getAreas().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 countries -> view.onLoadCountries(countries),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -77,7 +75,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getCategories() {
-        Disposable disposable = repository.getCategories().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.getCategories().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 countries -> view.onLoadCategories(countries),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -86,7 +84,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void getIngredients() {
-        Disposable disposable = repository.getIngredients().observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.getIngredients().observeOn(AndroidSchedulers.mainThread()).subscribe(
                 ingredients -> view.onLoadIngredients(ingredients),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -95,8 +93,8 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void addToFavorites(String mealId) {
-        Disposable disposable = repository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                () -> repository.searchById(mealId).subscribe(),
+        Disposable disposable = favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> mealRepository.searchById(mealId).subscribe(),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
         compositeDisposable.add(disposable);
@@ -104,7 +102,7 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void deleteFromFavorites(String mealId) {
-        Disposable disposable = repository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = favoriteRepository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> Log.d("loco", "removed from favorites"),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
@@ -112,8 +110,8 @@ public class SearchPresenter implements SearchContract.Presenter {
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
-        Disposable disposable = repository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                () -> repository.searchById(mealId).subscribe(),
+        Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> mealRepository.searchById(mealId).subscribe(),
                 throwable -> view.showError(getErrorMessage(throwable))
         );
         compositeDisposable.add(disposable);
