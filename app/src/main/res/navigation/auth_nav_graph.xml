@@ -41,7 +41,7 @@
         android:id="@+id/registerFragment"
         android:name="iti.student.foodo.features.auth.register.view.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/navigateToLoginFromRegister"
             app:destination="@id/loginFragment"

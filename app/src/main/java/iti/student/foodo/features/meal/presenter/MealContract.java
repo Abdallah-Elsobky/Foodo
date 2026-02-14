@@ -8,6 +8,8 @@ import iti.student.foodo.data.model.domain.Meal;
 public interface MealContract {
     interface View extends BaseView {
         void onLoadMeals(Meal meal);
+
+        void showToast(String message);
     }
 
     interface Presenter extends BasePresenter<View> {

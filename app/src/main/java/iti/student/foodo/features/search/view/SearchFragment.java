@@ -30,8 +30,10 @@ import iti.student.foodo.data.model.domain.Category;
 import iti.student.foodo.data.model.domain.Country;
 import iti.student.foodo.data.model.domain.Ingredient;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
@@ -40,7 +42,7 @@ import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 import iti.student.foodo.features.utils.MyDatePicker;
 
@@ -59,7 +61,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private IngredientAdapter ingredientAdapter;
 
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +72,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         presenter = new SearchPresenter(
                 new MealRepositoryImpl(remoteDataSource, localDataSource),
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
-                new PlannerRepositoryImpl(localDataSource, firestoreService)
+                new PlannerRepositoryImpl(localDataSource, firestoreService),
+                new AuthRepositoryImpl(new AuthService())
         );
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -181,7 +184,6 @@ public class SearchFragment extends Fragment implements SearchContract.View {
             public void onPlannerClick(Meal meal) {
                 MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
                     presenter.addMealToPlanner(date, meal.getId());
-                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
                 });
                 datePicker.show();
             }
@@ -235,6 +237,11 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     }
 
     @Override
+    public void showToast(String message) {
+        CustomToastKt.successToast(requireContext(), message);
+    }
+
+    @Override
     public void onLoadCountries(List<Country> countries) {
         this.allCountries = countries;
         if (countryAdapter == null) {
@@ -270,7 +277,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     // endregion

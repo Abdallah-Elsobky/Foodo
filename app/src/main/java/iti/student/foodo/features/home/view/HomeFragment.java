@@ -13,7 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -40,7 +42,8 @@ import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentHomeBinding;
 import iti.student.foodo.features.home.presenter.HomeContract;
 import iti.student.foodo.features.home.presenter.HomePresenter;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ConfirmDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 import iti.student.foodo.features.utils.MyDatePicker;
 
@@ -54,7 +57,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private HomeContract.Presenter presenter;
 
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +71,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 new PlannerRepositoryImpl(localDataSource, firestoreService),
                 new AuthRepositoryImpl(new AuthService()));
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -100,6 +103,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         presenter.getMeals();
         setupAdapters();
         setupRecyclerViews();
+        setupClickListeners();
     }
 
     @Override
@@ -136,7 +140,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             public void onPlannerClick(Meal meal) {
                 MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
                     presenter.addMealToPlanner(date, meal.getId());
-                    CustomToastKt.successToast(requireContext(), "Meal added to planner");
                 });
                 datePicker.show();
             }
@@ -145,7 +148,18 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupClickListeners() {
         binding.accountLogout.setOnClickListener(v->{
+            ConfirmDialog confirmDialog = new ConfirmDialog(requireContext(), "Logout", "Are you sure you want to logout?", new ConfirmDialog.OnConfirmListener() {
+                @Override
+                public void onConfirm() {
+                    presenter.logout();
+                }
 
+                @Override
+                public void onCancel() {
+
+                }
+            });
+            confirmDialog.show();
         });
     }
 
@@ -210,8 +224,17 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     @Override
-    public void onLogout() {
+    public void showToast(String message) {
+        CustomToastKt.successToast(requireContext(), message);
+    }
 
+    @Override
+    public void onLogout() {
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(R.id.auth_nav_graph, null,
+                new NavOptions.Builder()
+                        .setPopUpTo(R.id.root_nav_graph, true)
+                        .build());
     }
 
     @Override
@@ -226,6 +249,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 }

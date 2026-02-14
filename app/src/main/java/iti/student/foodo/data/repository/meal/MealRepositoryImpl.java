@@ -145,6 +145,11 @@ public class MealRepositoryImpl implements MealRepository {
         return localDataSource.saveMeals(MealMapper.toEntityList(meals));
     }
 
+    @Override
+    public Completable dropMeals() {
+        return localDataSource.dropMeals();
+    }
+
     /* ============================
        Helper Methods
      ============================ */

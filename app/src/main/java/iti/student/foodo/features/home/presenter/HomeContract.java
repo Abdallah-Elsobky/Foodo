@@ -14,6 +14,8 @@ public interface HomeContract {
 
         void showRandomMeal(Meal meal);
 
+        void showToast(String message);
+
         void onLogout();
     }
 
@@ -28,6 +30,6 @@ public interface HomeContract {
 
         void addMealToPlanner(String date, String mealId);
 
-        void Logout();
+        void logout();
     }
 }

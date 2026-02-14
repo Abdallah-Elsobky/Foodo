@@ -22,21 +22,21 @@ import iti.student.foodo.databinding.FragmentRegisterBinding;
 import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.features.auth.register.presenter.RegisterContract;
 import iti.student.foodo.features.auth.register.presenter.RegisterPresenterImpl;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.ValidationUtils;
 
 public class RegisterFragment extends Fragment implements RegisterContract.View {
     FragmentRegisterBinding binding;
     private RegisterContract.Presenter presenter;
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new RegisterPresenterImpl(new AuthRepositoryImpl(new AuthService()));
         presenter.attachView(this);
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -118,6 +118,6 @@ public class RegisterFragment extends Fragment implements RegisterContract.View 
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 }

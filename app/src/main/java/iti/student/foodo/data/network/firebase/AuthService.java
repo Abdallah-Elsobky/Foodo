@@ -31,6 +31,10 @@ public class AuthService {
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
 
+    public boolean isGuest() {
+        return firebaseAuth.getCurrentUser() == null || firebaseAuth.getCurrentUser().isAnonymous();
+    }
+
     public void register(String email, String password,
                          AuthRepository.AuthCallback callback) {
 
@@ -79,8 +83,13 @@ public class AuthService {
         }
     }
 
-    public void logout() {
+    public void logout(AuthRepository.AuthCallback callback) {
         firebaseAuth.signOut();
+        if(firebaseAuth.getCurrentUser() == null){
+            callback.onSuccess();
+        } else {
+            callback.onError("Logout failed");
+        }
     }
 }
 

@@ -17,6 +17,8 @@ public interface AuthRepository {
 
     boolean isVerified();
 
+    boolean isGuest();
+
 
     interface AuthCallback {
         void onSuccess();

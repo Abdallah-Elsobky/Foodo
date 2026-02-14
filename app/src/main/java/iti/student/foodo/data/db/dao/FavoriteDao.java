@@ -28,5 +28,8 @@ public interface FavoriteDao {
     @Transaction
     @Query("SELECT meals.* FROM meals INNER JOIN favorite_meals ON meals.id = favorite_meals.mealId")
     Flowable<List<MealWithDetails>> getUserFavoriteMeals();
+
+    @Query("DELETE FROM favorite_meals")
+    Completable clearFavorites();
 }
 

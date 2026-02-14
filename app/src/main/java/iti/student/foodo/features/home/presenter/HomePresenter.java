@@ -91,6 +91,10 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addFavorite(String mealId) {
+        if (authRepository.isGuest()) {
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     mealRepository.searchById(mealId).subscribe();
@@ -103,6 +107,10 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void removeFavorite(String mealId) {
+        if (authRepository.isGuest()) {
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = favoriteRepository.removeFromFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
                     Log.d("loco", "meal removed: " + mealId);
@@ -114,8 +122,13 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
+        if (authRepository.isGuest()) {
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
         Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 () -> {
+                    view.showToast("Meal added to planner");
                     mealRepository.searchById(mealId).subscribe();
                 }
                 , throwable -> Log.d("loco", "error: " + throwable.getMessage())
@@ -124,16 +137,21 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void Logout() {
-        authRepository.logout(new AuthRepository.AuthCallback(){
+    public void logout() {
+        Log.d("loco", "logout");
+        authRepository.logout(new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess() {
+                mealRepository.dropMeals().subscribe(
 
+                );
+                view.showToast("Logout successful");
+                view.onLogout();
             }
 
             @Override
             public void onError(String message) {
-
+                view.showError(message);
             }
         });
     }

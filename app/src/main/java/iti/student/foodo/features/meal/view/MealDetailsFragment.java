@@ -1,5 +1,7 @@
 package iti.student.foodo.features.meal.view;
 
+import static iti.student.foodo.features.utils.BlurUtils.blurView;
+import static iti.student.foodo.features.utils.BlurUtils.showBlur;
 import static iti.student.foodo.features.utils.VideoUtils.getVideoId;
 import static iti.student.foodo.features.utils.VideoUtils.loadVideoPaused;
 import static iti.student.foodo.features.utils.VideoUtils.pauseVideo;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
@@ -27,14 +30,17 @@ import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
 import iti.student.foodo.data.network.retrofit.ApiService;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.cart.CartRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentMealDetailsBinding;
 import iti.student.foodo.features.meal.presenter.MealContract;
 import iti.student.foodo.features.meal.presenter.MealPresenter;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 
 public class MealDetailsFragment extends Fragment implements MealContract.View {
@@ -43,6 +49,9 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
     private FragmentMealDetailsBinding binding;
     private MealContract.Presenter presenter;
     private String viewMealId = "53322";
+
+    private FragmentManager fragmentManager;
+    private ErrorDialog.OnDialogListener dialogListener;
     // endregion
 
     // region Lifecycle
@@ -57,9 +66,22 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         presenter = new MealPresenter(
                 new MealRepositoryImpl(remoteDataSource, localDataSource),
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
-                new CartRepositoryImpl(localDataSource)
+                new CartRepositoryImpl(localDataSource),
+                new AuthRepositoryImpl(new AuthService())
         );
         presenter.attachView(this);
+        fragmentManager = getParentFragmentManager();
+        dialogListener = new ErrorDialog.OnDialogListener() {
+            @Override
+            public void onOpen() {
+                blurView(binding.blurView, 30);
+            }
+
+            @Override
+            public void onClosed() {
+                showBlur(binding.blurView);
+            }
+        };
     }
 
     @Override
@@ -177,12 +199,17 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         setupVideo(meal);
     }
 
+    @Override
+    public void showToast(String message) {
+        CustomToastKt.successToast(requireContext(), message);
+
+    }
+
     private void setupIngredients(Meal meal) {
         MealIngredientAdapter ingredientAdapter = new MealIngredientAdapter(
                 meal.getIngredients(),
                 ingredient ->
                 {
-                    CustomToastKt.successToast(requireContext(), "Add item to cart");
                     presenter.addIngredientToCart(ingredient);
                 }
         );
@@ -217,14 +244,17 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
     // region State
     @Override
     public void showLoading() {
+
     }
 
     @Override
     public void hideLoading() {
+
     }
 
     @Override
     public void showError(String message) {
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     // endregion

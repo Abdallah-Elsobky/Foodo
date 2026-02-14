@@ -24,7 +24,9 @@ import java.util.List;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.db.AppDatabase;
 import iti.student.foodo.data.model.domain.Meal;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.network.firebase.FirestoreService;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentFavoritesBinding;
@@ -32,7 +34,7 @@ import iti.student.foodo.features.favorites.presenter.FavContract;
 import iti.student.foodo.features.favorites.presenter.FavPresenter;
 import iti.student.foodo.features.home.view.MealAdapter;
 import iti.student.foodo.features.utils.ConfirmDialog;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 import iti.student.foodo.features.utils.MyDatePicker;
 
@@ -41,7 +43,7 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
     FragmentFavoritesBinding binding;
     FavContract.Presenter presenter;
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,9 +52,9 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
         FirestoreService firestoreService = new FirestoreService();
         presenter = new FavPresenter(
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
-                new PlannerRepositoryImpl(localDataSource, firestoreService));
+                new PlannerRepositoryImpl(localDataSource, firestoreService),new AuthRepositoryImpl(new AuthService()));
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -146,6 +148,6 @@ public class FavoritesFragment extends Fragment implements FavContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 }
