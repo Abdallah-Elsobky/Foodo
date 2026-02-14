@@ -91,7 +91,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addFavorite(String mealId) {
-        if(authRepository.isGuest()){
+        if (authRepository.isGuest()) {
             view.showError("You must be logged in to add a meal to your planner");
             return;
         }
@@ -107,7 +107,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void removeFavorite(String mealId) {
-        if(authRepository.isGuest()){
+        if (authRepository.isGuest()) {
             view.showError("You must be logged in to add a meal to your planner");
             return;
         }
@@ -122,7 +122,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void addMealToPlanner(String date, String mealId) {
-        if(authRepository.isGuest()){
+        if (authRepository.isGuest()) {
             view.showError("You must be logged in to add a meal to your planner");
             return;
         }
@@ -137,16 +137,21 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void Logout() {
-        authRepository.logout(new AuthRepository.AuthCallback(){
+    public void logout() {
+        Log.d("loco", "logout");
+        authRepository.logout(new AuthRepository.AuthCallback() {
             @Override
             public void onSuccess() {
+                mealRepository.dropMeals().subscribe(
 
+                );
+                view.showToast("Logout successful");
+                view.onLogout();
             }
 
             @Override
             public void onError(String message) {
-
+                view.showError(message);
             }
         });
     }

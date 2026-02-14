@@ -18,5 +18,8 @@ public interface IngredientDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertIngredients(List<IngredientEntity> ingredients);
+
+    @Query("DELETE FROM ingredients")
+    Completable clearIngredients();
 }
 

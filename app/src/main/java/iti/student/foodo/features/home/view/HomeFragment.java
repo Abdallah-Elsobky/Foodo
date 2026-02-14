@@ -13,8 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 
@@ -100,6 +103,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         presenter.getMeals();
         setupAdapters();
         setupRecyclerViews();
+        setupClickListeners();
     }
 
     @Override
@@ -144,7 +148,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupClickListeners() {
         binding.accountLogout.setOnClickListener(v->{
-
+            presenter.logout();
         });
     }
 
@@ -215,7 +219,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void onLogout() {
-
+        NavController navController = Navigation.findNavController(binding.getRoot());
+        navController.navigate(R.id.auth_nav_graph, null,
+                new NavOptions.Builder()
+                        .setPopUpTo(R.id.root_nav_graph, true)
+                        .build());
     }
 
     @Override

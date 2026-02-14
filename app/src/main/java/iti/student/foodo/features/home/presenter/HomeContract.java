@@ -30,6 +30,6 @@ public interface HomeContract {
 
         void addMealToPlanner(String date, String mealId);
 
-        void Logout();
+        void logout();
     }
 }

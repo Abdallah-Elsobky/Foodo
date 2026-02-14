@@ -52,6 +52,6 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
     public void logout(AuthCallback callback) {
-        authService.logout();
+        authService.logout(callback);
     }
 }

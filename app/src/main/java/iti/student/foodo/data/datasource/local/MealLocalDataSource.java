@@ -132,4 +132,13 @@ public class MealLocalDataSource {
     public Flowable<List<PlannedMealWithDetails>> getPlannedMeals(String date) {
         return plannedMealDao.getPlannedMealsWithDetails(date);
     }
+
+    public Completable dropMeals() {
+        instructionDao.clearInstructions().subscribeOn(Schedulers.io()).subscribe();
+        ingredientDao.clearIngredients().subscribeOn(Schedulers.io()).subscribe();
+        favoriteDao.clearFavorites().subscribeOn(Schedulers.io()).subscribe();
+        cartDao.clearCart().subscribeOn(Schedulers.io()).subscribe();
+        plannedMealDao.clearPlannedMeals().subscribeOn(Schedulers.io()).subscribe();
+        return mealDao.clearMeals().subscribeOn(Schedulers.io());
+    }
 }

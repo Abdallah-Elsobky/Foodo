@@ -19,5 +19,8 @@ public interface InstructionDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertInstructions(List<InstructionEntity> instructions);
+
+    @Query("DELETE FROM instructions")
+    Completable clearInstructions();
 }
 

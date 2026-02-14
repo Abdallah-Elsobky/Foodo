@@ -29,4 +29,7 @@ public interface PlannedMealDao {
     Flowable<List<PlannedMealWithDetails>> getPlannedMealsWithDetails(
             String date
     );
+
+    @Query("DELETE FROM planned_meals")
+    Completable clearPlannedMeals();
 }

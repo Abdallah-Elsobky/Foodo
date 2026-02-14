@@ -83,8 +83,13 @@ public class AuthService {
         }
     }
 
-    public void logout() {
+    public void logout(AuthRepository.AuthCallback callback) {
         firebaseAuth.signOut();
+        if(firebaseAuth.getCurrentUser() == null){
+            callback.onSuccess();
+        } else {
+            callback.onError("Logout failed");
+        }
     }
 }
 
