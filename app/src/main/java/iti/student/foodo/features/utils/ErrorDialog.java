@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import iti.student.foodo.databinding.CustomDialogBinding;
 
-public class CustomDialog extends DialogFragment {
+public class ErrorDialog extends DialogFragment {
 
     private static final String TAG = "CustomDialogTag";
     private static final String ARG_TITLE = "arg_title";
@@ -36,7 +36,7 @@ public class CustomDialog extends DialogFragment {
             oldDialog.dismissAllowingStateLoss();
         }
 
-        CustomDialog dialog = newInstance(title, message);
+        ErrorDialog dialog = newInstance(title, message);
         dialog.setListener(listener);
 
         if (listener != null) listener.onOpen();
@@ -45,8 +45,8 @@ public class CustomDialog extends DialogFragment {
     }
 
 
-    private static CustomDialog newInstance(String title, String message) {
-        CustomDialog fragment = new CustomDialog();
+    private static ErrorDialog newInstance(String title, String message) {
+        ErrorDialog fragment = new ErrorDialog();
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_MESSAGE, message);

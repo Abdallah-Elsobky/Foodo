@@ -1,7 +1,5 @@
 package iti.student.foodo.features.meal.view;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static iti.student.foodo.features.utils.BlurUtils.blurView;
 import static iti.student.foodo.features.utils.BlurUtils.showBlur;
 import static iti.student.foodo.features.utils.VideoUtils.getVideoId;
@@ -42,7 +40,7 @@ import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
 import iti.student.foodo.databinding.FragmentMealDetailsBinding;
 import iti.student.foodo.features.meal.presenter.MealContract;
 import iti.student.foodo.features.meal.presenter.MealPresenter;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 
 public class MealDetailsFragment extends Fragment implements MealContract.View {
@@ -53,7 +51,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
     private String viewMealId = "53322";
 
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
     // endregion
 
     // region Lifecycle
@@ -73,7 +71,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         );
         presenter.attachView(this);
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -256,7 +254,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     // endregion

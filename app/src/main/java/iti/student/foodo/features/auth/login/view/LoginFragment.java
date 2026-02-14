@@ -40,7 +40,7 @@ import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.features.auth.login.presenter.LoginContract;
 import iti.student.foodo.features.auth.login.presenter.LoginPresenterImpl;
 import iti.student.foodo.features.utils.BlurUtils;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.ValidationUtils;
 
 import android.os.CancellationSignal;
@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
     FragmentLoginBinding binding;
     LoginContract.Presenter presenter;
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
     private PrefManager prefManager;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
                                 AppDatabase.getInstance(requireContext()))));
         presenter.attachView(this);
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -238,7 +238,7 @@ public class LoginFragment extends Fragment implements LoginContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     @Override

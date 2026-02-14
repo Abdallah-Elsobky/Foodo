@@ -42,7 +42,7 @@ import iti.student.foodo.features.home.view.CategoryAdapter;
 import iti.student.foodo.features.home.view.MealAdapter;
 import iti.student.foodo.features.search.presenter.SearchContract;
 import iti.student.foodo.features.search.presenter.SearchPresenter;
-import iti.student.foodo.features.utils.CustomDialog;
+import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
 import iti.student.foodo.features.utils.MyDatePicker;
 
@@ -61,7 +61,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     private IngredientAdapter ingredientAdapter;
 
     private FragmentManager fragmentManager;
-    private CustomDialog.OnDialogListener dialogListener;
+    private ErrorDialog.OnDialogListener dialogListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                 new AuthRepositoryImpl(new AuthService())
         );
         fragmentManager = getParentFragmentManager();
-        dialogListener = new CustomDialog.OnDialogListener() {
+        dialogListener = new ErrorDialog.OnDialogListener() {
             @Override
             public void onOpen() {
                 blurView(binding.blurView, 30);
@@ -277,7 +277,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
     @Override
     public void showError(String message) {
-        CustomDialog.show(fragmentManager, "Error", message, dialogListener);
+        ErrorDialog.show(fragmentManager, "Error", message, dialogListener);
     }
 
     // endregion
