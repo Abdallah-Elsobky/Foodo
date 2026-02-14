@@ -42,6 +42,7 @@
         android:layout_marginTop="16dp"
         android:textColor="@color/light_black"
         android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container"
         tools:text="Feb" />
 
@@ -94,7 +95,6 @@
             android:layout_height="100dp"
             android:backgroundTint="@color/light_orange"
             app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

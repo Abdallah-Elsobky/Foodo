@@ -38,13 +38,23 @@ public class MealPresenter implements MealContract.Presenter {
 
     @Override
     public void getMeals(String id) {
-        Disposable disposable = mealRepository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Disposable disposable = mealRepository.getLocalMeals(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meal -> {
                     if (view != null) {
-                        view.onLoadMeals(meal.get(0));
+                        view.onLoadMeals(meal);
+                    }
+                    if (meal == null) {
+                        Disposable dis = mealRepository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                                meals -> {
+                                    if (view != null) {
+                                        view.onLoadMeals(meals.get(0));
+                                    }
+                                }
+                                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
+                        );
+                        compositeDisposable.add(dis);
                     }
                 }
-                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
         );
         compositeDisposable.add(disposable);
     }
