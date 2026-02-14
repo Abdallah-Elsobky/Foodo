@@ -86,10 +86,11 @@ Whether you're a home cook looking for inspiration or someone who wants to organ
 - **Material Design** — Modern UI following Google's Material Design guidelines
 
 ---
-
+<!--
 ## Screenshots
 
 > *Screenshots coming soon — contributions welcome!*
+-->
 
 <!--
 Add screenshots to a `/screenshots` folder and reference them like this:
@@ -111,23 +112,23 @@ Foodo follows the **MVP (Model–View–Presenter)** architecture pattern, ensur
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        VIEW (Fragment)                       │
-│              Displays data, handles user input               │
+│                        VIEW (Fragment)                      │
+│              Displays data, handles user input              │
 └────────────────────────────┬────────────────────────────────┘
                              │ Contract Interface
 ┌────────────────────────────▼────────────────────────────────┐
-│                      PRESENTER                               │
-│          Business logic, mediates View ↔ Model               │
+│                      PRESENTER                              │
+│          Business logic, mediates View ↔ Model              │
 └────────────────────────────┬────────────────────────────────┘
                              │
 ┌────────────────────────────▼────────────────────────────────┐
-│                    MODEL (Repository)                         │
-│         Data access: API + Room DB + Firebase                │
+│                    MODEL (Repository)                       │
+│         Data access: API + Room DB + Firebase               │
 └──────┬──────────────────┬──────────────────┬────────────────┘
        │                  │                  │
-  ┌────▼────┐      ┌─────▼─────┐     ┌─────▼──────┐
-  │ Retrofit │      │  Room DB  │     │  Firebase   │
-  │  (API)   │      │ (Local)   │     │ (Auth/Sync) │
+  ┌────▼─────┐      ┌─────▼─────┐     ┌─────▼──────┐
+  │ Retrofit │      │  Room DB  │     │  Firebase  │
+  │  (API)   │      │ (Local)   │     │ (Auth/Sync)│
   └──────────┘      └───────────┘     └────────────┘
 ```
 
