@@ -7,10 +7,13 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import iti.student.foodo.data.mapper.IngredientMapper;
 import iti.student.foodo.data.model.domain.Ingredient;
+import iti.student.foodo.data.network.firebase.AuthService;
 import iti.student.foodo.data.repository.auth.AuthRepository;
+import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.cart.CartRepository;
 import iti.student.foodo.data.repository.favorite.FavoriteRepository;
 import iti.student.foodo.data.repository.meal.MealRepository;
+import iti.student.foodo.data.repository.planner.PlannerRepository;
 
 public class MealPresenter implements MealContract.Presenter {
 
@@ -19,16 +22,18 @@ public class MealPresenter implements MealContract.Presenter {
     final FavoriteRepository favoriteRepository;
     final CartRepository cartRepository;
     final AuthRepository authRepository;
+    final PlannerRepository plannerRepository;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     public MealPresenter(MealRepository mealRepository,
                          FavoriteRepository favoriteRepository,
-                         CartRepository cartRepository, AuthRepository authRepository) {
+                         CartRepository cartRepository, AuthRepository authRepository, PlannerRepository plannerRepository) {
         this.mealRepository = mealRepository;
         this.favoriteRepository = favoriteRepository;
         this.cartRepository = cartRepository;
         this.authRepository = authRepository;
+        this.plannerRepository = plannerRepository;
     }
 
     @Override
@@ -46,8 +51,8 @@ public class MealPresenter implements MealContract.Presenter {
 
     @Override
     public void addToFavorites(String mealId) {
-        if(authRepository.isGuest()){
-            view.showError("You must be logged in to add a meal to your planner");
+        if (authRepository.isGuest()) {
+            view.showError("You must be logged in to add a meal to your favorites");
             return;
         }
         Disposable disposable = favoriteRepository.addToFavorites(mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -61,7 +66,7 @@ public class MealPresenter implements MealContract.Presenter {
 
     @Override
     public void removeFromFavorites(String userId, String mealId) {
-        if(authRepository.isGuest()){
+        if (authRepository.isGuest()) {
             view.showError("You must be logged in to add a meal to your planner");
             return;
         }
@@ -73,8 +78,21 @@ public class MealPresenter implements MealContract.Presenter {
     }
 
     @Override
+    public void addToPlanner(String date, String mealId) {
+        if (authRepository.isGuest()) {
+            view.showError("You must be logged in to add a meal to your planner");
+            return;
+        }
+        Disposable disposable = plannerRepository.addPlannedMeal(date, mealId).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                () -> {
+                    view.showToast("Meal added to planner");
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
     public void addIngredientToCart(Ingredient ingredient) {
-        if(authRepository.isGuest()){
+        if (authRepository.isGuest()) {
             view.showError("You must be logged in to add a meal to your planner");
             return;
         }

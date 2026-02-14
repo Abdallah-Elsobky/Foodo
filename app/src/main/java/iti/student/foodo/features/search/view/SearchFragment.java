@@ -3,9 +3,14 @@ package iti.student.foodo.features.search.view;
 import static iti.student.foodo.features.utils.BlurUtils.blurView;
 import static iti.student.foodo.features.utils.BlurUtils.showBlur;
 
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 
 import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
+import iti.student.foodo.core.network.NetworkManager;
 import iti.student.foodo.core.utils.ShimmerAdapter;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
 import iti.student.foodo.data.datasource.remote.MealsRemoteDataSource;
@@ -100,10 +106,40 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         presenter.attachView(this);
+        NetworkManager.addConnectivityListener(requireContext(), new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onLost(@NonNull Network network) {
+                super.onLost(network);
+                if (binding == null)
+                    return;
+                new Handler(Looper.getMainLooper()).post(() -> {
+                            showError("No internet connection");
+                            CustomToastKt.errorToast(requireContext(), "No internet connection");
+                        }
+                );
+            }
+
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                Log.d("loco", "onAvilable home");
+                super.onAvailable(network);
+                if (binding == null)
+                    return;
+                new Handler(Looper.getMainLooper()).post(() -> {
+                            presenter.getMealsBySearch("");
+                        }
+                );
+            }
+        });
+
         setupAdapters();
         setupRecyclerViews();
         setupChipListeners();
         setupSearchBar();
+        if (NetworkManager.isNetworkDisconnected(requireContext())) {
+            showError("No internet connection");
+            return;
+        }
         presenter.getMealsBySearch("");
     }
 

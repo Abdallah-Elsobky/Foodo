@@ -37,11 +37,13 @@ import iti.student.foodo.data.repository.auth.AuthRepositoryImpl;
 import iti.student.foodo.data.repository.cart.CartRepositoryImpl;
 import iti.student.foodo.data.repository.favorite.FavoriteRepositoryImpl;
 import iti.student.foodo.data.repository.meal.MealRepositoryImpl;
+import iti.student.foodo.data.repository.planner.PlannerRepositoryImpl;
 import iti.student.foodo.databinding.FragmentMealDetailsBinding;
 import iti.student.foodo.features.meal.presenter.MealContract;
 import iti.student.foodo.features.meal.presenter.MealPresenter;
 import iti.student.foodo.features.utils.ErrorDialog;
 import iti.student.foodo.features.utils.CustomToastKt;
+import iti.student.foodo.features.utils.MyDatePicker;
 
 public class MealDetailsFragment extends Fragment implements MealContract.View {
 
@@ -67,7 +69,8 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
                 new MealRepositoryImpl(remoteDataSource, localDataSource),
                 new FavoriteRepositoryImpl(localDataSource, firestoreService),
                 new CartRepositoryImpl(localDataSource),
-                new AuthRepositoryImpl(new AuthService())
+                new AuthRepositoryImpl(new AuthService()),
+                new PlannerRepositoryImpl(localDataSource, firestoreService)
         );
         presenter.attachView(this);
         fragmentManager = getParentFragmentManager();
@@ -105,7 +108,7 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         setupYoutubeLifecycle();
         setupBackButtonListener();
         requestMealDetails();
-        setupAddToFavButton();
+        setupClickListeners();
     }
 
 
@@ -166,10 +169,17 @@ public class MealDetailsFragment extends Fragment implements MealContract.View {
         });
     }
 
-    private void setupAddToFavButton() {
+    private void setupClickListeners() {
         binding.btnFavorite.setOnClickListener(v -> {
             presenter.addToFavorites(viewMealId);
             binding.btnFavorite.setIconTintResource(R.color.orange);
+        });
+
+        binding.addPlane.setOnClickListener(v -> {
+            MyDatePicker datePicker = new MyDatePicker(requireContext(), date -> {
+                presenter.addToPlanner(date, viewMealId);
+            });
+            datePicker.show();
         });
     }
 

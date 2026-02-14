@@ -4,10 +4,16 @@ import static android.view.View.*;
 
 import static iti.student.foodo.features.utils.BlurUtils.*;
 
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +31,7 @@ import java.util.List;
 
 import iti.student.foodo.R;
 import iti.student.foodo.core.network.ApiClient;
+import iti.student.foodo.core.network.NetworkManager;
 import iti.student.foodo.core.utils.Animations;
 import iti.student.foodo.core.utils.ShimmerAdapter;
 import iti.student.foodo.data.datasource.local.MealLocalDataSource;
@@ -100,10 +107,15 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             @Nullable Bundle savedInstanceState
     ) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.getMeals();
+        addNetworkListener();
         setupAdapters();
         setupRecyclerViews();
         setupClickListeners();
+        if (NetworkManager.isNetworkDisconnected(requireContext())) {
+            showError("No internet connection");
+            return;
+        }
+        presenter.getMeals();
     }
 
     @Override
@@ -147,7 +159,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void setupClickListeners() {
-        binding.accountLogout.setOnClickListener(v->{
+        binding.accountLogout.setOnClickListener(v -> {
             ConfirmDialog confirmDialog = new ConfirmDialog(requireContext(), "Logout", "Are you sure you want to logout?", new ConfirmDialog.OnConfirmListener() {
                 @Override
                 public void onConfirm() {
@@ -235,6 +247,41 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 new NavOptions.Builder()
                         .setPopUpTo(R.id.root_nav_graph, true)
                         .build());
+    }
+
+    @Override
+    public void addNetworkListener() {
+        NetworkManager.addConnectivityListener(requireContext(), new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onLost(@NonNull Network network) {
+                super.onLost(network);
+                Log.d("loco", "onLost home");
+                if (binding == null)
+                    return;
+                new Handler(Looper.getMainLooper()).post(() -> {
+                            showError("No internet connection");
+                            CustomToastKt.errorToast(requireContext(), "No internet connection");
+                        }
+                );
+            }
+
+            @Override
+            public void onAvailable(@NonNull Network network) {
+                super.onAvailable(network);
+                if (binding == null)
+                    return;
+                new Handler(Looper.getMainLooper()).post(() -> {
+                            presenter.getMeals();
+                        }
+                );
+            }
+        });
+
+    }
+
+    @Override
+    public void removeNetworkListener() {
+
     }
 
     @Override

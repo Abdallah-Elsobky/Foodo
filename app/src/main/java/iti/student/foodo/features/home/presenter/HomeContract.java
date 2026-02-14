@@ -17,6 +17,10 @@ public interface HomeContract {
         void showToast(String message);
 
         void onLogout();
+
+        void addNetworkListener();
+
+        void removeNetworkListener();
     }
 
     interface Presenter extends BasePresenter<View> {

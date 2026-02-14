@@ -21,6 +21,8 @@ public interface MealContract {
 
         void isFavorite(String userId, String mealId);
 
+        void addToPlanner(String date,String mealId);
+
         void addIngredientToCart(Ingredient ingredient);
 
         void removeIngredientFromCart(Ingredient ingredient);

@@ -17,6 +17,8 @@ public class MealMapper {
     // API mapper
     public static Meal map(MealsItem item) {
         Meal meal = new Meal();
+        if(item == null)
+            return meal;
         meal.setId(item.getIdMeal());
         meal.setName(item.getStrMeal());
         meal.setImage(item.getStrMealThumb());
@@ -99,6 +101,7 @@ public class MealMapper {
             MealEntity mealEntity
     ) {
         Meal meal = new Meal();
+        if (mealEntity == null) return meal;
         meal.setId(mealEntity.getId());
         meal.setName(mealEntity.getName());
         meal.setArea(mealEntity.getArea());
