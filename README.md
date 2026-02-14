@@ -31,7 +31,6 @@
 - [API Reference](#api-reference)
 - [Database Schema](#database-schema)
 - [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -359,12 +358,6 @@ Contributions are welcome! Here's how you can help:
 - Write clean, documented Java code
 - Test on API 24+ devices before submitting
 - Keep UI consistent with Material Design guidelines
-
----
-
-## License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ---
 
