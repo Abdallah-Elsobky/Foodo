@@ -40,7 +40,9 @@ public class MealRepositoryImpl implements MealRepository {
     public Single<List<Meal>> getMeals() {
         return remoteDataSource.getMeals()
                 .compose(applySchedulers())
-                .map(response -> MealMapper.mapList(response.getMeals()));
+                .map(response -> MealMapper.mapList(response.getMeals()))
+                .flatMap(meals -> saveMeals(meals)
+                        .andThen(Single.just(meals)));
     }
 
     @Override
@@ -138,6 +140,11 @@ public class MealRepositoryImpl implements MealRepository {
                             .sort((a, b) -> a.ingredientId - b.ingredientId);
                     return mealWithDetails;
                 }).map(MealMapper::fromEntity);
+    }
+
+    @Override
+    public Flowable<List<Meal>> getLocalMeals() {
+        return localDataSource.getAllMeals().map(MealMapper::fromMealEntityList);
     }
 
     @Override

@@ -84,18 +84,18 @@ public class MealMapper {
         return meal;
     }
 
-    public static Meal fromEntity(
-            PlannedMealWithDetails plannedMealWithDetails
-    ) {
-        Meal meal = new Meal();
-        meal.setId(plannedMealWithDetails.meal.id);
-        meal.setName(plannedMealWithDetails.meal.name);
-        meal.setImage(plannedMealWithDetails.meal.image);
-        meal.setCategory(plannedMealWithDetails.meal.category);
-        meal.setArea(plannedMealWithDetails.meal.area);
-        meal.setYoutube(plannedMealWithDetails.meal.youtube);
-        return meal;
-    }
+//    public static Meal fromEntity(
+//            PlannedMealWithDetails plannedMealWithDetails
+//    ) {
+//        Meal meal = new Meal();
+//        meal.setId(plannedMealWithDetails.meal.id);
+//        meal.setName(plannedMealWithDetails.meal.name);
+//        meal.setImage(plannedMealWithDetails.meal.image);
+//        meal.setCategory(plannedMealWithDetails.meal.category);
+//        meal.setArea(plannedMealWithDetails.meal.area);
+//        meal.setYoutube(plannedMealWithDetails.meal.youtube);
+//        return meal;
+//    }
 
     public static Meal fromEntity(
             MealEntity mealEntity
@@ -119,6 +119,32 @@ public class MealMapper {
 
         for (int i = 0; i < mealWithDetails.size(); i++) {
             meals.add(fromEntity(mealWithDetails.get(i)));
+        }
+        return meals;
+    }
+
+
+    public static Meal fromMealEntity(
+            MealEntity mealEntity
+    ) {
+        Meal meal = new Meal();
+        if (mealEntity == null) return meal;
+        meal.setId(mealEntity.getId());
+        meal.setName(mealEntity.getName());
+        meal.setArea(mealEntity.getArea());
+        meal.setCategory(mealEntity.getCategory());
+        meal.setImage(mealEntity.getImage());
+        meal.setYoutube(mealEntity.getYoutube());
+        return meal;
+    }
+
+    public static List<Meal> fromMealEntityList(
+            List<MealEntity> mealEntities
+    ){
+        List<Meal> meals = new ArrayList<>();
+
+        for (int i = 0; i < mealEntities.size(); i++) {
+            meals.add(fromEntity(mealEntities.get(i)));
         }
         return meals;
     }

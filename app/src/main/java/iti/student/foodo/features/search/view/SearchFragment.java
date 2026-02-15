@@ -112,6 +112,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
                 super.onLost(network);
                 if (binding == null)
                     return;
+                presenter.getLocalMeals();
                 new Handler(Looper.getMainLooper()).post(() -> {
                             showError("No internet connection");
                             CustomToastKt.errorToast(requireContext(), "No internet connection");
@@ -137,6 +138,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
         setupChipListeners();
         setupSearchBar();
         if (NetworkManager.isNetworkDisconnected(requireContext())) {
+            presenter.getLocalMeals();
             showError("No internet connection");
             return;
         }

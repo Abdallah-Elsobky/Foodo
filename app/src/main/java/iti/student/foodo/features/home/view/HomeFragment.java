@@ -112,6 +112,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         setupRecyclerViews();
         setupClickListeners();
         if (NetworkManager.isNetworkDisconnected(requireContext())) {
+            presenter.getLocalMeals();
             showError("No internet connection");
             return;
         }
@@ -260,6 +261,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     return;
                 new Handler(Looper.getMainLooper()).post(() -> {
                             showError("No internet connection");
+                            presenter.getLocalMeals();
                             CustomToastKt.errorToast(requireContext(), "No internet connection");
                         }
                 );

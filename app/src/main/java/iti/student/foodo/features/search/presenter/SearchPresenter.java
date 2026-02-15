@@ -32,6 +32,30 @@ public class SearchPresenter implements SearchContract.Presenter {
     }
 
     @Override
+    public void getLocalMeals() {
+        Disposable disposable = mealRepository.getLocalMeals()
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> {
+                            if (view != null) {
+                                if (meals.isEmpty()) {
+                                    view.showError("No cached meals available");
+                                } else {
+                                    view.onLoadMeals(meals);
+                                }
+                            }
+                        },
+                        throwable -> {
+                            if (view != null) {
+                                view.showError(getErrorMessage(throwable));
+                            }
+                        }
+                );
+        compositeDisposable.add(disposable);
+    }
+
+    @Override
     public void getMealsBySearch(String query) {
         Disposable disposable = mealRepository.searchByName(query).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 meals -> view.onLoadMeals(meals),

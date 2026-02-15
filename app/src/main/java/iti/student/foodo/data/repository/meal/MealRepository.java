@@ -34,6 +34,8 @@ public interface MealRepository {
 
     Flowable<Meal> getLocalMeals(String mealId);
 
+    Flowable<List<Meal>> getLocalMeals();
+
     Completable saveMeals(List<Meal> meals);
 
     Completable dropMeals();

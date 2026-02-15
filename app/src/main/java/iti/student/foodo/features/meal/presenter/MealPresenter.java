@@ -43,19 +43,23 @@ public class MealPresenter implements MealContract.Presenter {
                     if (view != null) {
                         view.onLoadMeals(meal);
                     }
-                    if (meal == null) {
-                        Disposable dis = mealRepository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
-                                meals -> {
-                                    if (view != null) {
-                                        view.onLoadMeals(meals.get(0));
-                                    }
-                                }
-                                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
-                        );
-                        compositeDisposable.add(dis);
+                },
+                throwable -> {
+                    if (view != null) {
+                        view.showError(throwable.getMessage());
                     }
+                    Log.d("loco", "error: " + throwable.getMessage());
                 }
         );
+        Disposable dis = mealRepository.searchById(id).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                meals -> {
+                    if (view != null) {
+                        view.onLoadMeals(meals.get(0));
+                    }
+                }
+                , throwable -> Log.d("loco", "error: " + throwable.getMessage())
+        );
+        compositeDisposable.add(dis);
         compositeDisposable.add(disposable);
     }
 

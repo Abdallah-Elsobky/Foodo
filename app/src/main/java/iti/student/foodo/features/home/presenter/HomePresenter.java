@@ -52,7 +52,6 @@ public class HomePresenter implements HomeContract.Presenter {
                             if (view != null) {
                                 view.hideLoading();
                                 view.showMeals(meals);
-                                Log.d("Memo", "meals size: " + meals.size());
                             }
                         },
                         throwable -> {
@@ -67,15 +66,20 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void getRandomMeal() {
+    public void getLocalMeals() {
         if (view != null) view.showLoading();
-        Disposable disposable = mealRepository.getRandomMeal()
+        Disposable dis = mealRepository.getLocalMeals()
+                .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
                             if (view != null) {
                                 view.hideLoading();
-                                view.showMeals(meals);
+                                if (meals.isEmpty()) {
+                                    view.showError("No cached meals available");
+                                } else {
+                                    view.showMeals(meals);
+                                }
                             }
                         },
                         throwable -> {
@@ -85,8 +89,7 @@ public class HomePresenter implements HomeContract.Presenter {
                             }
                         }
                 );
-
-        compositeDisposable.add(disposable);
+        compositeDisposable.add(dis);
     }
 
     @Override

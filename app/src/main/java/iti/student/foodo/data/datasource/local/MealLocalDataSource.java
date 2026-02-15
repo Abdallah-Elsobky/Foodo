@@ -81,6 +81,9 @@ public class MealLocalDataSource {
         return mealDao.getMealWithDetails(mealId);
     }
 
+    public Flowable<List<MealEntity>> getMealDetails() {
+        return mealDao.getAllMeals();
+    }
 
     public Completable addToFavorites(String mealId) {
         return favoriteDao.addToFavorites(

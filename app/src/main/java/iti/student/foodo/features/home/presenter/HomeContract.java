@@ -26,7 +26,7 @@ public interface HomeContract {
     interface Presenter extends BasePresenter<View> {
         void getMeals();
 
-        void getRandomMeal();
+        void getLocalMeals();
 
         void addFavorite(String mealId);
 

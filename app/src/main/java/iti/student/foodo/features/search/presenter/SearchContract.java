@@ -26,6 +26,8 @@ public interface SearchContract {
     interface Presenter extends BasePresenter<View> {
 //        void getMeals();
 
+        void getLocalMeals();
+
         void getMealsBySearch(String query);
 
         void getMealsByCategory(String category);
